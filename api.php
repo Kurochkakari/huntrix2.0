@@ -9,15 +9,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 $host = getenv('DB_HOST') ?: '127.0.0.1';
-$db = getenv('DB_NAME') ?: 'huntrixhost';
-$user = getenv('DB_USER') ?: 'root';
-$pass = getenv('DB_PASS') ?: '12345678';
+$db = getenv('DB_NAME') ?: 'huntrix';
+$user = getenv('DB_USER') ?: 'postgres';
+$pass = getenv('DB_PASS') ?: '';
+
+$dbType = getenv('DB_TYPE') ?: 'pgsql';
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8mb4", $user, $pass);
+    if ($dbType === 'pgsql') {
+        $pdo = new PDO("pgsql:host=$host;dbname=$db", $user, $pass);
+    } else {
+        $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8mb4", $user, $pass);
+    }
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    echo json_encode(['success' => false, 'error' => 'Ошибка подключения к базе данных']);
+    echo json_encode(['success' => false, 'error' => 'Ошибка подключения к базе данных: ' . $e->getMessage()]);
     exit;
 }
 
