@@ -1,0 +1,2333 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оформление заказа | Huntrix</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #b3c4a0;
+            --secondary-color: #a3c483;
+            --accent-color: #40502a;
+            --background-color: #fefbf6;
+            --text-color: #0b0c04;
+            --light-color: #FEFBF6;
+            --header-color: #FFFFFF;
+            --dark-color: #40502a;
+            --icon-color: #40502a;
+            --gray-light: #f9f9f9;
+            --gray: #e0e0e0;
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+            --border-radius: 8px;
+            --shadow: 0 2px 10px rgba(64, 80, 42, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: var(--spacing-md);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .header h1 {
+            color: var(--accent-color);
+            font-size: 2.2rem;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .header p {
+            color: var(--text-color);
+            font-size: 1.1rem;
+        }
+
+        /* ИЗМЕНЕНИЕ: кнопка "Назад в магазин" перемещена в правый верхний угол */
+        .back-btn {
+            position: absolute;
+            top: var(--spacing-md);
+            right: var(--spacing-md); /* Изменено с left на right */
+            background: var(--primary-color);
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            z-index: 10;
+        }
+
+        .back-btn:hover {
+            background: var(--secondary-color);
+            transform: translateX(5px); /* Изменено с -5px на 5px для анимации вправо */
+        }
+
+        /* ОСНОВНОЕ ИЗМЕНЕНИЕ: правый столбец теперь немного шире */
+        .checkout-container {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr; /* Правая колонка (форма) на 20% шире */
+            gap: var(--spacing-xl);
+            min-height: 600px;
+            align-items: stretch;
+        }
+
+        @media (max-width: 1100px) {
+            .checkout-container {
+                grid-template-columns: 1fr 1.1fr; /* На планшетах разница меньше */
+                gap: var(--spacing-lg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-lg);
+            }
+        }
+
+        /* Секция товаров */
+        .products-section {
+            background: var(--header-color);
+            padding: var(--spacing-xl);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .section-title {
+            color: var(--accent-color);
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 1px solid var(--gray);
+            font-size: 1.3rem;
+        }
+
+        .products-list {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: var(--spacing-md);
+            min-height: 350px;
+            max-height: 550px;
+            width: 100%;
+        }
+
+        .product-item {
+            display: flex;
+            align-items: flex-start; /* Изменено с center на flex-start */
+            padding: var(--spacing-sm);
+            border: 1px solid var(--gray);
+            border-radius: var(--border-radius);
+            margin-bottom: var(--spacing-sm);
+            background: var(--gray-light);
+            transition: var(--transition);
+            width: 100%;
+            position: relative; /* Для позиционирования кнопки удаления */
+        }
+
+        .product-item:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow);
+        }
+
+        .product-item.selected {
+            border-color: var(--accent-color);
+            background-color: rgba(179, 196, 160, 0.1);
+        }
+
+        .product-checkbox {
+            margin-right: var(--spacing-sm);
+            flex-shrink: 0;
+            align-self: center; /* Выравниваем по центру вертикально */
+        }
+
+        .product-checkbox input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--accent-color);
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+            margin-right: var(--spacing-md);
+            flex-shrink: 0;
+        }
+
+        /* ИЗМЕНЕНИЕ: улучшенная структура информации о товаре */
+        .product-info {
+            flex-grow: 1;
+            min-width: 0; /* Важно для корректной работы text-overflow */
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        .product-name {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--text-color);
+            line-height: 1.4;
+            /* Разрешаем перенос текста и обрезаем многострочный текст */
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* Ограничиваем максимум 2 строки */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-word; /* Перенос длинных слов */
+        }
+
+        .product-details {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            font-size: 0.95rem;
+            color: #666;
+            flex-wrap: wrap;
+            margin-top: var(--spacing-xs);
+        }
+
+        .product-price-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: center;
+            min-width: 120px; /* Увеличил минимальную ширину */
+            flex-shrink: 0;
+            margin-left: auto;
+            padding-left: var(--spacing-sm);
+        }
+
+        .product-price {
+            font-weight: bold;
+            color: var(--dark-color);
+            font-size: 1.15rem;
+            text-align: right;
+            white-space: nowrap; /* Цена всегда в одну строку */
+        }
+
+        .product-subtotal {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 2px;
+            text-align: right;
+        }
+
+        .select-all {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+            padding: var(--spacing-sm);
+            background: var(--gray-light);
+            border-radius: var(--border-radius);
+        }
+
+        .select-all input {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--accent-color);
+        }
+
+        /* Форма заказа - теперь шире и красивее */
+        .order-form {
+            background: var(--header-color);
+            padding: var(--spacing-xl);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            max-height: 900px;
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: var(--spacing-xs);
+            color: var(--accent-color);
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.9rem;
+            border: 1px solid var(--gray);
+            border-radius: var(--border-radius);
+            font-size: 1.05rem;
+            transition: var(--transition);
+            background-color: white;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(179, 196, 160, 0.25);
+        }
+
+        .form-group.disabled input {
+            background-color: var(--gray-light);
+            cursor: not-allowed;
+        }
+
+        .city-info {
+            background-color: rgba(179, 196, 160, 0.2);
+            padding: var(--spacing-sm);
+            border-radius: var(--border-radius);
+            margin-top: var(--spacing-xs);
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            border-left: 3px solid var(--primary-color);
+            line-height: 1.4;
+        }
+
+        /* Стили для предпросмотра заказа */
+        .order-preview {
+            background: var(--gray-light);
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius);
+            margin-top: var(--spacing-lg);
+            border: 1px solid var(--gray);
+            flex: 1;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .order-preview.hidden {
+            display: none;
+        }
+
+        .order-items {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: var(--spacing-md);
+            min-height: 120px;
+            max-height: 350px;
+            padding-right: 5px;
+            width: 100%;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px solid var(--gray);
+            font-size: 1rem;
+            align-items: flex-start;
+            gap: var(--spacing-sm);
+        }
+
+        .order-item-name {
+            flex: 1;
+            min-width: 0;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+
+        .order-item-price {
+            flex-shrink: 0;
+            font-weight: 600;
+            color: var(--accent-color);
+            text-align: right;
+            min-width: 100px;
+        }
+
+        .order-summary {
+            padding-top: var(--spacing-md);
+            border-top: 2px solid var(--primary-color);
+            flex-shrink: 0;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-top: var(--spacing-sm);
+        }
+
+        /* Кнопки */
+        .buttons {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-lg);
+            flex-shrink: 0;
+        }
+
+        .btn {
+            padding: 1rem var(--spacing-xl);
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            min-height: 52px;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: var(--light-color);
+            flex: 1;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--dark-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            flex: 1;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Удаление title при наведении на кнопки */
+        .btn:hover::after,
+        .btn:focus::after {
+            display: none !important;
+        }
+
+        /* Расширенное уведомление */
+        .notification {
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius);
+            margin-bottom: var(--spacing-lg);
+            text-align: center;
+            display: none;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .notification.success {
+            background-color: rgba(163, 196, 131, 0.3);
+            color: var(--accent-color);
+            border: 2px solid var(--secondary-color);
+            display: block;
+        }
+
+        .notification.error {
+            background-color: rgba(255, 99, 71, 0.15);
+            color: #d32f2f;
+            border: 2px solid #ff6b6b;
+            display: block;
+        }
+
+        /* Заглушка для пустой корзины */
+        .empty-cart {
+            text-align: center;
+            padding: var(--spacing-xl);
+            color: #666;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .empty-cart p {
+            margin-bottom: var(--spacing-md);
+            font-size: 1.1rem;
+        }
+
+        /* Стили для сообщений о валидации */
+        .error-message {
+            color: #d32f2f;
+            font-size: 0.9rem;
+            margin-top: var(--spacing-xs);
+            display: none;
+        }
+
+        .form-group.error input,
+        .form-group.error textarea,
+        .form-group.error select {
+            border-color: #d32f2f;
+        }
+
+        .form-group.error .error-message {
+            display: block;
+        }
+
+        .loading {
+            text-align: center;
+            padding: var(--spacing-xl);
+            color: var(--accent-color);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading-spinner {
+            border: 4px solid var(--gray);
+            border-top: 4px solid var(--accent-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto var(--spacing-md);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--gray);
+            background: var(--light-color);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .quantity-btn:hover {
+            background: var(--primary-color);
+        }
+
+        .quantity-input {
+            width: 50px;
+            text-align: center;
+            border: 1px solid var(--gray);
+            border-radius: var(--border-radius);
+            padding: 0.35rem;
+            font-size: 0.95rem;
+        }
+
+        /* ИЗМЕНЕНИЕ: Кнопка удаления в виде корзины внизу справа */
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #d32f2f;
+            cursor: pointer;
+            padding: 0.5rem;
+            position: absolute;
+            bottom: var(--spacing-sm);
+            right: var(--spacing-sm);
+            transition: var(--transition);
+            z-index: 2;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--border-radius);
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--gray);
+        }
+
+        .remove-btn:hover {
+            background-color: rgba(211, 47, 47, 0.1);
+            color: #ff6b6b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            border-color: #ff6b6b;
+        }
+
+        .remove-btn i {
+            font-size: 1.1rem;
+        }
+
+        /* Стили для поля телефона */
+        .phone-input-group {
+            position: relative;
+        }
+
+        .country-code {
+            position: absolute;
+            left: var(--spacing-sm);
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            pointer-events: none;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .phone-input {
+            padding-left: 4.2rem !important;
+            letter-spacing: 0.5px;
+        }
+
+        .phone-hint {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.25rem;
+            line-height: 1.3;
+        }
+
+        .form-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Стили для выбора способа оплаты */
+        .payment-method {
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--gray);
+        }
+
+        .payment-options {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-sm);
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-sm);
+            border: 1px solid var(--gray);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .payment-option:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(179, 196, 160, 0.05);
+        }
+
+        .payment-option.selected {
+            border-color: var(--accent-color);
+            background-color: rgba(179, 196, 160, 0.1);
+        }
+
+        .payment-option input[type="radio"] {
+            margin-right: var(--spacing-sm);
+            accent-color: var(--accent-color);
+            width: 18px;
+            height: 18px;
+        }
+
+        .payment-option label {
+            cursor: pointer;
+            flex-grow: 1;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+
+        .payment-icon {
+            margin-right: var(--spacing-sm);
+            color: var(--accent-color);
+        }
+
+        /* Карточные платежные системы (логотипы) */
+        .card-icons {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-left: auto;
+            align-items: center;
+        }
+
+        .card-icon {
+            font-size: 1.5rem;
+            color: #666;
+        }
+
+        .card-icon.visa { color: #1a1f71; }
+        .card-icon.mastercard { color: #eb001b; }
+        .card-icon.belkart { color: #00a859; }
+
+        /* Форма для оплаты картой */
+        .card-payment-form {
+            margin-top: var(--spacing-md);
+            padding: var(--spacing-md);
+            border: 1px solid var(--gray);
+            border-radius: var(--border-radius);
+            background-color: rgba(179, 196, 160, 0.05);
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .card-payment-form.visible {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-form-title {
+            margin-bottom: var(--spacing-md);
+            color: var(--accent-color);
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .card-input-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        @media (max-width: 480px) {
+            .card-input-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card-security-info {
+            background-color: rgba(179, 196, 160, 0.1);
+            padding: var(--spacing-sm);
+            border-radius: var(--border-radius);
+            margin-top: var(--spacing-md);
+            font-size: 0.85rem;
+            color: #666;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .card-security-info i {
+            color: var(--accent-color);
+            margin-right: 0.5rem;
+        }
+
+        /* Стили для успешного оформления заказа */
+        .order-success {
+            text-align: center;
+            padding: var(--spacing-xl);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .order-success.visible {
+            display: flex;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: var(--secondary-color);
+            margin-bottom: var(--spacing-md);
+            animation: bounce 1s ease;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
+
+        .order-success h3 {
+            color: var(--accent-color);
+            margin-bottom: var(--spacing-sm);
+            font-size: 1.8rem;
+        }
+
+        .order-success p {
+            margin-bottom: var(--spacing-md);
+            font-size: 1.1rem;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .order-details {
+            background-color: rgba(179, 196, 160, 0.1);
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius);
+            margin-top: var(--spacing-md);
+            width: 100%;
+            max-width: 500px;
+            text-align: left;
+        }
+
+        .order-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-xs);
+            padding-bottom: var(--spacing-xs);
+            border-bottom: 1px dashed rgba(64, 80, 42, 0.2);
+        }
+
+        .order-detail:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .order-detail strong {
+            color: var(--accent-color);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 1024px) {
+            .checkout-container {
+                gap: var(--spacing-lg);
+            }
+            
+            .products-section,
+            .order-form {
+                padding: var(--spacing-lg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-lg);
+            }
+            
+            .products-section,
+            .order-form {
+                padding: var(--spacing-md);
+                min-height: auto;
+            }
+            
+            .product-item {
+                flex-wrap: wrap;
+                padding-bottom: 50px; /* Место для кнопки удаления внизу */
+            }
+            
+            .product-image {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .product-price-container {
+                width: 100%;
+                align-items: flex-start;
+                margin-top: var(--spacing-sm);
+                margin-left: 0;
+                padding-left: 0;
+            }
+            
+            .remove-btn {
+                bottom: var(--spacing-sm);
+                right: var(--spacing-sm);
+            }
+            
+            .buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                padding: 0.9rem;
+            }
+            
+            .country-code {
+                left: 0.75rem;
+                font-size: 0.9rem;
+            }
+            
+            .phone-input {
+                padding-left: 3.5rem !important;
+            }
+            
+            /* Адаптивность для кнопки "Назад в магазин" на мобильных */
+            .back-btn {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin: 0 auto var(--spacing-md);
+                width: fit-content;
+                display: block;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .checkout-container {
+                gap: var(--spacing-sm);
+            }
+            
+            .products-section,
+            .order-form {
+                padding: var(--spacing-sm);
+            }
+            
+            .product-item {
+                flex-direction: column;
+                align-items: flex-start;
+                padding-bottom: 50px;
+            }
+            
+            .product-image {
+                width: 100%;
+                height: 180px;
+                margin-right: 0;
+                margin-bottom: var(--spacing-sm);
+            }
+            
+            .product-info {
+                width: 100%;
+            }
+            
+            .product-name {
+                white-space: normal;
+                overflow: visible;
+                text-overflow: clip;
+                -webkit-line-clamp: 3; /* На мобильных показываем до 3 строк */
+            }
+            
+            .product-details {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--spacing-sm);
+            }
+            
+            .product-price-container {
+                align-items: flex-start;
+                margin-top: var(--spacing-sm);
+                width: 100%;
+            }
+            
+            .product-price {
+                text-align: left;
+            }
+            
+            .remove-btn {
+                bottom: 10px;
+                right: 10px;
+                width: 40px;
+                height: 40px;
+            }
+            
+            .phone-input {
+                padding-left: 3rem !important;
+            }
+            
+            .country-code {
+                left: 0.5rem;
+                font-size: 0.85rem;
+            }
+            
+            .order-form {
+                max-height: none;
+                overflow-y: visible;
+            }
+            
+            .back-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Стили для кнопки оформления заказа без галочки */
+        .submit-order-text {
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Удаление outline при фокусе */
+        .btn:focus {
+            outline: none;
+        }
+
+        /* Удаление tooltip при наведении */
+        .btn {
+            position: relative;
+        }
+
+        .btn::after {
+            display: none !important;
+        }
+
+        /* Тултип для полного названия товара */
+        .product-name[title] {
+            cursor: help;
+        }
+    </style>
+</head>
+<body>
+    <!-- ИЗМЕНЕНИЕ: Кнопка перемещена в правый верхний угол -->
+    <a href="index.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i>
+        Назад в магазин
+    </a>
+    
+    <div class="container">
+        <div class="header">
+            <h1>Оформление заказа</h1>
+            <p>Выберите товары и заполните данные для заказа</p>
+        </div>
+
+        <div class="checkout-container">
+            <!-- ЛЕВЫЙ СТОЛБЕЦ: Товары для заказа -->
+            <div class="products-section">
+                <h2 class="section-title">Товары для заказа</h2>
+                
+                <div class="select-all">
+                    <input type="checkbox" id="selectAll">
+                    <label for="selectAll">Выбрать все товары</label>
+                </div>
+
+                <div class="products-list" id="productsList">
+                    <div class="loading" id="loading">
+                        <div class="loading-spinner"></div>
+                        <p>Загрузка товаров...</p>
+                    </div>
+                </div>
+
+                <div class="empty-cart" id="emptyCart" style="display: none;">
+                    <p>Нет товаров для оформления заказа</p>
+                    <a href="index.html" class="btn btn-secondary">
+                        <i class="fas fa-shopping-bag"></i>
+                        Перейти к покупкам
+                    </a>
+                </div>
+            </div>
+
+            <!-- ПРАВЫЙ СТОЛБЕЦ: Форма заказа (теперь шире) -->
+            <div class="order-form" id="orderFormSection">
+                <h2 class="section-title">Данные для заказа</h2>
+
+                <div class="notification" id="notification"></div>
+
+                <div class="form-content" id="formContent">
+                    <form id="orderForm">
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required>
+                            <div class="error-message">Пожалуйста, введите корректный email</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Телефон *</label>
+                            <div class="phone-input-group">
+                                <span class="country-code">+375</span>
+                                <input type="tel" id="phone" name="phone" class="phone-input" 
+                                       placeholder="(XX) XXX-XX-XX" required 
+                                       maxlength="14"
+                                       pattern="^\(\d{2}\) \d{3}-\d{2}-\d{2}$">
+                            </div>
+                            <div class="phone-hint">Введите номер телефона в формате: (29) 123-45-67 (9 цифр после +375)</div>
+                            <div class="error-message" id="phone-error">Пожалуйста, введите корректный номер телефона</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name">Имя *</label>
+                            <input type="text" id="name" name="name" required>
+                            <div class="error-message">Пожалуйста, введите ваше имя</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="comment">Комментарий к заказу</label>
+                            <textarea id="comment" name="comment" rows="3" placeholder="Дополнительные пожелания..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Город получения</label>
+                            <input type="text" value="Минск" disabled>
+                            <div class="city-info">
+                                <i class="fas fa-info-circle"></i>
+                                Товар доступен для самовывоза в г. Минск. После оформления заказа с вами свяжутся для уточнения деталей.
+                            </div>
+                        </div>
+                        
+                        <!-- Раздел: Способ оплаты -->
+                        <div class="payment-method">
+                            <h3 class="section-title">Способ оплаты</h3>
+                            
+                            <div class="payment-options">
+                                <div class="payment-option" id="paymentOptionCash">
+                                    <input type="radio" id="paymentCash" name="paymentMethod" value="cash" checked>
+                                    <label for="paymentCash">
+                                        <i class="fas fa-money-bill-wave payment-icon"></i>
+                                        Наличными при получении
+                                    </label>
+                                </div>
+                                
+                                <div class="payment-option" id="paymentOptionCard">
+                                    <input type="radio" id="paymentCard" name="paymentMethod" value="card">
+                                    <label for="paymentCard">
+                                        <i class="fas fa-credit-card payment-icon"></i>
+                                        Банковской картой онлайн
+                                    </label>
+                                    <div class="card-icons">
+                                        <i class="fab fa-cc-visa card-icon visa" title="Visa"></i>
+                                        <i class="fab fa-cc-mastercard card-icon mastercard" title="MasterCard"></i>
+                                        <i class="fas fa-credit-card card-icon belkart" title="БЕЛКАРТ"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Информация о банках -->
+                            <div class="city-info" style="margin-top: var(--spacing-sm);">
+                                <i class="fas fa-university"></i>
+                                Принимаем карты банков: Беларусбанк, Белагропромбанк, Приорбанк, МТБанк.
+                            </div>
+                            
+                            <!-- Форма для оплаты картой -->
+                            <div class="card-payment-form" id="cardPaymentForm">
+                                <h4 class="card-form-title">Данные банковской карты</h4>
+                                
+                                <div class="form-group">
+                                    <label for="cardNumber">Номер карты *</label>
+                                    <input type="text" id="cardNumber" name="cardNumber" 
+                                           placeholder="XXXX XXXX XXXX XXXX" 
+                                           maxlength="19">
+                                    <div class="error-message" id="cardNumber-error">Пожалуйста, введите корректный номер карты (16 цифр)</div>
+                                </div>
+                                
+                                <div class="card-input-row">
+                                    <div class="form-group">
+                                        <label for="cardExpiry">Срок действия *</label>
+                                        <input type="text" id="cardExpiry" name="cardExpiry" 
+                                               placeholder="MM/ГГ" 
+                                               maxlength="5">
+                                        <div class="error-message" id="cardExpiry-error">Пожалуйста, введите срок действия в формате MM/ГГ</div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="cardCvc">CVC/CVV код *</label>
+                                        <input type="text" id="cardCvc" name="cardCvc" 
+                                               placeholder="XXX" 
+                                               maxlength="3">
+                                        <div class="error-message" id="cardCvc-error">Пожалуйста, введите 3-значный код безопасности</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card-security-info">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <strong>Безопасность платежей:</strong> CVC/CVV код — это 3 цифры на обратной стороне вашей карты. Мы не храним данные вашей карты. Все платежи защищены технологией 3D Secure.
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="order-preview hidden" id="orderPreview">
+                        <h3 class="section-title">Ваш заказ</h3>
+                        <div class="order-items" id="orderItems">
+                            <!-- Товары заказа будут отображаться здесь -->
+                        </div>
+                        <div class="order-summary">
+                            <div class="total-row">
+                                <span>Итого:</span>
+                                <span id="totalPrice">0.00 руб.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="buttons">
+                        <button type="button" class="btn btn-secondary" onclick="window.history.back()">
+                            <i class="fas fa-arrow-left"></i>
+                            Назад
+                        </button>
+                        <button type="button" class="btn btn-primary" id="submitOrder" disabled>
+                            <span class="submit-order-text">Оформить заказ</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Секция успешного оформления заказа -->
+                <div class="order-success" id="orderSuccess">
+                    <div class="success-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>Заказ успешно оформлен!</h3>
+                    <p>Спасибо за ваш заказ! Мы свяжемся с вами в ближайшее время для подтверждения заказа и уточнения деталей доставки.</p>
+                    
+                    <div class="order-details" id="orderDetails">
+                        <!-- Детали заказа будут заполнены JavaScript -->
+                    </div>
+                    
+                    <button type="button" class="btn btn-primary" id="continueShopping" style="margin-top: var(--spacing-lg);">
+                        <i class="fas fa-shopping-bag"></i>
+                        Продолжить покупки
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Глобальные переменные
+        let cartItems = [];
+        let selectedItems = [];
+        let userEmail = '';
+
+        // Инициализация страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Устанавливаем источник заказа как "cart" для совместимости
+            localStorage.setItem('checkoutSource', 'cart');
+            
+            // Загружаем данные из корзины/избранного
+            loadCheckoutData();
+            
+            // Настраиваем обработчики событий
+            setupEventListeners();
+            
+            // Проверяем авторизацию пользователя
+            checkUserAuth();
+        });
+
+        // Загрузка данных для оформления заказа
+        function loadCheckoutData() {
+            try {
+                // Пытаемся получить данные из localStorage
+                const savedCheckoutItems = localStorage.getItem('checkoutItems');
+                const savedCartItems = localStorage.getItem('cartItems');
+                const savedCart = localStorage.getItem('cart'); // Также проверяем ключ 'cart'
+                
+                if (savedCheckoutItems) {
+                    cartItems = JSON.parse(savedCheckoutItems);
+                } else if (savedCartItems) {
+                    // Если нет checkoutItems, но есть cartItems, используем их
+                    cartItems = JSON.parse(savedCartItems);
+                } else if (savedCart) {
+                    // Если нет cartItems, но есть cart (старая версия), используем их
+                    cartItems = JSON.parse(savedCart);
+                }
+                
+                if (cartItems.length > 0) {
+                    displayCheckoutItems();
+                } else {
+                    // Если нет данных в localStorage, показываем сообщение
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('emptyCart').style.display = 'block';
+                    document.getElementById('productsList').style.display = 'none';
+                }
+                
+            } catch (error) {
+                console.error('Ошибка загрузки данных для оформления заказа:', error);
+                showNotification('Ошибка загрузки товаров', 'error');
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('emptyCart').style.display = 'block';
+                document.getElementById('productsList').style.display = 'none';
+            }
+        }
+
+        // Проверка авторизации пользователя
+        function checkUserAuth() {
+            // В реальном приложении здесь была бы проверка через API
+            // Для демонстрации проверяем localStorage
+            const savedEmail = localStorage.getItem('userEmail');
+            if (savedEmail) {
+                userEmail = savedEmail;
+                document.getElementById('email').value = savedEmail;
+                validateForm();
+            }
+        }
+
+        // Отображение товаров для оформления заказа
+        function displayCheckoutItems() {
+            const productsList = document.getElementById('productsList');
+            const emptyCart = document.getElementById('emptyCart');
+            const loading = document.getElementById('loading');
+            
+            if (cartItems.length === 0) {
+                loading.style.display = 'none';
+                productsList.style.display = 'none';
+                emptyCart.style.display = 'block';
+                return;
+            }
+            
+            loading.style.display = 'none';
+            productsList.style.display = 'block';
+            emptyCart.style.display = 'none';
+            
+            productsList.innerHTML = '';
+            
+            cartItems.forEach((item, index) => {
+                const productElement = document.createElement('div');
+                productElement.className = 'product-item';
+                productElement.dataset.id = item.id;
+                
+                // Вычисляем общую стоимость
+                const itemQuantity = item.quantity || 1;
+                const itemPrice = item.basePrice || item.price;
+                const itemTotal = itemPrice * itemQuantity;
+                
+                productElement.innerHTML = `
+                    <div class="product-checkbox">
+                        <input type="checkbox" id="product-${index}" data-id="${item.id}" checked>
+                    </div>
+                    <img src="${item.image || 'https://via.placeholder.com/60'}" alt="${item.name}" class="product-image" onerror="this.src='https://via.placeholder.com/60'">
+                    <div class="product-info">
+                        <div class="product-name" title="${item.name}">${item.name}</div>
+                        <div class="product-details">
+                            <span>Цена: ${itemPrice.toFixed(2)} руб.</span>
+                            <div class="quantity-control">
+                                <button class="quantity-btn minus" data-id="${item.id}">-</button>
+                                <input type="number" class="quantity-input" data-id="${item.id}" value="${itemQuantity}" min="1" max="10">
+                                <button class="quantity-btn plus" data-id="${item.id}">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-price-container">
+                        <div class="product-price">${itemTotal.toFixed(2)} руб.</div>
+                        <div class="product-subtotal">${itemPrice.toFixed(2)} × ${itemQuantity} шт.</div>
+                    </div>
+                    <button class="remove-btn" data-id="${item.id}" title="Удалить товар из заказа">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                `;
+                
+                productsList.appendChild(productElement);
+                
+                // Добавляем товар в выбранные по умолчанию
+                const product = {...item};
+                if (!selectedItems.some(selected => selected.id === product.id)) {
+                    selectedItems.push(product);
+                }
+                
+                // Добавляем обработчики для чекбокса
+                const checkbox = productElement.querySelector('input[type="checkbox"]');
+                checkbox.addEventListener('change', function() {
+                    toggleProductSelection(item.id, this.checked);
+                });
+                
+                // Добавляем обработчики для кнопок количества
+                const minusBtn = productElement.querySelector('.minus');
+                const plusBtn = productElement.querySelector('.plus');
+                const quantityInput = productElement.querySelector('.quantity-input');
+                
+                minusBtn.addEventListener('click', function() {
+                    updateQuantity(item.id, -1);
+                });
+                
+                plusBtn.addEventListener('click', function() {
+                    updateQuantity(item.id, 1);
+                });
+                
+                quantityInput.addEventListener('change', function() {
+                    setQuantity(item.id, parseInt(this.value) || 1);
+                });
+                
+                // Добавляем обработчик для кнопки удаления
+                const removeBtn = productElement.querySelector('.remove-btn');
+                removeBtn.addEventListener('click', function() {
+                    removeProduct(item.id);
+                });
+            });
+            
+            // Устанавливаем чекбокс "Выбрать все"
+            document.getElementById('selectAll').checked = true;
+            updateOrderPreview();
+            validateForm();
+        }
+
+        // Обновление количества товара
+        function updateQuantity(productId, change) {
+            const product = cartItems.find(item => item.id === productId);
+            const selectedProduct = selectedItems.find(item => item.id === productId);
+            
+            if (product && selectedProduct) {
+                const newQuantity = Math.max(1, Math.min(10, (product.quantity || 1) + change));
+                
+                product.quantity = newQuantity;
+                selectedProduct.quantity = newQuantity;
+                
+                // Обновляем отображение
+                const productElement = document.querySelector(`.product-item[data-id="${productId}"]`);
+                if (productElement) {
+                    const quantityInput = productElement.querySelector('.quantity-input');
+                    const priceElement = productElement.querySelector('.product-price');
+                    const subtotalElement = productElement.querySelector('.product-subtotal');
+                    const itemPrice = product.basePrice || product.price;
+                    
+                    quantityInput.value = newQuantity;
+                    priceElement.textContent = `${(itemPrice * newQuantity).toFixed(2)} руб.`;
+                    subtotalElement.textContent = `${itemPrice.toFixed(2)} × ${newQuantity} шт.`;
+                }
+                
+                updateOrderPreview();
+            }
+        }
+
+        // Установка количества товара
+        function setQuantity(productId, quantity) {
+            const product = cartItems.find(item => item.id === productId);
+            const selectedProduct = selectedItems.find(item => item.id === productId);
+            
+            if (product && selectedProduct) {
+                const newQuantity = Math.max(1, Math.min(10, quantity));
+                
+                product.quantity = newQuantity;
+                selectedProduct.quantity = newQuantity;
+                
+                // Обновляем отображение
+                const productElement = document.querySelector(`.product-item[data-id="${productId}"]`);
+                if (productElement) {
+                    const priceElement = productElement.querySelector('.product-price');
+                    const subtotalElement = productElement.querySelector('.product-subtotal');
+                    const itemPrice = product.basePrice || product.price;
+                    
+                    priceElement.textContent = `${(itemPrice * newQuantity).toFixed(2)} руб.`;
+                    subtotalElement.textContent = `${itemPrice.toFixed(2)} × ${newQuantity} шт.`;
+                }
+                
+                updateOrderPreview();
+            }
+        }
+
+        // Удаление товара
+        function removeProduct(productId) {
+            cartItems = cartItems.filter(item => item.id !== productId);
+            selectedItems = selectedItems.filter(item => item.id !== productId);
+            
+            // Обновляем localStorage
+            localStorage.setItem('checkoutItems', JSON.stringify(cartItems));
+            
+            // Также удаляем из основной корзины
+            removeFromMainCart(productId);
+            
+            // Обновляем отображение
+            const productElement = document.querySelector(`.product-item[data-id="${productId}"]`);
+            if (productElement) {
+                productElement.remove();
+            }
+            
+            // Проверяем, остались ли товары
+            if (cartItems.length === 0) {
+                document.getElementById('emptyCart').style.display = 'block';
+                document.getElementById('productsList').style.display = 'none';
+            }
+            
+            updateOrderPreview();
+            validateForm();
+        }
+
+        // Удаление товара из основной корзины
+        function removeFromMainCart(productId) {
+            try {
+                // Получаем текущую корзину из localStorage (оба ключа)
+                const cartItems1 = JSON.parse(localStorage.getItem('cartItems') || '[]');
+                const cartItems2 = JSON.parse(localStorage.getItem('cart') || '[]');
+                
+                // Фильтруем товары, удаляя указанный
+                const updatedCartItems1 = cartItems1.filter(item => item.id !== productId);
+                const updatedCartItems2 = cartItems2.filter(item => item.id !== productId);
+                
+                // Сохраняем обновленную корзину в оба ключа для совместимости
+                localStorage.setItem('cartItems', JSON.stringify(updatedCartItems1));
+                localStorage.setItem('cart', JSON.stringify(updatedCartItems2));
+                
+                // Обновляем счетчик корзины на главной странице
+                updateCartCountOnMainPage(updatedCartItems1.length);
+                
+            } catch (error) {
+                console.error('Ошибка удаления товара из корзины:', error);
+            }
+        }
+
+        // Переключение выбора товара
+        function toggleProductSelection(productId, isSelected) {
+            if (isSelected) {
+                const product = cartItems.find(item => item.id === productId);
+                if (product && !selectedItems.some(item => item.id === productId)) {
+                    selectedItems.push({...product});
+                }
+            } else {
+                selectedItems = selectedItems.filter(item => item.id !== productId);
+            }
+            
+            // Обновляем визуальное состояние
+            const productElement = document.querySelector(`.product-item[data-id="${productId}"]`);
+            if (productElement) {
+                productElement.classList.toggle('selected', isSelected);
+            }
+            
+            // Обновляем чекбокс "Выбрать все"
+            updateSelectAllCheckbox();
+            
+            // Обновляем предпросмотр заказа
+            updateOrderPreview();
+            
+            // Проверяем возможность оформления заказа
+            validateForm();
+        }
+
+        // Обновление чекбокса "Выбрать все"
+        function updateSelectAllCheckbox() {
+            const selectAllCheckbox = document.getElementById('selectAll');
+            const allCheckboxes = document.querySelectorAll('.product-item input[type="checkbox"]');
+            
+            if (allCheckboxes.length === 0) {
+                selectAllCheckbox.checked = false;
+                selectAllCheckbox.disabled = true;
+                return;
+            }
+            
+            selectAllCheckbox.disabled = false;
+            const allChecked = Array.from(allCheckboxes).every(cb => cb.checked);
+            selectAllCheckbox.checked = allChecked;
+        }
+
+        // Обновление предпросмотра заказа
+        function updateOrderPreview() {
+            const orderPreview = document.getElementById('orderPreview');
+            const orderItems = document.getElementById('orderItems');
+            const totalPrice = document.getElementById('totalPrice');
+            
+            if (selectedItems.length === 0) {
+                orderPreview.classList.add('hidden');
+                return;
+            }
+            
+            orderPreview.classList.remove('hidden');
+            
+            // Очищаем список товаров
+            orderItems.innerHTML = '';
+            
+            let total = 0;
+            
+            // Добавляем товары в предпросмотр
+            selectedItems.forEach(item => {
+                const itemQuantity = item.quantity || 1;
+                const itemPrice = item.basePrice || item.price;
+                const itemTotal = itemPrice * itemQuantity;
+                total += itemTotal;
+                
+                const orderItem = document.createElement('div');
+                orderItem.className = 'order-item';
+                orderItem.innerHTML = `
+                    <div class="order-item-name">${item.name}</div>
+                    <div class="order-item-price">${itemTotal.toFixed(2)} руб.</div>
+                `;
+                orderItems.appendChild(orderItem);
+            });
+            
+            // Обновляем итоговую сумму
+            totalPrice.textContent = `${total.toFixed(2)} руб.`;
+        }
+
+        // Валидация формы
+        function validateForm() {
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const name = document.getElementById('name').value;
+            const submitButton = document.getElementById('submitOrder');
+            
+            // Валидация email
+            const emailValid = validateEmail(email);
+            toggleError('email', !emailValid);
+            
+            // Валидация телефона
+            const phoneValid = validatePhone(phone);
+            toggleError('phone', !phoneValid);
+            
+            // Валидация имени
+            const nameValid = name.trim().length >= 2;
+            toggleError('name', !nameValid);
+            
+            // Проверяем выбранный способ оплаты
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+            let paymentValid = true;
+            
+            // Если выбран способ оплаты картой, проверяем данные карты
+            if (paymentMethod === 'card') {
+                const cardNumber = document.getElementById('cardNumber').value;
+                const cardExpiry = document.getElementById('cardExpiry').value;
+                const cardCvc = document.getElementById('cardCvc').value;
+                
+                const cardNumberValid = validateCardNumber(cardNumber);
+                const cardExpiryValid = validateCardExpiry(cardExpiry);
+                const cardCvcValid = validateCardCvc(cardCvc);
+                
+                toggleError('cardNumber', !cardNumberValid);
+                toggleError('cardExpiry', !cardExpiryValid);
+                toggleError('cardCvc', !cardCvcValid);
+                
+                paymentValid = cardNumberValid && cardExpiryValid && cardCvcValid;
+            }
+            
+            // Проверяем, выбран ли хотя бы один товар
+            const hasSelectedItems = selectedItems.length > 0;
+            
+            // Активируем/деактивируем кнопку
+            const formValid = emailValid && phoneValid && nameValid && paymentValid && hasSelectedItems;
+            submitButton.disabled = !formValid;
+            
+            return formValid;
+        }
+
+        // Валидация email
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // Валидация телефона
+        function validatePhone(phone) {
+            // Проверяем полный формат (XX) XXX-XX-XX
+            const re = /^\(\d{2}\) \d{3}-\d{2}-\d{2}$/;
+            if (!re.test(phone)) {
+                return false;
+            }
+            
+            // Извлекаем только цифры
+            const cleaned = phone.replace(/[^\d]/g, '');
+            
+            // Проверяем код оператора (29, 33, 44, 25, 17)
+            const operatorCode = cleaned.substring(0, 2);
+            const validOperators = ['29', '33', '44', '25', '17'];
+            
+            if (!validOperators.includes(operatorCode)) {
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Валидация номера карты
+        function validateCardNumber(cardNumber) {
+            // Убираем пробелы
+            const cleaned = cardNumber.replace(/\s/g, '');
+            
+            // Проверяем, что это 16 цифр
+            if (!/^\d{16}$/.test(cleaned)) {
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Валидация срока действия карты
+        function validateCardExpiry(expiry) {
+            // Проверяем формат MM/ГГ
+            const re = /^(0[1-9]|1[0-2])\/([0-9]{2})$/;
+            if (!re.test(expiry)) {
+                return false;
+            }
+            
+            // Проверяем, что срок действия не истек
+            const [month, year] = expiry.split('/');
+            const now = new Date();
+            const currentYear = now.getFullYear() % 100;
+            const currentMonth = now.getMonth() + 1;
+            
+            const expiryYear = parseInt(year);
+            const expiryMonth = parseInt(month);
+            
+            // Если год меньше текущего, карта просрочена
+            if (expiryYear < currentYear) {
+                return false;
+            }
+            
+            // Если год равен текущему, проверяем месяц
+            if (expiryYear === currentYear && expiryMonth < currentMonth) {
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Валидация CVC/CVV кода
+        function validateCardCvc(cvc) {
+            // CVC/CVV код - это 3 цифры на обратной стороне карты
+            return /^\d{3}$/.test(cvc);
+        }
+
+        // Форматирование телефона
+        function formatPhone(phone) {
+            // Удаляем все символы, кроме цифр
+            let cleaned = phone.replace(/[^\d]/g, '');
+            
+            // Ограничиваем до 9 цифр
+            cleaned = cleaned.substring(0, 9);
+            
+            // Форматируем как (XX) XXX-XX-XX
+            if (cleaned.length > 0) {
+                let formatted = '(' + cleaned.substring(0, 2);
+                
+                if (cleaned.length > 2) {
+                    formatted += ') ' + cleaned.substring(2, 5);
+                }
+                
+                if (cleaned.length > 5) {
+                    formatted += '-' + cleaned.substring(5, 7);
+                }
+                
+                if (cleaned.length > 7) {
+                    formatted += '-' + cleaned.substring(7, 9);
+                }
+                
+                return formatted;
+            }
+            
+            return '';
+        }
+
+        // Форматирование номера карты (добавляем пробелы каждые 4 цифры)
+        function formatCardNumber(cardNumber) {
+            // Убираем все нецифры
+            let cleaned = cardNumber.replace(/\D/g, '');
+            
+            // Ограничиваем до 16 цифр
+            cleaned = cleaned.substring(0, 16);
+            
+            // Добавляем пробелы каждые 4 цифры
+            if (cleaned.length > 0) {
+                let formatted = '';
+                for (let i = 0; i < cleaned.length; i++) {
+                    if (i > 0 && i % 4 === 0) {
+                        formatted += ' ';
+                    }
+                    formatted += cleaned[i];
+                }
+                return formatted;
+            }
+            
+            return '';
+        }
+
+        // Форматирование срока действия карты (MM/ГГ)
+        function formatCardExpiry(expiry) {
+            // Убираем все нецифры
+            let cleaned = expiry.replace(/\D/g, '');
+            
+            // Ограничиваем до 4 цифр
+            cleaned = cleaned.substring(0, 4);
+            
+            // Добавляем / после первых 2 цифр
+            if (cleaned.length > 2) {
+                return cleaned.substring(0, 2) + '/' + cleaned.substring(2, 4);
+            } else if (cleaned.length > 0) {
+                return cleaned;
+            }
+            
+            return '';
+        }
+
+        // Получение полного номера телефона
+        function getFullPhoneNumber(phone) {
+            const cleaned = phone.replace(/[^\d]/g, '');
+            return '+375' + cleaned;
+        }
+
+        // Маска ввода телефона
+        function applyPhoneMask(input) {
+            let value = input.value;
+            
+            // Сохраняем позицию курсора
+            const cursorPosition = input.selectionStart;
+            
+            // Форматируем значение
+            input.value = formatPhone(value);
+            
+            // Восстанавливаем позицию курсора с учетом добавленных символов
+            let newCursorPosition = cursorPosition;
+            
+            // Подсчитываем сколько символов было до курсора
+            let originalDigits = 0;
+            for (let i = 0; i < cursorPosition && i < value.length; i++) {
+                if (/\d/.test(value[i])) {
+                    originalDigits++;
+                }
+            }
+            
+            // Находим новую позицию курсора
+            let countedDigits = 0;
+            for (let i = 0; i < input.value.length; i++) {
+                if (/\d/.test(input.value[i])) {
+                    countedDigits++;
+                }
+                if (countedDigits >= originalDigits) {
+                    newCursorPosition = i + 1;
+                    break;
+                }
+            }
+            
+            input.setSelectionRange(newCursorPosition, newCursorPosition);
+            
+            // Валидируем поле
+            validateForm();
+        }
+
+        // Маска ввода номера карты
+        function applyCardNumberMask(input) {
+            let value = input.value;
+            
+            // Сохраняем позицию курсора
+            const cursorPosition = input.selectionStart;
+            
+            // Форматируем значение
+            input.value = formatCardNumber(value);
+            
+            // Восстанавливаем позицию курсора
+            let newCursorPosition = cursorPosition;
+            
+            // Подсчитываем сколько цифр было до курсора
+            let originalDigits = 0;
+            for (let i = 0; i < cursorPosition && i < value.length; i++) {
+                if (/\d/.test(value[i])) {
+                    originalDigits++;
+                }
+            }
+            
+            // Находим новую позицию курсора с учетом пробелов
+            let countedDigits = 0;
+            let spacesAdded = 0;
+            for (let i = 0; i < input.value.length; i++) {
+                if (/\d/.test(input.value[i])) {
+                    countedDigits++;
+                }
+                if (countedDigits >= originalDigits) {
+                    // Учитываем добавленные пробелы
+                    newCursorPosition = i + 1;
+                    break;
+                }
+            }
+            
+            input.setSelectionRange(newCursorPosition, newCursorPosition);
+            
+            // Валидируем поле
+            validateForm();
+        }
+
+        // Маска ввода срока действия карты
+        function applyCardExpiryMask(input) {
+            let value = input.value;
+            
+            // Сохраняем позицию курсора
+            const cursorPosition = input.selectionStart;
+            
+            // Форматируем значение
+            input.value = formatCardExpiry(value);
+            
+            // Восстанавливаем позицию курсора
+            input.setSelectionRange(Math.min(cursorPosition + (value.length < input.value.length && value.length === 2 ? 1 : 0), input.value.length), 
+                                   Math.min(cursorPosition + (value.length < input.value.length && value.length === 2 ? 1 : 0), input.value.length));
+            
+            // Валидируем поле
+            validateForm();
+        }
+
+        // Маска ввода CVC/CVV кода
+        function applyCardCvcMask(input) {
+            let value = input.value;
+            
+            // Убираем все нецифры и ограничиваем до 3 цифр
+            let cleaned = value.replace(/\D/g, '').substring(0, 3);
+            input.value = cleaned;
+            
+            // Валидируем поле
+            validateForm();
+        }
+
+        // Показать/скрыть ошибку валидации
+        function toggleError(fieldId, showError) {
+            const formGroup = document.getElementById(fieldId).closest('.form-group');
+            if (showError) {
+                formGroup.classList.add('error');
+            } else {
+                formGroup.classList.remove('error');
+            }
+        }
+
+        // Оформление заказа (без перехода на другую страницу)
+        function submitOrder() {
+            if (!validateForm()) {
+                showNotification('Пожалуйста, заполните все обязательные поля правильно', 'error');
+                return;
+            }
+            
+            // Собираем данные заказа
+            const orderData = {
+                email: document.getElementById('email').value,
+                phone: getFullPhoneNumber(document.getElementById('phone').value),
+                phoneFormatted: '+375 ' + document.getElementById('phone').value,
+                name: document.getElementById('name').value,
+                comment: document.getElementById('comment').value,
+                city: 'Минск',
+                items: selectedItems,
+                total: selectedItems.reduce((sum, item) => {
+                    const itemPrice = item.basePrice || item.price;
+                    const itemQuantity = item.quantity || 1;
+                    return sum + (itemPrice * itemQuantity);
+                }, 0),
+                paymentMethod: document.querySelector('input[name="paymentMethod"]:checked').value,
+                orderDate: new Date().toISOString(),
+                orderId: 'ORD-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9)
+            };
+            
+            // Если оплата картой, добавляем данные карты (без CVC/CVV для безопасности)
+            if (orderData.paymentMethod === 'card') {
+                const cardNumber = document.getElementById('cardNumber').value;
+                // Сохраняем только последние 4 цифры для безопасности
+                orderData.cardLastFour = cardNumber.replace(/\s/g, '').slice(-4);
+                orderData.cardExpiry = document.getElementById('cardExpiry').value;
+                // CVC/CVV код не сохраняем - это конфиденциальная информация
+            }
+            
+            try {
+                // Сохраняем заказ
+                const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+                orders.push(orderData);
+                localStorage.setItem('orders', JSON.stringify(orders));
+                
+                // УДАЛЯЕМ ЗАКАЗАННЫЕ ТОВАРЫ ИЗ КОРЗИНЫ
+                removeOrderedItemsFromCart();
+                
+                // Очищаем данные для оформления заказа
+                localStorage.removeItem('checkoutItems');
+                
+                // Показываем экран успешного оформления заказа на этой же странице
+                showOrderSuccess(orderData);
+                
+            } catch (error) {
+                console.error('Ошибка оформления заказа:', error);
+                showNotification('Произошла ошибка при оформлении заказа. Пожалуйста, попробуйте еще раз.', 'error');
+            }
+        }
+
+        // Удаление заказанных товаров из корзины
+        function removeOrderedItemsFromCart() {
+            try {
+                // Получаем текущую корзину из localStorage (оба ключа)
+                let cartItems1 = JSON.parse(localStorage.getItem('cartItems') || '[]');
+                let cartItems2 = JSON.parse(localStorage.getItem('cart') || '[]');
+                
+                // Если корзина пуста, ничего не делаем
+                if (cartItems1.length === 0 && cartItems2.length === 0) {
+                    return;
+                }
+                
+                // Создаем массив ID заказанных товаров
+                const orderedItemIds = selectedItems.map(item => item.id);
+                
+                // Фильтруем товары в корзине, оставляя только те, которые НЕ были заказаны
+                const updatedCartItems1 = cartItems1.filter(item => !orderedItemIds.includes(item.id));
+                const updatedCartItems2 = cartItems2.filter(item => !orderedItemIds.includes(item.id));
+                
+                // Сохраняем обновленную корзину в ОБА ключа для совместимости
+                localStorage.setItem('cartItems', JSON.stringify(updatedCartItems1));
+                localStorage.setItem('cart', JSON.stringify(updatedCartItems2));
+                
+                // Обновляем счетчик корзины на главной странице
+                updateCartCountOnMainPage(updatedCartItems1.length);
+                
+                console.log('Заказанные товары удалены из корзины. Осталось товаров:', updatedCartItems1.length);
+                
+            } catch (error) {
+                console.error('Ошибка удаления заказанных товаров из корзины:', error);
+            }
+        }
+
+        // Обновление счетчика корзины на главной странице
+        function updateCartCountOnMainPage(count) {
+            // Отправляем сообщение родительскому окну (если мы в iframe)
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({
+                    type: 'UPDATE_CART_COUNT',
+                    count: count
+                }, '*');
+            }
+            
+            // Также отправляем сообщение через localStorage для синхронизации между вкладками
+            localStorage.setItem('cartCount', count);
+            
+            // Отправляем событие обновления корзины
+            window.dispatchEvent(new Event('cartUpdated'));
+        }
+
+        // Показать уведомление
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            
+            // Автоматически скрываем уведомление через 5 секунд
+            setTimeout(() => {
+                notification.className = 'notification';
+            }, 5000);
+        }
+
+        // Показать экран успешного оформления заказа
+        function showOrderSuccess(orderData) {
+            const formContent = document.getElementById('formContent');
+            const orderSuccess = document.getElementById('orderSuccess');
+            const orderDetails = document.getElementById('orderDetails');
+            
+            // Скрываем форму и показываем экран успеха
+            formContent.style.display = 'none';
+            orderSuccess.classList.add('visible');
+            
+            // Заполняем детали заказа
+            const paymentMethodText = orderData.paymentMethod === 'cash' 
+                ? 'Наличными при получении' 
+                : `Банковской картой (последние цифры: **** ${orderData.cardLastFour})`;
+            
+            // Форматируем дату заказа
+            const orderDate = new Date(orderData.orderDate);
+            const formattedDate = orderDate.toLocaleDateString('ru-RU', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            // Формируем список товаров
+            let itemsList = '';
+            orderData.items.forEach(item => {
+                const itemPrice = item.basePrice || item.price;
+                const itemQuantity = item.quantity || 1;
+                itemsList += `<div class="order-detail">
+                    <span>${item.name} (${itemQuantity} шт.)</span>
+                    <span>${(itemPrice * itemQuantity).toFixed(2)} руб.</span>
+                </div>`;
+            });
+            
+            // Заполняем блок с деталями заказа
+            orderDetails.innerHTML = `
+                <div class="order-detail">
+                    <span>Номер заказа:</span>
+                    <strong>${orderData.orderId}</strong>
+                </div>
+                <div class="order-detail">
+                    <span>Дата оформления:</span>
+                    <span>${formattedDate}</span>
+                </div>
+                <div class="order-detail">
+                    <span>Способ оплаты:</span>
+                    <span>${paymentMethodText}</span>
+                </div>
+                <div class="order-detail">
+                    <span>Получение:</span>
+                    <span>Самовывоз в г. ${orderData.city}</span>
+                </div>
+                <div style="margin-top: var(--spacing-sm); border-top: 2px dashed rgba(64, 80, 42, 0.3); padding-top: var(--spacing-sm);">
+                    ${itemsList}
+                </div>
+                <div class="order-detail" style="font-size: 1.1rem; margin-top: var(--spacing-sm);">
+                    <span><strong>Итого к оплате:</strong></span>
+                    <strong>${orderData.total.toFixed(2)} руб.</strong>
+                </div>
+            `;
+            
+            // Прокручиваем страницу к экрану успеха
+            orderSuccess.scrollIntoView({ behavior: 'smooth' });
+            
+            // Очищаем список товаров на странице оформления заказа
+            document.getElementById('productsList').innerHTML = '';
+            document.getElementById('emptyCart').style.display = 'block';
+            document.getElementById('productsList').style.display = 'none';
+            
+            // Показываем уведомление об успешном оформлении
+            showNotification('Заказ успешно оформлен! Товары удалены из вашей корзины.', 'success');
+        }
+
+        // Переключение способа оплаты
+        function togglePaymentMethod() {
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+            const cardPaymentForm = document.getElementById('cardPaymentForm');
+            const paymentOptionCash = document.getElementById('paymentOptionCash');
+            const paymentOptionCard = document.getElementById('paymentOptionCard');
+            
+            // Снимаем выделение с обоих вариантов
+            paymentOptionCash.classList.remove('selected');
+            paymentOptionCard.classList.remove('selected');
+            
+            // Добавляем выделение выбранному варианту
+            if (paymentMethod === 'cash') {
+                paymentOptionCash.classList.add('selected');
+                cardPaymentForm.classList.remove('visible');
+            } else {
+                paymentOptionCard.classList.add('selected');
+                cardPaymentForm.classList.add('visible');
+            }
+            
+            // Валидируем форму
+            validateForm();
+        }
+
+        // Настройка обработчиков событий
+        function setupEventListeners() {
+            // Обработчик для "Выбрать все"
+            document.getElementById('selectAll').addEventListener('change', function() {
+                const checkboxes = document.querySelectorAll('.product-item input[type="checkbox"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                    const productId = checkbox.dataset.id;
+                    toggleProductSelection(productId, this.checked);
+                });
+            });
+            
+            // Обработчики для полей формы
+            const formInputs = ['email', 'name', 'comment'];
+            formInputs.forEach(inputId => {
+                document.getElementById(inputId).addEventListener('input', validateForm);
+                document.getElementById(inputId).addEventListener('blur', validateForm);
+            });
+            
+            // Обработчик для поля телефона
+            const phoneInput = document.getElementById('phone');
+            phoneInput.addEventListener('input', function() {
+                applyPhoneMask(this);
+            });
+            
+            // Обработчики для полей карты
+            const cardNumberInput = document.getElementById('cardNumber');
+            const cardExpiryInput = document.getElementById('cardExpiry');
+            const cardCvcInput = document.getElementById('cardCvc');
+            
+            cardNumberInput.addEventListener('input', function() {
+                applyCardNumberMask(this);
+            });
+            
+            cardExpiryInput.addEventListener('input', function() {
+                applyCardExpiryMask(this);
+            });
+            
+            cardCvcInput.addEventListener('input', function() {
+                applyCardCvcMask(this);
+            });
+            
+            // Обработчики для выбора способа оплаты
+            const paymentOptions = document.querySelectorAll('input[name="paymentMethod"]');
+            paymentOptions.forEach(option => {
+                option.addEventListener('change', togglePaymentMethod);
+            });
+            
+            // Инициализация выбора способа оплаты
+            togglePaymentMethod();
+            
+            // Обработчик для кнопки оформления заказа
+            document.getElementById('submitOrder').addEventListener('click', submitOrder);
+            
+            // Обработчик для кнопки "Продолжить покупки"
+            document.getElementById('continueShopping').addEventListener('click', function() {
+                window.location.href = 'index.html';
+            });
+            
+            // Удаляем title при наведении на кнопку
+            document.getElementById('submitOrder').addEventListener('mouseenter', function() {
+                this.removeAttribute('title');
+            });
+            
+            // Обработчик сообщений от родительского окна
+            window.addEventListener('message', function(event) {
+                if (event.data && event.data.type === 'CART_DATA') {
+                    cartItems = event.data.items || [];
+                    displayCheckoutItems();
+                }
+                
+                if (event.data && event.data.type === 'USER_EMAIL') {
+                    userEmail = event.data.email;
+                    document.getElementById('email').value = userEmail;
+                    validateForm();
+                }
+            });
+            
+            // Разрешаем ввод только цифр и управляющих клавиш для телефона
+            phoneInput.addEventListener('keydown', function(e) {
+                // Разрешаем: backspace, delete, tab, escape, enter
+                if ([46, 8, 9, 27, 13].indexOf(e.keyCode) !== -1 ||
+                    // Разрешаем: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                    (e.keyCode === 65 && e.ctrlKey === true) ||
+                    (e.keyCode === 67 && e.ctrlKey === true) ||
+                    (e.keyCode === 86 && e.ctrlKey === true) ||
+                    (e.keyCode === 88 && e.ctrlKey === true) ||
+                    // Разрешаем: home, end, left, right
+                    (e.keyCode >= 35 && e.keyCode <= 39)) {
+                    return;
+                }
+                
+                // Запрещаем все, кроме цифр
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
+                }
+            });
+            
+            // Ограничение ввода для полей карты (только цифры)
+            [cardNumberInput, cardExpiryInput, cardCvcInput].forEach(input => {
+                input.addEventListener('keydown', function(e) {
+                    // Разрешаем: backspace, delete, tab, escape, enter
+                    if ([46, 8, 9, 27, 13].indexOf(e.keyCode) !== -1 ||
+                        // Разрешаем: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                        (e.keyCode === 65 && e.ctrlKey === true) ||
+                        (e.keyCode === 67 && e.ctrlKey === true) ||
+                        (e.keyCode === 86 && e.ctrlKey === true) ||
+                        (e.keyCode === 88 && e.ctrlKey === true) ||
+                        // Разрешаем: home, end, left, right
+                        (e.keyCode >= 35 && e.keyCode <= 39)) {
+                        return;
+                    }
+                    
+                    // Для поля срока действия разрешаем /
+                    if (this.id === 'cardExpiry' && e.keyCode === 191) {
+                        return;
+                    }
+                    
+                    // Запрещаем все, кроме цифр
+                    if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                        e.preventDefault();
+                    }
+                });
+            });
+        }
+    </script>
+    <script src="auth.js"></script>
+    <script>
+        // Расширение функционала оформления заказа для работы с БД
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Переопределяем функцию submitOrder для сохранения в БД
+            const originalSubmitOrder = window.submitOrder;
+            window.submitOrder = async function() {
+                if (!isLoggedIn()) {
+                    showNotification('Для оформления заказа необходимо войти в аккаунт', 'error');
+                    showAuthModal();
+                    return;
+                }
+                
+                const selectedItems = getSelectedItems();
+                if (selectedItems.length === 0) {
+                    showNotification('Выберите товары для заказа', 'error');
+                    return;
+                }
+                
+                const orderData = {
+                    items: selectedItems.map(item => ({
+                        id: item.id,
+                        album_id: item.album_id || item.id,
+                        name: item.name,
+                        price: item.basePrice || item.price,
+                        quantity: item.quantity
+                    })),
+                    total: calculateTotal(),
+                    shipping_address: 'Минск'
+                };
+                
+                const result = await saveOrder(orderData);
+                
+                if (result.success) {
+                    showOrderSuccess(result.order_id, orderData);
+                } else {
+                    showNotification(result.message || 'Ошибка оформления заказа', 'error');
+                }
+            };
+            
+            function getSelectedItems() {
+                const checkboxes = document.querySelectorAll('.product-checkbox input[type="checkbox"]:checked');
+                const items = [];
+                checkboxes.forEach(checkbox => {
+                    const productElement = checkbox.closest('.product-item');
+                    const id = productElement.dataset.id;
+                    const cartItem = cartItems.find(item => item.id === id);
+                    if (cartItem) {
+                        items.push(cartItem);
+                    }
+                });
+                return items;
+            }
+            
+            function calculateTotal() {
+                return parseFloat(document.getElementById('totalPrice').textContent) || 0;
+            }
+            
+            function showOrderSuccess(orderId, orderData) {
+                const formContent = document.getElementById('formContent');
+                const orderSuccess = document.getElementById('orderSuccess');
+                const orderDetails = document.getElementById('orderDetails');
+                
+                formContent.style.display = 'none';
+                orderSuccess.classList.add('visible');
+                
+                orderDetails.innerHTML = `
+                    <div class="order-detail">
+                        <span>Номер заказа:</span>
+                        <strong>#${orderId}</strong>
+                    </div>
+                    <div class="order-detail">
+                        <span>Товаров:</span>
+                        <strong>${orderData.items.length}</strong>
+                    </div>
+                    <div class="order-detail">
+                        <span>Сумма:</span>
+                        <strong>${orderData.total.toFixed(2)} руб.</strong>
+                    </div>
+                    <div class="order-detail">
+                        <span>Статус:</span>
+                        <strong>Ожидает подтверждения</strong>
+                    </div>
+                `;
+            }
+            
+            function showNotification(message, type) {
+                const notification = document.getElementById('notification');
+                notification.textContent = message;
+                notification.className = 'notification ' + type;
+                notification.style.display = 'block';
+                
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html>

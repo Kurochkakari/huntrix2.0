@@ -1,0 +1,4335 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Huntrix</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Стили остались практически без изменений, за исключением исправленных пунктов */
+        * {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Arial', sans-serif;
+        }
+
+        :root {
+	--primary-color: #b3c4a0;
+	--secondary-color: #a3c483;
+	--accent-color: #40502a;
+	--background-color: #FFFFFF;
+	--text-color: #0b0c04;
+	--light-color: #FFFFFF;
+	--header-color: #FFFFFF;
+	--dark-color: #40502a;
+	--icon-color: #40502a;
+	--price-color: #2c3a1d;
+	--gray-light: #f9f9f9;
+	--gray: #e0e0e0;
+	--spacing-xs: 0.5rem;
+	--spacing-sm: 1rem;
+	--spacing-md: 1.5rem;
+	--spacing-lg: 2rem;
+	--spacing-xl: 3rem;
+	--border-radius: 8px;
+	--shadow: 0 2px 10px rgba(64, 80, 42, 0.1);
+	--transition: all 0.3s ease;
+        }
+
+        body {
+	background-color: var(--background-color);
+	color: var(--text-color);
+	line-height: 1.6;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	-webkit-text-size-adjust: 100%;
+        }
+
+        .container {
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 var(--spacing-md);
+        }
+
+        header {
+	padding: var(--spacing-md) 0;
+	background: var(--header-color);
+	box-shadow: var(--shadow);
+	position: sticky;
+	z-index: 100;
+	width: 100%;
+        }
+
+        .header-content {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	position: relative;
+        }
+
+        .logo {
+	display: flex;
+	align-items: center;
+        }
+
+        .logo-img {
+	max-height: 60px;
+	width: auto;
+	object-fit: contain;
+	cursor: pointer;
+	transition: var(--transition);
+        }
+
+        .logo-img:hover {
+	transform: scale(1.05);
+        }
+
+        .header-right {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-lg);
+	position: relative;
+        }
+
+        .header-controls {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-md);
+        }
+
+        .auth-btn {
+	background: var(--accent-color);
+	color: var(--header-color);
+	padding: 0.6rem 1.2rem;
+	border-radius: 30px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: var(--transition);
+	border: none;
+	white-space: nowrap;
+        }
+
+        .auth-btn:hover {
+	background: var(--dark-color);
+        }
+
+        .icon-btn {
+	position: relative;
+	font-size: 1.5rem;
+	color: var(--icon-color);
+	cursor: pointer;
+	transition: transform 0.2s;
+	background: none;
+	border: none;
+	padding: 5px;
+        }
+
+        .icon-btn:hover {
+	transform: scale(1.1);
+        }
+
+        .icon-count {
+	position: absolute;
+	top: -8px;
+	right: -8px;
+	background: var(--primary-color);
+	color: var(--text-color);
+	font-size: 0.8rem;
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: bold;
+        }
+
+        #menu-btn {
+	font-size: 1.4rem;
+	cursor: pointer;
+	background: var(--accent-color);
+	color: var(--header-color);
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+	transition: var(--transition);
+	border: none;
+	outline: none;
+	margin-left: 4cm;
+        }
+
+        #menu-btn:hover {
+	transform: scale(1.1);
+	background: var(--dark-color);
+        }
+
+        .search-section {
+	background: var(--header-color);
+	padding: var(--spacing-md) 0;
+	box-shadow: 0 2px 5px rgba(64, 80, 42, 0.05);
+	border-bottom: 2px solid var(--secondary-color);
+	border-top: 2px solid var(--secondary-color);
+        }
+
+        .search-container {
+	display: flex;
+	max-width: 600px;
+	margin: 0 auto;
+	position: relative;
+        }
+
+        .search-input {
+	flex: 1;
+	padding: 0.8rem 1.2rem;
+	border: 1px solid var(--secondary-color);
+	border-radius: var(--border-radius) 0 0 var(--border-radius);
+	outline: none;
+	font-size: 16px;
+	transition: var(--transition);
+	background: var(--header-color);
+	color: var(--text-color);
+        }
+
+        .search-input:focus {
+	border-color: var(--secondary-color);
+        }
+
+        .search-btn {
+	padding: 0 1.5rem;
+	background: var(--accent-color);
+	color: var(--header-color);
+	border: 1px solid var(--secondary-color);
+	border-left: none;
+	border-radius: 0 var(--border-radius) var(--border-radius) 0;
+	cursor: pointer;
+	transition: var(--transition);
+	transform: none !important;
+        }
+
+        .search-btn:hover {
+	background: var(--dark-color);
+	transform: none !important;
+        }
+
+        .search-results {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	background: white;
+	border: 1px solid var(--secondary-color);
+	border-top: none;
+	border-radius: 0 0 var(--border-radius) var(--border-radius);
+	max-height: 300px;
+	overflow-y: auto;
+	z-index: 100;
+	box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+	display: none;
+        }
+
+        .search-results.active {
+	display: block;
+        }
+
+        .search-result-item {
+	padding: 0.8rem 1rem;
+	border-bottom: 1px solid var(--gray);
+	cursor: pointer;
+	transition: var(--transition);
+        }
+
+        .search-result-item:hover {
+	background-color: var(--primary-color);
+        }
+
+        .search-result-item:last-child {
+	border-bottom: none;
+        }
+
+        .search-result-group {
+	font-weight: bold;
+	color: var(--accent-color);
+	background-color: var(--gray-light);
+	padding: 0.5rem 1rem;
+	border-bottom: 1px solid var(--gray);
+        }
+
+        .search-result-album {
+	color: var(--text-color);
+        }
+
+        main {
+	flex: 1;
+	width: 100%;
+	padding: var(--spacing-xl) 0;
+        }
+
+        section {
+	margin-bottom: var(--spacing-xl);
+        }
+
+        .section-title {
+	text-align: center;
+	margin-bottom: var(--spacing-lg);
+	color: var(--accent-color);
+	font-size: clamp(1.8rem, 5vw, 2.2rem);
+        }
+
+        .about-section {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--spacing-lg);
+	align-items: center;
+	max-width: 1000px;
+	margin: 0 auto;
+        }
+
+        .about-image {
+	width: 100%;
+	border-radius: 0;
+	overflow: hidden;
+	box-shadow: var(--shadow);
+	display: flex;
+	justify-content: flex-end;
+        }
+
+        .about-image img {
+	width: 100%;
+	height: auto;
+	display: block;
+	transition: var(--transition);
+	object-fit: cover;
+        }
+
+        .about-image:hover img {
+	transform: scale(1.03);
+        }
+
+        .about-text {
+	padding: var(--spacing-md);
+	font-size: 1.1rem;
+	background: var(--primary-color);
+	color: var(--text-color);
+	border-radius: var(--border-radius);
+        }
+
+        .about-text p {
+	margin-bottom: var(--spacing-sm);
+	text-align: left;
+        }
+
+        .text-content {
+	text-align: center;
+	max-width: 800px;
+	margin: 0 auto;
+	padding: var(--spacing-sm);
+        }
+
+        .product-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	gap: var(--spacing-md);
+	max-width: 1000px;
+	margin: 0 auto;
+        }
+
+        .product {
+	background: var(--light-color);
+	border-radius: var(--border-radius);
+	overflow: hidden;
+	box-shadow: var(--shadow);
+	transition: var(--transition);
+	position: relative;
+	border: 1px solid var(--secondary-color);
+	cursor: pointer;
+        }
+        
+        .product::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: -100%;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(90deg, transparent, rgba(230, 250, 230, 0.7), transparent);
+	transition: left 0.8s ease;
+	z-index: 1;
+	pointer-events: none;
+        }
+        
+        .product:hover::before {
+	left: 100%;
+        }
+
+        /* УБРАН ЭФФЕКТ НАВЕДЕНИЯ НА ПРОДУКТЫ */
+        .product:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 5px 15px rgba(64, 80, 42, 0.2), 0 0 20px rgba(230, 250, 230, 0.5);
+        }
+
+        .product img {
+	width: 100%;
+	height: 200px;
+	object-fit: cover;
+        }
+
+        /* ИСПРАВЛЕНИЕ №1: Сделал фон блока белым, а текст темным */
+        .product-info {
+	padding: var(--spacing-sm);
+	background: var(--light-color);
+        }
+
+        .product-title {
+	font-weight: bold;
+	margin-bottom: var(--spacing-xs);
+	color: var(--text-color);
+	font-size: 1.1rem;
+        }
+
+        .product-price {
+	color: var(--price-color);
+	font-weight: bold;
+	font-size: 1.2rem;
+        }
+
+        #catalog-menu {
+	position: fixed;
+	top: 0;
+	right: -300px;
+	width: 300px;
+	height: 100vh;
+	background: var(--header-color);
+	padding: var(--spacing-lg);
+	transition: right 0.3s ease;
+	box-shadow: -4px 0 10px rgba(64, 80, 42, 0.1);
+	z-index: 1000;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+	border-left: 3px solid var(--secondary-color);
+        }
+
+        #catalog-menu.active {
+	right: 0;
+        }
+
+        #catalog-menu h3 {
+	text-align: center;
+	margin-bottom: var(--spacing-lg);
+	color: var(--accent-color);
+	font-size: 1.8rem;
+        }
+
+        .category-item {
+	background: var(--primary-color);
+	color: var(--text-color);
+	border: 1px solid var(--secondary-color);
+	border-radius: var(--border-radius);
+	padding: var(--spacing-sm);
+	text-align: center;
+	cursor: pointer;
+	transition: var(--transition);
+	margin-bottom: var(--spacing-sm);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	min-height: 50px;
+        }
+
+        .category-item:hover {
+	transform: scale(1.03);
+	background: var(--secondary-color);
+        }
+
+        /* ИСПРАВЛЕНИЕ №2: Убрал обрезание текста для кнопок с TESTS */
+        .category-item span {
+	display: block;
+	font-size: 1.1rem;
+	color: var(--text-color);
+	font-weight: bold;
+	flex: 1;
+	text-align: left;
+        }
+        /* Особое правило для кнопок с тестами - разрешаем перенос слов */
+        .category-item[onclick*="test"],
+        .category-item[onclick*="Test"] {
+	white-space: normal;
+	word-wrap: break-word;
+        }
+
+        .category-item i {
+	font-size: 1.2rem;
+	transition: var(--transition);
+	margin-left: var(--spacing-xs);
+        }
+
+        .category-item:hover i {
+	transform: translateX(5px);
+        }
+
+        .subcategory {
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 0.3s ease;
+	margin-left: 0;
+	margin-bottom: 0;
+        }
+
+        .subcategory.active {
+	max-height: 1000px;
+	margin-bottom: var(--spacing-sm);
+        }
+
+        .subcategory-item {
+	background: var(--light-color);
+	color: var(--text-color);
+	border: 1px solid var(--secondary-color);
+	border-radius: var(--border-radius);
+	padding: var(--spacing-sm);
+	text-align: center;
+	cursor: pointer;
+	transition: var(--transition);
+	margin-top: var(--spacing-xs);
+	margin-bottom: var(--spacing-xs);
+        }
+
+        .subcategory-item:hover {
+	background: var(--primary-color);
+        }
+
+        .modal {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.5);
+	z-index: 2000;
+	align-items: flex-start;
+	justify-content: center;
+	padding-top: 50px;
+        }
+
+        .modal.active {
+	display: flex;
+        }
+
+        .modal-content {
+	background: white;
+	padding: 30px;
+	border-radius: 12px;
+	max-width: 500px;
+	width: 90%;
+	max-height: 70vh;
+	overflow-y: auto;
+	box-shadow: 0 10px 30px rgba(64, 80, 42, 0.3);
+	border: 2px solid var(--secondary-color);
+	margin-top: 20px;
+        }
+
+        .modal-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+	padding-bottom: 15px;
+	border-bottom: 2px solid var(--accent-color);
+        }
+
+        .modal-title {
+	font-size: 1.5rem;
+	color: var(--dark-color);
+	font-weight: bold;
+        }
+
+        .close-modal {
+	background: none;
+	border: none;
+	font-size: 1.5rem;
+	cursor: pointer;
+	color: var(--dark-color);
+	transition: var(--transition);
+        }
+
+        .close-modal:hover {
+	color: var(--dark-color);
+	transform: scale(1.1);
+        }
+
+        .cart-item, .favorite-item {
+	display: flex;
+	align-items: center;
+	padding: 15px 0;
+	border-bottom: 1px solid var(--gray);
+	position: relative;
+        }
+
+        .cart-item:last-child, .favorite-item:last-child {
+	border-bottom: none;
+        }
+
+        .item-image {
+	width: 60px;
+	height: 60px;
+	object-fit: cover;
+	border-radius: 6px;
+	margin-right: 15px;
+	border: 1px solid var(--secondary-color);
+        }
+
+        .item-details {
+	flex: 1;
+        }
+
+        .item-name {
+	font-weight: 600;
+	margin-bottom: 5px;
+	color: var(--text-color);
+        }
+
+        .item-price {
+	color: var(--price-color);
+	font-weight: bold;
+        }
+
+        .delete-btn {
+	background: none;
+	border: none;
+	color: var(--dark-color);
+	font-size: 1.2rem;
+	cursor: pointer;
+	padding: 5px;
+	transition: all 0.3s ease;
+	border-radius: 4px;
+        }
+
+        .delete-btn:hover {
+	background: var(--dark-color);
+	color: white;
+	transform: scale(1.1);
+        }
+
+        .empty-message {
+	text-align: center;
+	padding: 40px 20px;
+	color: var(--text-color);
+	font-size: 1.1rem;
+        }
+
+        .modal-actions {
+	margin-top: 20px;
+	display: flex;
+	gap: 10px;
+	justify-content: flex-end;
+	flex-wrap: wrap;
+        }
+
+        .btn-clear {
+	background: var(--dark-color);
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	font-weight: bold;
+        }
+
+        .btn-clear:hover {
+	background: var(--dark-color);
+	transform: translateY(-2px);
+        }
+
+        .btn-checkout {
+	background: var(--accent-color);
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	font-weight: bold;
+        }
+
+        .btn-checkout:hover {
+	background: var(--dark-color);
+	transform: translateY(-2px);
+        }
+
+        .total-price {
+	font-size: 1.2rem;
+	font-weight: bold;
+	color: var(--price-color);
+	text-align: right;
+	margin-top: 15px;
+	padding-top: 15px;
+	border-top: 2px solid var(--accent-color);
+        }
+
+        .modal-overlay {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 1000;
+	justify-content: center;
+	align-items: center;
+	padding: 20px;
+        }
+
+        .auth-modal {
+	width: 90%;
+	max-width: 400px;
+	background: var(--light-color);
+	border-radius: 12px;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+	overflow: hidden;
+	position: relative;
+	max-height: 90vh;
+	overflow-y: auto;
+	border: 2px solid var(--secondary-color);
+        }
+
+        .auth-modal-header {
+	display: flex;
+	justify-content: space-between;
+	background: var(--primary-color);
+	padding: var(--spacing-sm);
+	position: relative;
+        }
+
+        .tab-btn {
+	flex: 1;
+	padding: var(--spacing-sm);
+	text-align: center;
+	cursor: pointer;
+	font-weight: bold;
+	border-bottom: 3px solid transparent;
+	color: var(--text-color);
+        }
+
+        .tab-btn.active {
+	border-bottom: 3px solid var(--accent-color);
+	color: var(--accent-color);
+        }
+
+        .close-auth-modal {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 30px;
+	height: 30px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.5rem;
+	color: var(--text-color);
+	cursor: pointer;
+	transition: var(--transition);
+	background: transparent;
+	border: none;
+	z-index: 1;
+        }
+
+        .close-auth-modal:hover {
+	color: var(--accent-color);
+	transform: rotate(90deg);
+        }
+
+        .auth-modal-body {
+	padding: var(--spacing-lg);
+        }
+
+        .auth-modal-body form input {
+	width: 100%;
+	padding: 0.8rem;
+	margin-bottom: var(--spacing-sm);
+	border: 1px solid var(--secondary-color);
+	border-radius: var(--border-radius);
+	outline: none;
+	font-size: 16px;
+	background: var(--light-color);
+        }
+
+        .auth-modal-body button {
+	width: 100%;
+	padding: 0.8rem;
+	background: var(--accent-color);
+	color: var(--light-color);
+	border: none;
+	border-radius: var(--border-radius);
+	font-weight: bold;
+	cursor: pointer;
+	transition: var(--transition);
+        }
+
+        .auth-modal-body button:hover {
+	background: var(--dark-color);
+        }
+
+        #assistant {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	z-index: 1000;
+        }
+
+        #assistant-btn {
+	background: var(--accent-color);
+	color: var(--light-color);
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.5rem;
+	cursor: pointer;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+	overflow: hidden;
+	transition: var(--transition);
+	border: 3px solid var(--light-color);
+        }
+
+        #assistant-btn:hover {
+	transform: scale(1.1);
+	background: var(--dark-color);
+        }
+
+        #assistant-btn img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+        }
+
+        #assistant-modal {
+	display: none;
+	position: fixed;
+	bottom: 100px;
+	right: 20px;
+	width: 420px;
+	max-width: calc(100vw - 40px);
+	background: var(--light-color);
+	border-radius: 12px;
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+	overflow: hidden;
+	border: 2px solid var(--secondary-color);
+        }
+
+        #assistant-header {
+	background: var(--accent-color);
+	color: var(--light-color);
+	padding: 0.8rem;
+	text-align: center;
+	font-weight: bold;
+        }
+
+        #assistant-chat {
+	height: 400px;
+	padding: var(--spacing-sm);
+	overflow-y: auto;
+	background: var(--light-color);
+	display: flex;
+	flex-direction: column;
+        }
+
+        .chat-message {
+	margin-bottom: var(--spacing-sm);
+	padding: 0.8rem;
+	border-radius: var(--border-radius);
+	max-width: 100%;
+	word-wrap: break-word;
+	line-height: 1.4;
+	overflow-wrap: break-word;
+	word-break: break-word;
+	overflow: visible;
+        }
+
+        .chat-message.user {
+	background: var(--accent-color);
+	color: var(--light-color);
+	margin-left: auto;
+	text-align: right;
+	padding: 0.8rem 1rem;
+	border-top-right-radius: 18px;
+	border-bottom-right-radius: 4px;
+        }
+
+        .chat-message.bot {
+	background: var(--light-color);
+	align-self: flex-start;
+	margin-right: auto;
+	text-align: left;
+	padding: 0.8rem 1rem;
+	border-top-left-radius: 18px;
+	border-bottom-left-radius: 4px;
+	border: 1px solid var(--secondary-color);
+        }
+
+        .message-content {
+	padding: 12px 16px;
+	border-radius: 18px;
+	overflow: visible;
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
+        }
+
+        .chat-message.user .message-content {
+	background: var(--accent-color);
+	color: var(--light-color);
+	max-width: 100%;
+	overflow-wrap: break-word;
+        }
+
+        .chat-message.bot .message-content {
+	background: var(--light-color);
+	color: var(--text-color);
+	overflow: visible;
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
+        }
+
+        /* ИСПРАВЛЕННЫЙ СТИЛЬ ДЛЯ АЛЬБОМОВ */
+        .album-info-chat {
+	display: flex;
+	align-items: flex-start;
+	gap: 15px;
+	margin: 10px 0;
+	padding: 10px;
+	background: var(--gray-light);
+	border-radius: var(--border-radius);
+	overflow: visible;
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
+	flex-wrap: wrap;
+        }
+
+        .album-info-chat img {
+	width: 150px;
+	height: 150px;
+	object-fit: cover;
+	border-radius: 6px;
+	border: 1px solid var(--secondary-color);
+	flex-shrink: 0;
+        }
+
+        .album-details-chat {
+	flex: 1;
+	min-width: 200px;
+	overflow: visible;
+	max-width: 100%;
+        }
+
+        .album-details-chat strong {
+	font-size: 1rem;
+	display: block;
+	margin-bottom: 5px;
+	color: var(--accent-color);
+        }
+
+        .album-details-chat br {
+	display: block;
+	content: "";
+	margin: 5px 0;
+        }
+
+        .album-link-chat {
+	display: inline-block;
+	margin-top: 8px;
+	color: var(--accent-color);
+	text-decoration: none;
+	font-weight: bold;
+	font-size: 0.9rem;
+        }
+
+        .album-link-chat:hover {
+	text-decoration: underline;
+        }
+
+        #assistant-input {
+	display: flex;
+	padding: 0.8rem;
+	border-top: 1px solid var(--secondary-color);
+	background: var(--light-color);
+        }
+
+        #assistant-input input {
+	flex: 1;
+	padding: 0.8rem 1rem;
+	border: 1px solid var(--secondary-color);
+	border-radius: 25px;
+	outline: none;
+	font-size: 16px;
+	background: var(--light-color);
+        }
+
+        #assistant-input button {
+	margin-left: var(--spacing-xs);
+	padding: 0.8rem 1.2rem;
+	background: var(--accent-color);
+	color: var(--light-color);
+	border: none;
+	border-radius: 25px;
+	cursor: pointer;
+	transition: var(--transition);
+        }
+
+        #assistant-input button:hover {
+	background: var(--dark-color);
+        }
+
+        footer {
+	background: #FFFFFF;
+	color: var(--text-color);
+	padding: var(--spacing-xl) 0;
+	margin-top: auto;
+	border-top: 3px solid var(--secondary-color);
+        }
+
+        .footer-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	gap: var(--spacing-lg);
+	margin-bottom: var(--spacing-xl);
+        }
+
+        .footer-section {
+	background: var(--primary-color);
+	padding: var(--spacing-md);
+	border-radius: var(--border-radius);
+	height: fit-content;
+        }
+
+        .footer-section h3 {
+	margin-bottom: var(--spacing-md);
+	font-size: 1.2rem;
+	position: relative;
+	padding-bottom: var(--spacing-xs);
+	color: var(--text-color);
+        }
+
+        .footer-section h3::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 50px;
+	height: 2px;
+	background: var(--accent-color);
+        }
+
+        .footer-section p, .footer-section address {
+	margin-bottom: var(--spacing-sm);
+	line-height: 1.6;
+        }
+
+        .footer-links {
+	list-style: none;
+        }
+
+        .footer-links li {
+	margin-bottom: var(--spacing-xs);
+        }
+
+        .footer-links a {
+	color: var(--text-color);
+	text-decoration: none;
+	transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+	color: var(--accent-color);
+	padding-left: var(--spacing-xs);
+        }
+
+        .social-links {
+	display: flex;
+	gap: var(--spacing-sm);
+	margin-top: var(--spacing-sm);
+        }
+
+        .social-links a {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	background: var(--accent-color);
+	border-radius: 50%;
+	color: var(--light-color);
+	font-size: 1.2rem;
+	transition: var(--transition);
+        }
+
+        .social-links a:hover {
+	background: var(--dark-color);
+	color: var(--light-color);
+	transform: translateY(-3px);
+        }
+
+        .footer-map-section {
+	text-align: center;
+	margin-top: var(--spacing-lg);
+	padding-top: var(--spacing-lg);
+	border-top: 1px solid var(--accent-color);
+        }
+
+        .footer-map-section h3 {
+	margin-bottom: var(--spacing-md);
+	color: var(--text-color);
+	font-size: 1.3rem;
+        }
+
+        .map-container {
+	height: 250px;
+	border-radius: var(--border-radius);
+	overflow: hidden;
+	margin: 0 auto;
+	max-width: 600px;
+	box-shadow: var(--shadow);
+	border: 2px solid var(--secondary-color);
+        }
+
+        .map-container iframe {
+	width: 100%;
+	height: 100%;
+	border: none;
+        }
+
+        .footer-bottom {
+	text-align: center;
+	margin-top: var(--spacing-lg);
+	padding-top: var(--spacing-md);
+	border-top: 1px solid var(--accent-color);
+	background: var(--primary-color);
+	padding: var(--spacing-md);
+	border-radius: var(--border-radius);
+        }
+
+        .newsletter-form {
+	display: flex;
+	margin-top: var(--spacing-sm);
+        }
+
+        .newsletter-form input {
+	flex: 1;
+	padding: 0.8rem;
+	border: none;
+	border-radius: var(--border-radius) 0 0 var(--border-radius);
+	outline: none;
+	font-size: 16px;
+	background: var(--light-color);
+	border: 1px solid var(--secondary-color);
+        }
+
+        .newsletter-form button {
+	padding: 0 1rem;
+	background: var(--accent-color);
+	color: var(--light-color);
+	border: none;
+	border-radius: 0 var(--border-radius) var(--border-radius) 0;
+	cursor: pointer;
+	transition: var(--transition);
+        }
+
+        .newsletter-form button:hover {
+	background: var(--dark-color);
+        }
+
+        .overlay {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 999;
+        }
+
+        .btn {
+	display: inline-block;
+	padding: 0.6rem 1.2rem;
+	background: var(--accent-color);
+	color: var(--light-color);
+	border: none;
+	border-radius: var(--border-radius);
+	cursor: pointer;
+	transition: var(--transition);
+	font-weight: bold;
+	text-align: center;
+        }
+
+        .btn:hover {
+	background: var(--dark-color);
+        }
+
+        .btn-accent {
+	background: var(--accent-color);
+	color: var(--light-color);
+        }
+
+        .btn-accent:hover {
+	background: var(--primary-color);
+        }
+
+        .text-center {
+	text-align: center;
+        }
+
+        .mb-sm {
+	margin-bottom: var(--spacing-sm);
+        }
+
+        .mb-md {
+	margin-bottom: var(--spacing-md);
+        }
+
+        .mb-lg {
+	margin-bottom: var(--spacing-lg);
+        }
+
+        .high-res-avatar {
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 3px solid var(--light-color);
+	box-shadow: 0 4px 15px rgba(64, 80, 42, 0.2);
+        }
+
+        .avatar-container {
+	position: relative;
+	display: inline-block;
+        }
+
+        .avatar-container::after {
+	content: '';
+	position: absolute;
+	top: -3px;
+	left: -3px;
+	right: -3px;
+	bottom: -3px;
+	border-radius: 50%;
+	background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+	z-index: -1;
+        }
+
+        .avatar-fallback {
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--light-color);
+	font-weight: bold;
+	font-size: 1.5rem;
+        }
+
+        @keyframes pulse {
+	0% { transform: scale(1); }
+	50% { transform: scale(1.05); }
+	100% { transform: scale(1); }
+        }
+
+        #assistant-btn.pulse {
+	animation: pulse 2s infinite;
+        }
+
+        .item-quantity-controls {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-top: 5px;
+        }
+
+        .quantity-btn {
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	background: var(--accent-color);
+	color: white;
+	border: none;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: bold;
+	transition: var(--transition);
+        }
+
+        .quantity-btn:hover {
+	background: var(--dark-color);
+        }
+
+        .quantity-btn:disabled {
+	background: var(--gray);
+	opacity: 0.5;
+	pointer-events: none;
+        }
+
+        .quantity {
+	font-weight: bold;
+	min-width: 40px;
+	text-align: center;
+        }
+
+        @keyframes slideIn {
+	from {
+	    transform: translateX(100%);
+	    opacity: 0;
+	}
+	to {
+	    transform: translateX(0);
+	    opacity: 1;
+	}
+        }
+
+        @keyframes slideOut {
+	from {
+	    transform: translateX(0);
+	    opacity: 1;
+	}
+	to {
+	    transform: translateX(100%);
+	    opacity: 0;
+	}
+        }
+
+        .typing-indicator {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	padding: 10px 16px;
+	background: var(--light-color);
+	border: 1px solid var(--secondary-color);
+	border-radius: 18px;
+	width: fit-content;
+	margin-bottom: var(--spacing-sm);
+        }
+
+        .typing-dot {
+	width: 8px;
+	height: 8px;
+	background: var(--accent-color);
+	border-radius: 50%;
+	animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typing {
+	0%, 80%, 100% { transform: scale(0.6); opacity: 0.6; }
+	40% { transform: scale(1); opacity: 1; }
+        }
+
+        @media (max-width: 1200px) {
+	#menu-btn {
+	    margin-left: 3cm;
+	}
+        }
+
+        @media (max-width: 992px) {
+	#assistant-btn {
+	    width: 70px;
+	    height: 70px;
+	}
+
+	.high-res-avatar {
+	    width: 80px;
+	    height: 80px;
+	}
+
+	.logo-img {
+	    max-height: 50px;
+	}
+
+	#menu-btn {
+	    margin-left: 2.5cm;
+	}
+
+	.header-right {
+	    gap: var(--spacing-md);
+	}
+        }
+
+        @media (max-width: 768px) {
+	.about-section {
+	    grid-template-columns: 1fr;
+	    gap: var(--spacing-md);
+	}
+
+	.about-image {
+	    order: -1;
+	    width: 100vw;
+	    margin-left: calc(-1 * var(--spacing-md));
+	    margin-right: calc(-1 * var(--spacing-md));
+	    border-radius: 0;
+	    justify-content: center;
+	}
+
+	#assistant-modal {
+	    width: 90%;
+	    right: 5%;
+	    bottom: 90px;
+	}
+
+	.footer-grid {
+	    grid-template-columns: 1fr;
+	}
+
+	.map-container {
+	    height: 200px;
+	}
+
+	#menu-btn {
+	    width: 45px;
+	    height: 45px;
+	    font-size: 1.2rem;
+	    margin-left: 2cm;
+	}
+
+	#assistant-btn {
+	    width: 60px;
+	    height: 60px;
+	}
+
+	.high-res-avatar {
+	    width: 70px;
+	    height: 70px;
+	}
+
+	#assistant-chat {
+	    height: 300px;
+	}
+
+	.logo-img {
+	    max-height: 45px;
+	}
+
+	.header-right {
+	    gap: var(--spacing-sm);
+	}
+
+	.header-controls {
+	    gap: var(--spacing-sm);
+	}
+
+	.cart-item, .favorite-item {
+	    flex-direction: column;
+	    align-items: flex-start;
+	    gap: 10px;
+	}
+
+	.delete-btn {
+	    position: absolute;
+	    top: 15px;
+	    right: 0;
+	}
+
+	.modal {
+	    padding-top: 20px;
+	}
+
+	.modal-content {
+	    max-height: 80vh;
+	}
+
+	.album-info-chat {
+	    flex-direction: column;
+	    align-items: center;
+	    text-align: center;
+	}
+
+	.album-info-chat img {
+	    width: 100%;
+	    height: auto;
+	    max-height: 200px;
+	    max-width: 200px;
+	}
+	
+	.album-details-chat {
+	    text-align: center;
+	}
+        }
+
+        @media (max-width: 576px) {
+	.header-content {
+	    flex-wrap: wrap;
+	}
+
+	.header-right {
+	    width: 100%;
+	    justify-content: space-between;
+	    margin-top: var(--spacing-sm);
+	}
+
+	#menu-btn {
+	    margin-left: 0;
+	    order: 3;
+	}
+
+	.product-grid {
+	    grid-template-columns: 1fr;
+	}
+
+	#catalog-menu {
+	    width: 100%;
+	    right: -100%;
+	}
+
+	.modal-overlay {
+	    padding: 10px;
+	}
+
+	.auth-modal {
+	    width: 100%;
+	}
+
+	#assistant-btn {
+	    width: 50px;
+	    height: 50px;
+	    bottom: 15px;
+	    right: 15px;
+	}
+
+	.high-res-avatar {
+	    width: 60px;
+	    height: 60px;
+	}
+
+	#assistant-chat {
+	    height: 250px;
+	}
+
+	.chat-message {
+	    max-width: 90%;
+	}
+
+	.footer-section {
+	    text-align: center;
+	}
+
+	.footer-section h3::after {
+	    left: 50%;
+	    transform: translateX(-50%);
+	}
+
+	.social-links {
+	    justify-content: center;
+	}
+
+	.logo-img {
+	    max-height: 40px;
+	}
+
+	.auth-btn {
+	    padding: 0.5rem 1rem;
+	    font-size: 0.9rem;
+	}
+
+	.search-container {
+	    flex-direction: column;
+	    gap: var(--spacing-xs);
+	}
+
+	.search-input {
+	    border-radius: var(--border-radius);
+	}
+
+	.search-btn {
+	    border-radius: var(--border-radius);
+	    padding: 0.8rem;
+	}
+
+	.modal {
+	    padding-top: 10px;
+	}
+
+	.modal-content {
+	    width: 95%;
+	    padding: 20px;
+	}
+
+	.album-info-chat img {
+	    width: 120px;
+	    height: 120px;
+	}
+	
+	.album-info-chat {
+	    padding: 8px;
+	}
+	
+	.album-details-chat {
+	    font-size: 0.9rem;
+	}
+        }
+
+        @supports (-webkit-touch-callout: none) {
+	#assistant-chat {
+	    -webkit-overflow-scrolling: touch;
+	}
+
+	input, textarea {
+	    border-radius: 0;
+	    -webkit-appearance: none;
+	}
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+	* {
+	    animation-duration: 0.01ms !important;
+	    animation-iteration-count: 1 !important;
+	    transition-duration: 0.01ms !important;
+	}
+
+	#assistant-btn.pulse {
+	    animation: none;
+	}
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+	<div class="header-content">
+	    <div class="logo">
+	        <a href="index.html">
+	            <img src="шапка/1.jpg" alt="Huntrix" class="logo-img">
+	        </a>
+	    </div>
+
+	    <div class="header-right">
+	        <div class="header-controls">
+	            <button id="auth-btn" class="auth-btn">Войти / Регистрация</button>
+	            <button class="icon-btn" id="favorites-btn" aria-label="Избранное">
+	                <i class="fas fa-heart"></i>
+	                <span class="icon-count" id="favorites-count">0</span>
+	            </button>
+	            <button class="icon-btn" id="cart-btn" aria-label="Корзина покупок">
+	                <i class="fas fa-shopping-cart"></i>
+	                <span class="icon-count" id="cart-count">0</span>
+	            </button>
+	        </div>
+
+	        <button id="menu-btn" class="menu-btn" aria-label="Открыть меню">
+	            <i class="fas fa-bars"></i>
+	        </button>
+	    </div>
+	</div>
+        </div>
+    </header>
+
+    <div class="search-section">
+        <div class="container">
+	<div class="search-container">
+	    <input type="text" class="search-input" id="search-input" placeholder="Поиск альбомов, исполнителей..." aria-label="Поиск по каталогу">
+	    <button class="search-btn" id="search-btn" aria-label="Найти"><i class="fas fa-search"></i></button>
+	    <div class="search-results" id="search-results">
+	        <!-- Результаты поиска будут добавляться сюда -->
+	    </div>
+	</div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container">
+	<section id="about-us">
+	    <h2 class="section-title">Huntrix</h2>
+	    <div class="about-section">
+	        <div class="about-image">
+	            <img src="avatars/2.jpg" alt="Huntrix">
+	        </div>
+	        <div class="about-text">
+	            <p>Все альбомы заказываются напрямую из Кореи и доставляются в пункт выдачи по адресу: г. Минск, ул. Интернациональная, д. 7.</p>
+	            <p>К каждому заказу мы кладём приятные подарочки — их подбираем индивидуально с учётом общей суммы заказа и ваших пожеланий, указанных в комментарии при оформлении.</p>
+	            <p>Подробности о сроках доставки, акциях и скидках — в нашем Telegram-канале: https://t.me/testkpopsapo</p>
+	        </div>
+	    </div>
+	</section>
+
+	<section id="best-sellers">
+	    <h2 class="section-title">ХИТ ПРОДАЖ</h2>
+	    <div class="product-grid" id="best-sellers-grid">
+	        <!-- Продукт 1 -->
+	        <div class="product" data-product-id="txt-eternity" onclick="window.location.href='альбомы общие мужских групп/txt/1/1.html'">
+	            <img src="альбомы общие мужских групп/txt/1/1.jpg" alt="TXT Album">
+	            <div class="product-info">
+	                <div class="product-title">TXT - The Dream Chapter: ETERNITY</div>
+	                <div class="product-price">105.00 руб.</div>
+	            </div>
+	        </div>
+	        <!-- Продукт 2 -->
+	        <div class="product" data-product-id="aespa-armageddon" onclick="window.location.href='альбомы общие женских групп/aespa/1/1.html'">
+	            <img src="альбомы общие женских групп/aespa/1/1.jpg" alt="Aespa Album">
+	            <div class="product-info">
+	                <div class="product-title">Aespa - Armageddon</div>
+	                <div class="product-price">107.00 руб.</div>
+	            </div>
+	        </div>
+	        <!-- Продукт 3 -->
+	        <div class="product" data-product-id="skz-5star" onclick="window.location.href='альбомы общие мужских групп/straykids/1/1.html'">
+	            <img src="альбомы общие мужских групп/straykids/1/1.jpg" alt="Stray Kids Album">
+	            <div class="product-info">
+	                <div class="product-title">Stray Kids - 5-STAR</div>
+	                <div class="product-price">95.00 руб.</div>
+	            </div>
+	        </div>
+	    </div>
+	</section>
+
+	<section id="new-arrivals">
+	    <h2 class="section-title">НОВИНКИ</h2>
+	    <div class="product-grid" id="new-arrivals-grid">
+	        <!-- Продукт 1 -->
+	        <div class="product" data-product-id="katseye-sis" onclick="window.location.href='альбомы общие женских групп/KATSEYE/1/1.html'">
+	            <img src="альбомы общие женских групп/KATSEYE/1/1.jpg" alt="KATSEYE Album">
+	            <div class="product-info">
+	                <div class="product-title">KATSEYE - SIS</div>
+	                <div class="product-price">100.00 руб.</div>
+	            </div>
+	        </div>
+	        <!-- Продукт 2 -->
+	        <div class="product" data-product-id="enhypen-romance" onclick="window.location.href='альбомы общие мужских групп/enhypen/1/1.html'">
+	            <img src="альбомы общие мужских групп/enhypen/1/1.jpg" alt="ENHYPEN Album">
+	            <div class="product-info">
+	                <div class="product-title">ENHYPEN - ROMANCE : UNTOLD [daydream]</div>
+	                <div class="product-price">150.00 руб.</div>
+	            </div>
+	        </div>
+	        <!-- Продукт 3 -->
+	        <div class="product" data-product-id="lesserafim-spaghetti" onclick="window.location.href='альбомы общие женских групп/lesserafim/1/1.html'">
+	            <img src="альбомы общие женских групп/lesserafim/1/1.jpg" alt="LE SSERAFIM Album">
+	            <div class="product-info">
+	                <div class="product-title">LE SSERAFIM - SPAGHETTI</div>
+	                <div class="product-price">100.00 руб.</div>
+	            </div>
+	        </div>
+	    </div>
+	</section>
+
+	<div id="catalog-menu">
+	    <h3>КАТАЛОГ</h3>
+	    <div class="category">
+	        <div class="category-item" id="female-group-category">
+	            <span onclick="window.location.href='girls.html'">FEMALE GROUP</span>
+	            <i class="fas fa-chevron-right"></i>
+	        </div>
+	        <div class="subcategory" id="female-group-subcategory">
+	            <div class="subcategory-item" onclick="window.location.href='альбомы общие женских групп/KATSEYE/1.html'">KATSEYE</div>
+	            <div class="subcategory-item" onclick="window.location.href='альбомы общие женских групп/aespa/1.html'">Aespa</div>
+	            <div class="subcategory-item" onclick="window.location.href='альбомы общие женских групп/redvelvet/1.html'">Red Velvet</div>
+	            <div class="subcategory-item" onclick="window.location.href='альбомы общие женских групп/babymonster/1.html'">BABYMONSTER</div>
+	            <div class="subcategory-item" onclick="window.location.href='альбомы общие женских групп/illit/1.html'">ILLIT</div>
+	            <div class="subcategory-item" onclick="window.location.href='альбомы общие женских групп/kissoflife/1.html'">Kiss of life</div>
+	            <div class="subcategory-item" onclick="window.location.href='альбомы общие женских групп/ive/1.html'">IVE</div>
+	            <div class="subcategory-item" onclick="window.location.href='альбомы общие женских групп/twice/1.html'">TWICE</div>
+	            <div class="subcategory-item" onclick="window.location.href='альбомы общие женских групп/lesserafim/1.html'">LE SSERAFIM</div>
+	            <div class="subcategory-item" onclick="window.location.href='альбомы общие женских групп/kep1er/1.html'">Kep1er</div>
+	            <div class="subcategory-item" onclick="window.location.href='альбомы общие женских групп/itzy/1.html'">ITZY</div>
+	            <div class="subcategory-item" onclick="window.location.href='альбомы общие женских групп/dreamcatcher/1.html'">DREAMCATCHER</div>
+	        </div>
+
+	        <div class="category-item" id="male-group-category">
+	            <span onclick="window.location.href='men.html'">MALE GROUP</span>
+	            <i class="fas fa-chevron-right"></i>
+	        </div>
+	        <div class="subcategory" id="male-group-subcategory">
+	            <div class="subcategory-item" onclick="window.location.href='альбомы общие мужских групп/zb1/1.html'">ZEROBASEONE</div>
+	            <div class="subcategory-item" onclick="window.location.href='альбомы общие мужских групп/p1h/1.html'">P1Harmony</div>
+	            <div class="subcategory-item" onclick="window.location.href='альбомы общие мужских групп/txt/1.html'">TXT</div>
+	            <div class="subcategory-item" onclick="window.location.href='альбомы общие мужских групп/bts/1.html'">BTS</div>
+	            <div class="subcategory-item" onclick="window.location.href='альбомы общие мужских групп/enhypen/1.html'">Enhypen</div>
+	            <div class="subcategory-item" onclick="window.location.href='альбомы общие мужских групп/ateez/1.html'">Ateez</div>
+	            <div class="subcategory-item" onclick="window.location.href='альбомы общие мужских групп/seventeen/1.html'">Seventeen</div>
+	            <div class="subcategory-item" onclick="window.location.href='альбомы общие мужских групп/straykids/1.html'">Stray Kids</div>
+	            <div class="subcategory-item" onclick="window.location.href='альбомы общие мужских групп/oneus/1.html'">ONEUS</div>
+	            <div class="subcategory-item" onclick="window.location.href='альбомы общие мужских групп/boynextdoor/1.html'">Boynextdoor</div>
+	            <div class="subcategory-item" onclick="window.location.href='альбомы общие мужских групп/xlov/1.html'">XLOV</div>
+	            <div class="subcategory-item" onclick="window.location.href='альбомы общие мужских групп/riize/1.html'">RIIZE</div>
+	        </div>
+
+	        <!-- Кнопки с тестами - текст теперь будет переноситься -->
+	        <div class="category-item" onclick="window.location.href='тестики/женские/1.html'">
+	            <span>FEMALE GROUP TESTS</span>
+	        </div>
+	        <div class="category-item" onclick="window.location.href='тестики/мужские/1.html'">
+	            <span>MALE GROUP TESTS</span>
+	        </div>
+	        <div class="category-item" onclick="document.getElementById('contacts').scrollIntoView({behavior: 'smooth'});">
+	            <span>CONTACTS</span>
+	        </div>
+	    </div>
+	</div>
+        </div>
+    </main>
+
+    <footer id="contacts">
+        <div class="container">
+	<div class="footer-grid">
+	    <div class="footer-section">
+	        <h3>О компании</h3>
+	        <p>Huntrix — это больше, чем сайт. Это пространство, где каждый может найти свою музыку или группу.</p>
+	        <p>Наша миссия — помочь людям услышать то, что отзовётся внутри: вдохновит на перемены, утешит в трудный момент или подарит силы идти вперёд, даже когда кажется, что это невозможно.</p>
+	        <p>Ведь музыка — спутник души. Так давайте найдём вашего.</p>
+	        <div class="social-links">
+	            <a href="https://t.me/testkpopsapo" target="_blank" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+	            <a href="https://vkvideo.ru/video-229346252_456240351" target="_blank" aria-label="ВКонтакте"><i class="fab fa-vk"></i></a>
+	            <a href="https://www.instagram.com/mettea_minsk/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+	            <a href="https://www.youtube.com/@chickencurryshow" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+	        </div>
+	    </div>
+
+	    <div class="footer-section">
+	        <h3>Контакты</h3>
+	        <address>
+	            <p><i class="fas fa-map-marker-alt"></i> Минск, ул. Интернациональная, д. 7</p>
+	            <p><i class="fas fa-phone"></i> +375 (29) 562-34-73</p>
+	            <p><i class="fas fa-envelope"></i> info@huntrix.com</p>
+	        </address>
+	    </div>
+
+	    <div class="footer-section">
+	        <h3>Часы работы</h3>
+	        <p>Пн-Пт: 10:00 - 20:00</p>
+	        <p>Сб-Вс: 11:00 - 18:00</p>
+	    </div>
+
+	    <div class="footer-section">
+	        <h3>Полезные ссылки</h3>
+	        <ul class="footer-links">
+	            <li><a href="buy.html">Доставка и оплата</a></li>
+	            <li><a href="mailto:info@huntrix.com">Возврат и обмен</a></li>
+	            <li><a href="#" onclick="document.getElementById('assistant-btn').click(); return false;">Частые вопросы</a></li>
+	            <li><a href="https://www.youtube.com/watch?v=LGEAOUPB5xc" target="_blank">Блог</a></li>
+	        </ul>
+	    </div>
+	</div>
+
+	<div class="footer-map-section">
+	    <h3>Как нас найти</h3>
+	    <div class="map-container">
+	        <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A1a7d39b5b6c9c5b5b5b5b5b5b5b5b5b5b5b5b5b5&amp;source=constructor" frameborder="0" title="Карта расположения магазина Huntrix"></iframe>
+	    </div>
+	</div>
+
+	<div class="footer-bottom">
+	    <p>© 2025 Huntrix. Все права защищены.</p>
+	</div>
+        </div>
+    </footer>
+
+    <!-- Модальное окно авторизации -->
+    <div class="modal-overlay" id="auth-modal">
+        <div class="auth-modal">
+	<div class="auth-modal-header">
+	    <div class="tab-btn active" data-tab="login">Вход</div>
+	    <div class="tab-btn" data-tab="register">Регистрация</div>
+	    <button class="close-auth-modal" id="close-auth-modal" aria-label="Закрыть">&times;</button>
+	</div>
+	<div class="auth-modal-body">
+	    <form id="login-form">
+	        <input type="email" placeholder="Email" required aria-label="Email">
+	        <input type="password" placeholder="Пароль" required aria-label="Пароль">
+	        <button type="submit">Войти</button>
+	    </form>
+	    <form id="register-form" style="display: none;">
+	        <input type="text" placeholder="Имя" required aria-label="Имя">
+	        <input type="email" placeholder="Email" required aria-label="Email">
+	        <input type="password" placeholder="Пароль" required aria-label="Пароль">
+	        <input type="password" placeholder="Подтвердите пароль" required aria-label="Подтверждение пароля">
+	        <button type="submit">Зарегистрироваться</button>
+	    </form>
+	</div>
+        </div>
+    </div>
+
+    <!-- Модальное окно корзины -->
+    <div class="modal" id="cart-modal">
+        <div class="modal-content">
+	<div class="modal-header">
+	    <h2 class="modal-title">Корзина</h2>
+	    <button class="close-modal">&times;</button>
+	</div>
+	<div id="cart-items">
+	    <!-- Товары будут добавляться сюда -->
+	</div>
+	<div id="cart-total" class="total-price" style="display: none;">
+	    Итого: <span id="total-price-value">0</span> руб.
+	</div>
+	<div class="modal-actions" id="cart-actions" style="display: none;">
+	    <button class="btn-checkout" id="checkout-btn">Оформить заказ</button>
+	    <button class="btn-clear" id="clear-cart-btn">Очистить корзину</button>
+	</div>
+        </div>
+    </div>
+
+    <!-- Модальное окно избранного -->
+    <div class="modal" id="favorites-modal">
+        <div class="modal-content">
+	<div class="modal-header">
+	    <h2 class="modal-title">Избранное</h2>
+	    <button class="close-modal">&times;</button>
+	</div>
+	<div id="favorites-items">
+	    <!-- Товары будут добавляться сюда -->
+	</div>
+	<div class="modal-actions" id="favorites-actions" style="display: none;">
+	    <button class="btn-clear" id="clear-favorites-btn">Очистить избранное</button>
+	</div>
+        </div>
+    </div>
+
+    <div id="assistant">
+        <div id="assistant-btn" class="pulse" aria-label="Музыкальный помощник">
+	<div class="avatar-container">
+	    <img src="avatars/1.jpg" alt="Помощник" class="high-res-avatar" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+	    <div class="avatar-fallback" style="display: none;">HX</div>
+	</div>
+        </div>
+        <div id="assistant-modal">
+	<div id="assistant-header">Музыкальный помощник</div>
+	<div id="assistant-chat"></div>
+	<div id="assistant-input">
+	    <input type="text" id="user-input" placeholder="Расскажите, что вам нравится...">
+	    <button id="send-btn">➤</button>
+	</div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <script>
+        // ======================
+        // ЕДИНАЯ СИСТЕМА КОРЗИНЫ
+        // ======================
+
+        window.CartSystem = {
+	MAX_QUANTITY: 12,
+
+	init: function() {
+	    this.loadCart();
+	    this.setupEventListeners();
+	    this.updateCartCount();
+	    console.log('Система корзины инициализирована, максимум: ' + this.MAX_QUANTITY + ' шт.');
+	},
+
+	loadCart: function() {
+	    try {
+	        let cartData = localStorage.getItem('cart');
+	        if (!cartData) {
+	            cartData = localStorage.getItem('cartItems');
+	        }
+
+	        this.cart = cartData ? JSON.parse(cartData) : [];
+
+	        this.cart = this.cart.map(item => {
+	            return {
+	                id: item.id || Date.now().toString(),
+	                name: item.name || 'Товар',
+	                price: parseFloat(item.price) || 0,
+	                basePrice: parseFloat(item.basePrice || item.price) || 0,
+	                image: item.image || '',
+	                quantity: parseInt(item.quantity) || 1,
+	                totalPrice: parseFloat(item.totalPrice || (item.price * (item.quantity || 1))) || 0
+	            };
+	        });
+
+	        console.log('Корзина загружена:', this.cart);
+	    } catch (error) {
+	        console.error('Ошибка загрузки корзины:', error);
+	        this.cart = [];
+	    }
+	},
+
+	saveCart: function() {
+	    try {
+	        localStorage.setItem('cart', JSON.stringify(this.cart));
+	        localStorage.setItem('cartItems', JSON.stringify(this.cart));
+	        console.log('Корзина сохранена:', this.cart);
+	    } catch (error) {
+	        console.error('Ошибка сохранения корзины:', error);
+	    }
+	},
+
+	addItem: function(product) {
+	    const existingItemIndex = this.cart.findIndex(item => item.id === product.id);
+
+	    if (existingItemIndex > -1) {
+	        const currentQuantity = this.cart[existingItemIndex].quantity;
+	        const quantityToAdd = product.quantity || 1;
+
+	        if (currentQuantity + quantityToAdd > this.MAX_QUANTITY) {
+	            this.showNotification(`Максимум ${this.MAX_QUANTITY} шт. одного товара! У вас уже ${currentQuantity} шт.`, 'warning');
+	            return false;
+	        }
+
+	        this.cart[existingItemIndex].quantity += quantityToAdd;
+	        this.cart[existingItemIndex].totalPrice = this.cart[existingItemIndex].basePrice * this.cart[existingItemIndex].quantity;
+
+	        this.showNotification(`Добавлено еще ${quantityToAdd} шт. "${product.name}". Всего: ${this.cart[existingItemIndex].quantity} шт.`);
+	    } else {
+	        const quantityToAdd = product.quantity || 1;
+
+	        if (quantityToAdd > this.MAX_QUANTITY) {
+	            this.showNotification(`Максимум ${this.MAX_QUANTITY} шт. одного товара!`, 'warning');
+	            return false;
+	        }
+
+	        const newItem = {
+	            id: product.id,
+	            name: product.name,
+	            price: parseFloat(product.price),
+	            basePrice: parseFloat(product.basePrice || product.price),
+	            image: product.image,
+	            quantity: quantityToAdd,
+	            totalPrice: product.price * quantityToAdd
+	        };
+	        this.cart.push(newItem);
+
+	        this.showNotification(`Товар "${product.name}" добавлен в корзину! Количество: ${quantityToAdd} шт.`);
+	    }
+
+	    this.saveCart();
+	    this.updateCartCount();
+
+	    if (document.getElementById('cart-modal')?.classList.contains('active')) {
+	        this.updateCartModal();
+	    }
+
+	    return true;
+	},
+
+	removeItem: function(productId) {
+	    this.cart = this.cart.filter(item => item.id !== productId);
+	    this.saveCart();
+	    this.updateCartCount();
+
+	    if (document.getElementById('cart-modal')?.classList.contains('active')) {
+	        this.updateCartModal();
+	    }
+
+	    return true;
+	},
+
+	updateQuantity: function(productId, newQuantity) {
+	    const itemIndex = this.cart.findIndex(item => item.id === productId);
+
+	    if (itemIndex > -1) {
+	        if (newQuantity > this.MAX_QUANTITY) {
+	            this.showNotification(`Максимум ${this.MAX_QUANTITY} шт. одного товара!`, 'warning');
+	            return false;
+	        }
+
+	        if (newQuantity > 0) {
+	            this.cart[itemIndex].quantity = newQuantity;
+	            this.cart[itemIndex].totalPrice = this.cart[itemIndex].basePrice * newQuantity;
+	        } else {
+	            return this.removeItem(productId);
+	        }
+
+	        this.saveCart();
+	        this.updateCartCount();
+
+	        if (document.getElementById('cart-modal')?.classList.contains('active')) {
+	            this.updateCartModal();
+	        }
+	    }
+
+	    return true;
+	},
+
+	clearCart: function() {
+	    if (confirm('Вы уверены, что хотите очистить корзину?')) {
+	        this.cart = [];
+	        this.saveCart();
+	        this.updateCartCount();
+
+	        if (document.getElementById('cart-modal')?.classList.contains('active')) {
+	            this.updateCartModal();
+	        }
+
+	        this.showNotification('Корзина очищена');
+	    }
+	},
+
+	getTotalItems: function() {
+	    return this.cart.reduce((total, item) => total + item.quantity, 0);
+	},
+
+	getTotalPrice: function() {
+	    return this.cart.reduce((total, item) => total + item.totalPrice, 0).toFixed(2);
+	},
+
+	updateCartCount: function() {
+	    const cartCountElements = document.querySelectorAll('.icon-count, #cart-count');
+	    const totalItems = this.getTotalItems();
+
+	    cartCountElements.forEach(element => {
+	        element.textContent = totalItems;
+	    });
+	},
+
+	showNotification: function(message, type = 'success') {
+	    const notification = document.createElement('div');
+	    const bgColor = type === 'warning' ? '#ff6b6b' : 'var(--accent-color)';
+
+	    notification.style.cssText = `
+	        position: fixed;
+	        top: 20px;
+	        right: 20px;
+	        background: ${bgColor};
+	        color: white;
+	        padding: 15px 25px;
+	        border-radius: var(--border-radius);
+	        box-shadow: var(--shadow);
+	        z-index: 9999;
+	        animation: slideIn 0.3s ease;
+	        max-width: 300px;
+	        font-weight: bold;
+	    `;
+
+	    notification.textContent = message;
+	    document.body.appendChild(notification);
+
+	    setTimeout(() => {
+	        notification.style.animation = 'slideOut 0.3s ease';
+	        setTimeout(() => notification.remove(), 300);
+	    }, 3000);
+	},
+
+	updateCartModal: function() {
+	    const cartItemsContainer = document.getElementById('cart-items');
+	    const cartTotal = document.getElementById('cart-total');
+	    const cartActions = document.getElementById('cart-actions');
+	    const totalPriceValue = document.getElementById('total-price-value');
+
+	    if (!cartItemsContainer) return;
+
+	    if (this.cart.length === 0) {
+	        cartItemsContainer.innerHTML = '<div class="empty-message">Корзина пуста</div>';
+	        cartTotal.style.display = 'none';
+	        cartActions.style.display = 'none';
+	    } else {
+	        cartItemsContainer.innerHTML = this.cart.map(item => `
+	            <div class="cart-item">
+	                <img src="${item.image}" alt="${item.name}" class="item-image">
+	                <div class="item-details">
+	                    <div class="item-name">${item.name}</div>
+	                    <div class="item-price">${item.basePrice} руб.</div>
+	                    <div class="item-quantity-controls">
+	                        <button class="quantity-btn minus" onclick="CartSystem.updateQuantity('${item.id}', ${item.quantity - 1})" ${item.quantity <= 1 ? 'disabled' : ''}>-</button>
+	                        <span class="quantity">${item.quantity} шт.</span>
+	                        <button class="quantity-btn plus" onclick="CartSystem.updateQuantity('${item.id}', ${item.quantity + 1})" ${item.quantity >= this.MAX_QUANTITY ? 'disabled' : ''}>+</button>
+	                    </div>
+	                    <div style="font-size: 0.8rem; color: #666; margin-top: 5px;">
+	                        Максимум: ${this.MAX_QUANTITY} шт.
+	                    </div>
+	                </div>
+	                <button class="delete-btn" onclick="CartSystem.removeItem('${item.id}')" title="Удалить из корзины">
+	                    <i class="fas fa-trash"></i>
+	                </button>
+	            </div>
+	        `).join('');
+
+	        cartTotal.style.display = 'block';
+	        cartActions.style.display = 'flex';
+	        totalPriceValue.textContent = this.getTotalPrice();
+	    }
+	},
+
+	setupEventListeners: function() {
+	    const cartBtn = document.getElementById('cart-btn');
+	    if (cartBtn) {
+	        cartBtn.addEventListener('click', () => this.showCartModal());
+	    }
+
+	    const clearCartBtn = document.getElementById('clear-cart-btn');
+	    if (clearCartBtn) {
+	        clearCartBtn.addEventListener('click', () => this.clearCart());
+	    }
+
+	    const checkoutBtn = document.getElementById('checkout-btn');
+	    if (checkoutBtn) {
+	        checkoutBtn.addEventListener('click', () => this.goToCheckout());
+	    }
+	},
+
+	showCartModal: function() {
+	    this.updateCartModal();
+	    const modal = document.getElementById('cart-modal');
+	    const overlay = document.getElementById('overlay');
+
+	    if (modal && overlay) {
+	        modal.classList.add('active');
+	        overlay.style.display = 'block';
+	    }
+	},
+
+	goToCheckout: function() {
+	    if (this.cart.length === 0) {
+	        alert('Корзина пуста. Добавьте товары в корзину перед оформлением заказа.');
+	        return;
+	    }
+
+	    const exceededItems = this.cart.filter(item => item.quantity > this.MAX_QUANTITY);
+	    if (exceededItems.length > 0) {
+	        this.showNotification('Некоторые товары превышают максимальное количество!', 'warning');
+	        return;
+	    }
+
+	    localStorage.setItem('checkoutItems', JSON.stringify(this.cart));
+	    localStorage.setItem('checkoutSource', 'cart');
+
+	    window.location.href = 'buy.html';
+	},
+
+	getCart: function() {
+	    return this.cart;
+	},
+
+	isInCart: function(productId) {
+	    return this.cart.some(item => item.id === productId);
+	},
+
+	getItemQuantity: function(productId) {
+	    const item = this.cart.find(item => item.id === productId);
+	    return item ? item.quantity : 0;
+	}
+        };
+
+        // Глобальные функции для использования в HTML
+        window.addToCart = function(product) {
+	if (window.CartSystem) {
+	    return window.CartSystem.addItem(product);
+	}
+	return false;
+        };
+
+        window.removeFromCart = function(productId) {
+	if (window.CartSystem) {
+	    return window.CartSystem.removeItem(productId);
+	}
+	return false;
+        };
+
+        window.updateQuantity = function(productId, newQuantity) {
+	if (window.CartSystem) {
+	    return window.CartSystem.updateQuantity(productId, newQuantity);
+	}
+	return false;
+        };
+
+        // ======================
+        // УЛУЧШЕННЫЙ ПОМОЩНИК (С ДЕТАЛЬНЫМИ ОПИСАНИЯМИ АЛЬБОМОВ)
+        // ======================
+
+        const MusicAssistant = {
+	context: {
+	    userName: '',
+	    userPreferences: {
+	        genres: [],
+	        groups: [],
+	        budget: null,
+	        excludedGroups: []
+	    },
+	    conversationHistory: [],
+	    lastRecommendations: []
+	},
+
+	groupsDatabase: [
+	    {
+	        name: 'Aespa',
+	        description: 'Aespa — это группа, участницы которой: Карина, Джисо, Винтер и Нинг Нинг. С 2020 года они создают не просто музыку, а целую вселенную, где каждая взаимодействует со своей цифровой версией. Это не просто музыка — это стиль, который выделяет их среди многих.',
+	        keywords: ['футуристичный', 'киберпанк', 'технологичный', 'мощный', 'электронный', 'новаторский', 'Карина', 'Джисо', 'Винтер', 'Нинг Нинг'],
+	        members: ['Карина', 'Джисо', 'Винтер', 'Нинг Нинг'],
+	        debutYear: 2020,
+	        genres: ['поп', 'EDM', 'хип-хоп', 'трэп', 'гиперпоп'],
+	        gender: 'female',
+	        url: 'альбомы общие женских групп/aespa/group/1.html'
+	    },
+	    {
+	        name: 'Babymonster',
+	        description: 'Babymonster — это группа, участницы которой: Рука, Аса, Фарита, Чикита, Ахён, Рами и Рора. С 2023 года они не просто выпускают треки — они формируют новую эпоху K-pop, в которой каждая участница олицетворяет свою силу, характер и звучание. Эта гармония внутри хаоса привлекает внимание к группе и делает их одной из самых узнаваемых групп.',
+	        keywords: ['мощный', 'вокальный', 'энергичный', 'поп', 'хип-хоп', 'R&B', 'Рука', 'Аса', 'Фарита', 'Чикита', 'Ахён', 'Рами', 'Рора'],
+	        members: ['Рука', 'Аса', 'Фарита', 'Чикита', 'Ахён', 'Рами', 'Рора'],
+	        debutYear: 2023,
+	        genres: ['поп', 'EDM', 'хип-хоп', 'трэп', 'гиперпоп'],
+	        gender: 'female',
+	        url: 'альбомы общие женских групп/babymonster/group/1.html'
+	    },
+	    {
+	        name: 'KATSEYE',
+	        description: 'KATSEYE — это группа, участницы которой: Юнчэ, Меган, Лара, София, Манон и Даниэла. С 2024 года они не просто выходят на сцену — они стирают границы между культурами, языками и музыкальными мирами, создавая уникальное пространство, где каждая участница раскрывает свою историю через голос, движение и искренние эмоции. Их культурное многообразие становится источником нового звучания, в котором гармонично реализуется каждая из участниц.',
+	        keywords: ['международный', 'стильный', 'современный', 'поп', 'r&b', 'городской', 'Юнчэ', 'Меган', 'Лара', 'София', 'Манон', 'Даниэла'],
+	        members: ['Юнчэ', 'Меган', 'Лара', 'София', 'Манон', 'Даниэла'],
+	        debutYear: 2024,
+	        genres: ['поп'],
+	        gender: 'female',
+	        url: 'альбомы общие женских групп/KATSEYE/group/1.html'
+	    },
+	    {
+	        name: 'Red Velvet',
+	        description: 'Red Velvet — это группа, участницы которой: Айрен, Сыльги, Вэнди, Джой и Йери. С 2014 года они не просто выходят на сцену — они создают пространство, где каждая песня становится живым высказыванием каждой из участниц. Их музыка — это диалог.',
+	        keywords: ['элегантный', 'вокальный', 'разнообразный', 'утонченный', 'романтичный', 'игривый', 'Айрен', 'Сыльги', 'Вэнди', 'Джой', 'Йери'],
+	        members: ['Айрен', 'Сыльги', 'Вэнди', 'Джой', 'Йери'],
+	        debutYear: 2014,
+	        genres: ['поп', 'R&B', 'электропоп', 'экспериментальный поп'],
+	        gender: 'female',
+	        url: 'альбомы общие женских групп/redvelvet/group/1.html'
+	    },
+	    {
+	        name: 'ILLIT',
+	        description: 'ILLIT — это группа из пяти участниц: Юна, Минджу, Мока, Вонхи и Ироха. Дебютировали в марте 2024 года под лейблом BELIFT LAB. Их музыка энергичная и современная, с живым вокалом и текстами о повседневных переживаниях молодого поколения.',
+	        keywords: ['молодежный', 'свежий', 'современный', 'поп', 'яркий', 'Юна', 'Минджу', 'Мока', 'Вонхи', 'Ироха'],
+	        members: ['Юна', 'Минджу', 'Мока', 'Вонхи', 'Ироха'],
+	        debutYear: 2024,
+	        genres: ['поп', 'электроника'],
+	        gender: 'female',
+	        url: 'альбомы общие женских групп/illit/group/1.html'
+	    },
+	    {
+	        name: 'Kiss of life',
+	        description: 'KISS OF LIFE — это группа из четырёх участниц: Джули, Ханыль, Белль и Натти. Дебютировали в июле 2023 года под лейблом S2 Entertainment. Их музыка отличается уверенным вокалом, чёткими рэп-партиями и атмосферным звучанием.',
+	        keywords: ['чувственный', 'зрелый', 'элегантный', 'r&b', 'соул', 'Джули', 'Ханыль', 'Белль', 'Натти'],
+	        members: ['Джули', 'Ханыль', 'Белль', 'Натти'],
+	        debutYear: 2023,
+	        genres: ['поп', 'R&B', 'электроника'],
+	        gender: 'female',
+	        url: 'альбомы общие женских групп/kissoflife/group/1.html'
+	    },
+	    {
+	        name: 'IVE',
+	        description: 'IVE — это группа из шести участниц: Юджин, Гаыль, Рэй, Вонён, Лиз и Лисо. Дебютировали в декабре 2021 года под лейблом Starship Entertainment. Их музыка сочетает запоминающиеся мелодии и эстетику элегантности, часто обращаясь к темам любви, уверенности и личного роста.',
+	        keywords: ['элегантный', 'уверенный', 'стильный', 'поп', 'диско', 'Юджин', 'Гаыль', 'Рэй', 'Вонён', 'Лиз', 'Лисо'],
+	        members: ['Юджин', 'Гаыль', 'Рэй', 'Вонён', 'Лиз', 'Лисо'],
+	        debutYear: 2021,
+	        genres: ['поп', 'R&B'],
+	        gender: 'female',
+	        url: 'альбомы общие женских групп/ive/group/1.html'
+	    },
+	    {
+	        name: 'TWICE',
+	        description: 'TWICE — это группа из девяти участниц: Наён, Джихён, Сана, Момо, Дахён, Мина, Чонён, Цзыюй и Чэён. Дебютировали в октябре 2015 года под лейблом JYP Entertainment. Их музыка узнаваема по ярким мелодиям и динамичным хореографиям, несущим радость.',
+	        keywords: ['позитивный', 'запоминающийся', 'стильный', 'разнообразный', 'поп', 'яркий', 'Наён', 'Джихён', 'Сана', 'Момо', 'Дахён', 'Мина', 'Чонён', 'Цзыюй', 'Чэён'],
+	        members: ['Наён', 'Джихён', 'Сана', 'Момо', 'Дахён', 'Мина', 'Чонён', 'Цзыюй', 'Чэён'],
+	        debutYear: 2015,
+	        genres: ['поп'],
+	        gender: 'female',
+	        url: 'альбомы общие женских групп/twice/group/1.html'
+	    },
+	    {
+	        name: 'LE SSERAFIM',
+	        description: 'LE SSERAFIM — это группа, участницы которой: Сакура, Ким Чэвон, Хо Юджин, Хон Ынче и Казуха. Дебютировали в мае 2022 года под лейблом Source Music. Их музыка отличается чёткими рэп-партиями и уверенной подачей, часто затрагивает темы принятия себя и движения вперёд.',
+	        keywords: ['элегантный', 'уверенный', 'гламурный', 'чувственный', 'поп', 'диско', 'Сакура', 'Ким Чэвон', 'Хо Юджин', 'Хон Ынче', 'Казуха'],
+	        members: ['Сакура', 'Ким Чэвон', 'Хо Юджин', 'Хон Ынче', 'Казуха'],
+	        debutYear: 2022,
+	        genres: ['поп', 'R&B', 'электроника'],
+	        gender: 'female',
+	        url: 'альбомы общие женских групп/lesserafim/group/1.html'
+	    },
+	    {
+	        name: 'Kep1er',
+	        description: 'Kep1er — это группа, участницы которой: Чэхён, Хикару, Даён, Сяотин, Юджин, Хюнин и Ёнын. Дебютировали в январе 2022 года под лейблом WAKEONE после реалити-шоу Girls Planet 999. Их музыка энергичная и мелодичная, с акцентом на слаженный вокал и динамичные перформансы.',
+	        keywords: ['яркий', 'энергичный', 'космический', 'поп', 'танцевальный', 'Чэхён', 'Хикару', 'Даён', 'Сяотин', 'Юджин', 'Хюнин', 'Ёнын'],
+	        members: ['Чэхён', 'Хикару', 'Даён', 'Сяотин', 'Юджин', 'Хюнин', 'Ёнын'],
+	        debutYear: 2022,
+	        genres: ['поп'],
+	        gender: 'female',
+	        url: 'альбомы общие женских групп/kep1er/group/1.html'
+	    },
+	    {
+	        name: 'ITZY',
+	        description: 'ITZY — это группа, участницы которой: Йеджи, Лиа, Рюджин, Чэрён и Юна. Дебютировали в феврале 2019 года под лейблом JYP Entertainment. Их музыка отличается смелой энергетикой, чёткими рэп-партиями и мощным вокалом, часто выражает темы уверенности в себе и аутентичности.',
+	        keywords: ['уверенный', 'дерзкий', 'энергичный', 'мотивирующий', 'хип-хоп', 'смелый', 'Йеджи', 'Лиа', 'Рюджин', 'Чэрён', 'Юна'],
+	        members: ['Йеджи', 'Лиа', 'Рюджин', 'Чэрён', 'Юна'],
+	        debutYear: 2019,
+	        genres: ['поп', 'хип-хоп'],
+	        gender: 'female',
+	        url: 'альбомы общие женских групп/itzy/group/1.html'
+	    },
+	    {
+	        name: 'DREAMCATCHER',
+	        description: 'Dreamcatcher — это группа, участницы которой: Джию, Суа, Шиён, Хандон, Юхён, Гахён и Дами. Дебютировали в январе 2017 года под лейблом Dreamcatcher Company. Их музыка сочетает мощные рок-элементы с мелодичным вокалом и запоминающимися припевами, часто обращаясь к тематике снов, кошмаров и внутренних переживаний.',
+	        keywords: ['рок', 'мистический', 'драматичный', 'интенсивный', 'готический', 'уникальный', 'Джию', 'Суа', 'Шиён', 'Хандон', 'Юхён', 'Гахён', 'Дами'],
+	        members: ['Джию', 'Суа', 'Шиён', 'Хандон', 'Юхён', 'Гахён', 'Дами'],
+	        debutYear: 2017,
+	        genres: ['поп', 'рок', 'альтернатива'],
+	        gender: 'female',
+	        url: 'альбомы общие женских групп/dreamcatcher/group/1.html'
+	    },
+	    {
+	        name: 'ZEROBASEONE',
+	        description: 'ZEROBASEONE — это группа из девяти участников: Ким Джиун, Ким Тэрэ, Чжан Хао, Сон Ханбин, Пак Гонук, Рики, Ким Гювин, Сок Мэттью и Хан Юджин. Дебютировали в июле 2023 года под лейблом WAKEONE. Их музыка объединяет яркие танцевальные ритмы с плавными вокальными линиями и эмоциональными мелодиями, часто затрагивая темы юношеских мечтаний, роста и светлых надежд на будущее.',
+	        keywords: ['мелодичный', 'романтичный', 'нежный', 'поп', 'r&b', 'Ким Джиун', 'Ким Тэрэ', 'Чжан Хао', 'Сон Ханбин', 'Пак Гонук', 'Рики', 'Ким Гювин', 'Сок Мэттью', 'Хан Юджин'],
+	        members: ['Ким Джиун', 'Ким Тэрэ', 'Чжан Хао', 'Сон Ханбин', 'Пак Гонук', 'Рики', 'Ким Гювин', 'Сок Мэттью', 'Хан Юджин'],
+	        debutYear: 2023,
+	        genres: ['поп'],
+	        gender: 'male',
+	        url: 'альбомы общие мужских групп/zb1/group/1.html'
+	    },
+	    {
+	        name: 'P1Harmony',
+	        description: 'P1Harmony — это группа из шести участников: Кихо, Интак, Чонсоб, Соул, Тэо и Джиун. Дебютировали в октябре 2020 года под лейблом FNC Entertainment. Их музыка выделяется энергичным хип-хоп ритмом, чёткими вокальными партиями и динамичным перформансом, часто встречаются темы взросления, поиска себя и преодоления жизненных трудностей.',
+	        keywords: ['хип-хоп', 'r&b', 'гармоничный', 'уличный', 'современный', 'Кихо', 'Интак', 'Чонсоб', 'Соул', 'Тэо', 'Джиун'],
+	        members: ['Кихо', 'Интак', 'Чонсоб', 'Соул', 'Тэо', 'Джиун'],
+	        debutYear: 2020,
+	        genres: ['поп', 'хип-хоп', 'R&B'],
+	        gender: 'male',
+	        url: 'альбомы общие мужских групп/p1h/group/1.html'
+	    },
+	    {
+	        name: 'TXT',
+	        description: 'TXT — это группа из пяти участников: Субин, Ёнджун, Бомгю, Тэхён и Кай. Дебютировали в марте 2019 года под лейблом Big Hit Entertainment (ныне HYBE). Их музыка сочетает лёгкие поп-мелодии с элементами электроники и инди-звучания, создавая живые, эмоционально насыщенные композиции, в которых отражаются переживания о юности, поиске собственного пути и искреннее размышление о дружбе, любви и взрослении.',
+	        keywords: ['концептуальный', 'повествовательный', 'разнообразный', 'поп', 'рок', 'Субин', 'Ёнджун', 'Бомгю', 'Тэхён', 'Кай'],
+	        members: ['Субин', 'Ёнджун', 'Бомгю', 'Тэхён', 'Кай'],
+	        debutYear: 2019,
+	        genres: ['поп', 'R&B'],
+	        gender: 'male',
+	        url: 'альбомы общие мужских групп/txt/group/1.html'
+	    },
+	    {
+	        name: 'BTS',
+	        description: 'BTS — это группа из семи участников: Намджун, Чимин, Юнги, Хосок, Тэхён, Чонгук и Джин. Дебютировали в июне 2013 года под лейблом Big Hit Entertainment (ныне HYBE). Их музыка соединяет глубокие хип-хоп основы с разнообразными поп-аранжировками, от электроники до акустических инструментов, затрагивая в текстах темы принятия себя, социального давления, эмоционального роста и поиска собственного голоса в современном мире. У группы есть сольники.',
+	        keywords: ['глубокий', 'разнообразный', 'вдумчивый', 'социальный', 'хип-хоп', 'поп', 'Намджун', 'Чимин', 'Юнги', 'Хосок', 'Тэхён', 'Чонгук', 'Джин'],
+	        members: ['Намджун', 'Чимин', 'Юнги', 'Хосок', 'Тэхён', 'Чонгук', 'Джин'],
+	        debutYear: 2013,
+	        genres: ['поп', 'хип-хоп', 'R&B'],
+	        gender: 'male',
+	        url: 'альбомы общие мужских групп/bts/group/1.html'
+	    },
+	    {
+	        name: 'Enhypen',
+	        description: 'Enhypen — это группа, участники которой: Чонвон, Хисын, Джей, Сону, Сонхун, Джейк и Ники. Дебютировали в ноябре 2020 года под лейблом BELIFT LAB. Их музыка переплетает электронные биты с вокальными партиями и сложной хореографией, часто раскрывая темы связей между людьми, внутренних противоречий, трансформации и поиска собственной идентичности.',
+	        keywords: ['мистический', 'мелодичный', 'готический', 'романтичный', 'поп', 'загадочный', 'Чонвон', 'Хисын', 'Джей', 'Сону', 'Сонхун', 'Джейк', 'Ники'],
+	        members: ['Чонвон', 'Хисын', 'Джей', 'Сону', 'Сонхун', 'Джейк', 'Ники'],
+	        debutYear: 2020,
+	        genres: ['поп', 'хип-хоп', 'EDM'],
+	        gender: 'male',
+	        url: 'альбомы общие мужских групп/enhypen/group/1.html'
+	    },
+	    {
+	        name: 'Ateez',
+	        description: 'Ateez — это группа, участники которой: Хонджун, Сонхва, Юнхо, Ёсан, Сан, Минги, Уён и Чонхо. Дебютировали в октябре 2018 года под лейблом KQ Entertainment. Их музыка отличается мощным перформансом, драйвовыми битами и оркестровыми вставками, погружая слушателя в масштабные концептуальные миры, построенные вокруг тем приключений, поиска свободы, внутренней силы и преодоления преград на пути к мечте.',
+	        keywords: ['мощный', 'эпичный', 'пиратский', 'edm', 'рок', 'Хонджун', 'Сонхва', 'Юнхо', 'Ёсан', 'Сан', 'Минги', 'Уён', 'Чонхо'],
+	        members: ['Хонджун', 'Сонхва', 'Юнхо', 'Ёсан', 'Сан', 'Минги', 'Уён', 'Чонхо'],
+	        debutYear: 2018,
+	        genres: ['поп', 'хип-хоп', 'EDM'],
+	        gender: 'male',
+	        url: 'альбомы общие мужских групп/ateez/group/1.html'
+	    },
+	    {
+	        name: 'Seventeen',
+	        description: 'Seventeen — это группа, участники которой: S.Coups, Минхао, Джошуа, Джун, Хоши, Вону, Уджи, Докём, Мингю, Сынкван, Джонхан, Дино и Вернон. Дебютировали в мае 2015 года под лейблом Pledis Entertainment (ныне в составе HYBE). Их музыка выделяется сложной синхронной хореографией, вокальной гармонией и живой энергетикой, часто раскрывая темы взаимной поддержки, самовыражения, преодоления трудностей и ценности единства в коллективе и с поклонниками.',
+	        keywords: ['синхронный', 'разнообразный', 'веселый', 'поп', 'хип-хоп', 'S.Coups', 'Минхао', 'Джошуа', 'Джун', 'Хоши', 'Вону', 'Уджи', 'Докём', 'Мингю', 'Сынкван', 'Джонхан', 'Дино', 'Вернон'],
+	        members: ['S.Coups', 'Минхао', 'Джошуа', 'Джун', 'Хоши', 'Вону', 'Уджи', 'Докём', 'Мингю', 'Сынкван', 'Джонхан', 'Дино', 'Вернон'],
+	        debutYear: 2015,
+	        genres: ['поп', 'хип-хоп'],
+	        gender: 'male',
+	        url: 'альбомы общие мужских групп/seventeen/group/1.html'
+	    },
+	    {
+	        name: 'Stray Kids',
+	        description: 'Stray Kids — это группа, участники которой: Бан Чан, Ли Ноу, Чанбин, Хёнджин, Хан, Феликс, Сынмин и I.N. Дебютировали в марте 2018 года под лейблом JYP Entertainment. Их музыка выделяется агрессивными хип-хоп ритмами, экспериментальными электронными звуками и мощными рэп партиями, отражая темы внутренней борьбы, отказа подстраиваться под шаблоны и ожидания общества, поиска собственного я и движения вперёд вопреки сомнениям и критике.',
+	        keywords: ['экспериментальный', 'энергичный', 'уличный', 'мощный', 'хип-хоп', 'инновационный', 'Бан Чан', 'Ли Ноу', 'Чанбин', 'Хёнджин', 'Хан', 'Феликс', 'Сынмин', 'I.N'],
+	        members: ['Бан Чан', 'Ли Ноу', 'Чанбин', 'Хёнджин', 'Хан', 'Феликс', 'Сынмин', 'I.N'],
+	        debutYear: 2018,
+	        genres: ['поп', 'хип-хоп', 'EDM', 'трэп'],
+	        gender: 'male',
+	        url: 'альбомы общие мужских групп/straykids/group/1.html'
+	    },
+	    {
+	        name: 'ONEUS',
+	        description: 'ONEUS — это группа из шести участников(уже меньше): Лидо, Гонхи, Хванун, Сион, Рейвн(выбыл из группы в октябре 2022, ушёл в соло в феврале 2023) и Сохо. Дебютировали в январе 2019 года под лейблом RBW(уже не состоит там). Их музыкальная вселенная строится на драматичных историях, где переплетаются мифологические сюжеты, метафоры света и тьмы, а также глубокие размышления о любви как о всепоглощающей силе — от романтического влечения до одержимости и самопожертвования. В их песнях звучат темы поиска истины сквозь иллюзии, внутренней борьбы между разумом и чувствами, а также принятия собственной уникальности не смотря на осуждение со стороны.',
+	        keywords: ['концептуальный', 'исторический', 'мифический', 'поп', 'традиционный', 'Лидо', 'Гонхи', 'Хванун', 'Сион', 'Рейвн', 'Сохо'],
+	        members: ['Лидо', 'Гонхи', 'Хванун', 'Сион', 'Рейвн', 'Сохо'],
+	        debutYear: 2019,
+	        genres: ['поп', 'R&B', 'альтернатива', 'электроника'],
+	        gender: 'male',
+	        url: 'альбомы общие мужских групп/oneus/group/1.html'
+	    },
+	    {
+	        name: 'Boynextdoor',
+	        description: 'Boynextdoor — это группа из шести участников: Сонхо, Риу, Джэхён, Тэсан, Лихан и Унхак. Дебютировали в мае 2023 года под лейблом KOZ Entertainment (в составе HYBE). Их музыка передаёт подростковые переживания — от неловких признаний и первых влюблённостей до дружеских ссор и примирений, превращая будничные моменты в тёплые, искренние истории, будто написанные от руки в личном дневнике. Лёгкие гитарные рифы, мягкие синтезаторы и чистый вокал создают ощущение близости.',
+	        keywords: ['молодежный', 'свежий', 'соседский', 'поп', 'инди', 'Сонхо', 'Риу', 'Джэхён', 'Тэсан', 'Лихан', 'Унхак'],
+	        members: ['Сонхо', 'Риу', 'Джэхён', 'Тэсан', 'Лихан', 'Унхак'],
+	        debutYear: 2023,
+	        genres: ['поп'],
+	        gender: 'male',
+	        url: 'альбомы общие мужских групп/boynextdoor/group/1.html'
+	    },
+	    {
+	        name: 'XLOV',
+	        description: 'XLOV — это группа из четырёх участников: Умути, Руи, Хён и Хару. Дебютировали в январе 2025 года под лейблом 257 Entertainment. Их творчество строится на гендерно-нейтральном концепте, где чувственные мелодии переплетаются с плавными вокальными линиями и элегантной хореографией. В текстах звучат темы самовыражения вне рамок, принятия собственной уязвимости как силы, а также поиска любви и связи в мире, полном условностей и ожиданий.',
+	        keywords: ['романтичный', 'мелодичный', 'эмоциональный', 'поп', 'r&b', 'Умути', 'Руи', 'Хён', 'Хару'],
+	        members: ['Умути', 'Руи', 'Хён', 'Хару'],
+	        debutYear: 2025,
+	        genres: ['поп', 'R&B', 'альтернатива'],
+	        gender: 'male',
+	        url: 'альбомы общие мужских групп/xlov/group/1.html'
+	    },
+	    {
+	        name: 'RIIZE',
+	        description: 'RIIZE — это группа из семи участников: Сотаро, Вонбин, Сунхан, Антон, Сончхан, Вон и Ёндон. Дебютировали в сентябре 2023 года под лейблом SM Entertainment. Их музыка развивает концепцию сочетания мягких, меланхоличных мелодий с тёплыми вокальными гармониями и электронными битами. В текстах звучат размышления о хрупкости чувств, поиске эмоциональной связи в цифровую эпоху, неопределённости молодости и тихой надежде, которая остаётся даже в моменты сомнений и одиночества.',
+	        keywords: ['современный', 'городской', 'стильный', 'поп', 'r&b', 'Сотаро', 'Вонбин', 'Сунхан', 'Антон', 'Сончхан', 'Вон', 'Ёндон'],
+	        members: ['Сотаро', 'Вонбин', 'Сунхан', 'Антон', 'Сончхан', 'Вон', 'Ёндон'],
+	        debutYear: 2023,
+	        genres: ['поп', 'R&B'],
+	        gender: 'male',
+	        url: 'альбомы общие мужских групп/riize/group/1.html'
+	    }
+	],
+
+	// ДЕТАЛЬНАЯ БАЗА ДАННЫХ АЛЬБОМОВ (ВСЕ 75 АЛЬБОМОВ)
+	albumsDatabase: [
+	    // KATSEYE
+	    {
+	        id: 'katseye-sis',
+	        name: 'KATSEYE - SIS',
+	        price: 100,
+	        group: 'KATSEYE',
+	        url: 'альбомы общие женских групп/KATSEYE/1/1.html',
+	        image: 'альбомы общие женских групп/KATSEYE/1/1.jpg',
+	        description: 'Список треков: "Debut", "Touch", "My Way", "I\'m Pretty", "Tonight I Might"',
+	        releaseDate: '16 августа 2024',
+	        type: 'дебютный мини-альбом',
+	        tracks: 5
+	    },
+	    {
+	        id: 'katseye-beautiful-chaos',
+	        name: 'KATSEYE - BEAUTIFUL CHAOS',
+	        price: 120,
+	        group: 'KATSEYE',
+	        url: 'альбомы общие женских групп/KATSEYE/2/1.html',
+	        image: 'альбомы общие женских групп/KATSEYE/2/1.jpg',
+	        description: 'Список треков: "Gnarly", "Gabriela", "Gameboy", "Mean Girls", "M.I.A"',
+	        releaseDate: '27 июня 2025',
+	        type: 'второй мини-альбом',
+	        tracks: 5
+	    },
+	    // Aespa
+	    {
+	        id: 'aespa-armageddon',
+	        name: 'Aespa - Armageddon',
+	        price: 107,
+	        group: 'Aespa',
+	        url: 'альбомы общие женских групп/aespa/1/1.html',
+	        image: 'альбомы общие женских групп/aespa/1/1.jpg',
+	        description: 'Список треков: "Supernova", "Armageddon", "Set The Tone", "Mine", "Licorice", "Bahama", "Long Chat", "Prologue", "Live My Life", "Melody"',
+	        releaseDate: '27 мая 2024',
+	        type: 'первый полноформатный альбом',
+	        tracks: 10
+	    },
+	    {
+	        id: 'aespa-drama',
+	        name: 'Aespa - Drama',
+	        price: 99,
+	        group: 'Aespa',
+	        url: 'альбомы общие женских групп/aespa/2/1.html',
+	        image: 'альбомы общие женских групп/aespa/2/1.jpg',
+	        description: 'Список треков: "Drama", "Trick or Trick", "Don\'t Blink", "Hot Air Balloon", "YOLO", "You", "Better Things"',
+	        releaseDate: '10 ноября 2023',
+	        type: 'четвёртый мини-альбом',
+	        tracks: 7
+	    },
+	    {
+	        id: 'aespa-girls',
+	        name: 'Aespa - Girls',
+	        price: 55,
+	        group: 'Aespa',
+	        url: 'альбомы общие женских групп/aespa/3/1.html',
+	        image: 'альбомы общие женских групп/aespa/3/1.jpg',
+	        description: 'Список треков: "Girls", "Illusion", "Lingo", "Life\'s Too Short", "ICU", "Life\'s Too Short", "Black Mamba", "Forever", "Dreams Come True", "Up Next: aespa"',
+	        releaseDate: '8 июля 2022',
+	        type: 'второй мини-альбом',
+	        tracks: 10
+	    },
+	    // Red Velvet
+	    {
+	        id: 'redvelvet-queendom',
+	        name: 'Red Velvet - Queendom',
+	        price: 110,
+	        group: 'Red Velvet',
+	        url: 'альбомы общие женских групп/redvelvet/1/1.html',
+	        image: 'альбомы общие женских групп/redvelvet/1/1.jpg',
+	        description: 'Список треков: "Queendom", "Pose", "Knock On Wood", "Better Be", "Pushin\' N Pullin\'", "Hello, Sunset"',
+	        releaseDate: '16 августа 2021',
+	        type: 'восьмой мини-альбом',
+	        tracks: 6
+	    },
+	    {
+	        id: 'redvelvet-feel-my-rhythm',
+	        name: 'Red Velvet - The ReVe Festival 2022 [Feel My Rhythm]',
+	        price: 150,
+	        group: 'Red Velvet',
+	        url: 'альбомы общие женских групп/redvelvet/2/1.html',
+	        image: 'альбомы общие женских групп/redvelvet/2/1.jpg',
+	        description: 'Список треков: "Feel My Rhythm", "Rainbow Halo", "Beg For Me", "Bamboleo", "Good, Bad, Ugly", "In My Dreams"',
+	        releaseDate: '21 марта 2022',
+	        type: 'девятый мини-альбом',
+	        tracks: 6
+	    },
+	    {
+	        id: 'irene-like-a-flower',
+	        name: 'IRENE - 1st Mini Album [Like A Flower]',
+	        price: 80,
+	        group: 'Red Velvet',
+	        url: 'альбомы общие женских групп/redvelvet/3/1.html',
+	        image: 'альбомы общие женских групп/redvelvet/3/1.jpg',
+	        description: ' Список треков: "Like A Flower", "Summer Rain", "Calling Me Back", "Strawberry Silhouette", "Start Line", "Winter Wish", "Ka-Ching", "I Feel Pretty"',
+	        releaseDate: '26 ноября 2024',
+	        type: 'сольный дебютный мини-альбом',
+	        tracks: 8
+	    },
+	    // BABYMONSTER
+	    {
+	        id: 'babymonster-drip',
+	        name: 'BABYMONSTER - DRIP',
+	        price: 95,
+	        group: 'BABYMONSTER',
+	        url: 'альбомы общие женских групп/babymonster/1/1.html',
+	        image: 'альбомы общие женских групп/babymonster/1/1.jpg',
+	        description: 'Список треков: "Clik Clak", "Drip", "Love, Maybe", "Really Like You", "Billionaire", "Love In My Heart", "Woke Up In Tokyo", "Forever", "Batter Up"',
+	        releaseDate: '1 ноября 2024',
+	        type: 'первый студийный альбом',
+	        tracks: 9
+	    },
+	    {
+	        id: 'babymonster-drip-zip',
+	        name: 'BABYMONSTER - DRIP ZIP',
+	        price: 95,
+	        group: 'BABYMONSTER',
+	        url: 'альбомы общие женских групп/babymonster/2/1.html',
+	        image: 'альбомы общие женских групп/babymonster/2/1.jpg',
+	        description: 'Список треков: "Clik Clak", "Drip", "Love, Maybe", "Really Like You", "Billionaire", "Love In My Heart", "Woke Up In Tokyo", "Forever", "Batter Up"',
+	        releaseDate: '1 ноября 2024',
+	        type: 'первый студийный альбом',
+	        tracks: 9
+	    },
+	    {
+	        id: 'babymonster-babymons7er',
+	        name: 'BABYMONS7ER - 1st MINI ALBUM [BABYMONS7ER]',
+	        price: 80,
+	        group: 'BABYMONSTER',
+	        url: 'альбомы общие женских групп/babymonster/3/1.html',
+	        image: 'альбомы общие женских групп/babymonster/3/1.jpg',
+	        description: 'Список треков: "Monsters", "Sheesh", "Like That", "Stuck In The Middle", "Batter Up", "Dream", "Stuck In The Middle"',
+	        releaseDate: '1 апреля 2024',
+	        type: 'дебютный мини-альбом',
+	        tracks: 7
+	    },
+	    // ILLIT
+	    {
+	        id: 'illit-ill-like-you',
+	        name: 'ILLIT - 2nd Mini Album [I\'LL LIKE YOU]',
+	        price: 115,
+	        group: 'ILLIT',
+	        url: 'альбомы общие женских групп/illit/1/1.html',
+	        image: 'альбомы общие женских групп/illit/1/1.jpg',
+	        description: 'Список треков: "I\'ll Like You", "Cherish", "Iykyk", "Pimple", "Tick Tack"',
+	        releaseDate: '21 октября 2024',
+	        type: 'второй мини-альбом',
+	        tracks: 5
+	    },
+	    {
+	        id: 'illit-bomb',
+	        name: 'ILLIT - Bomb',
+	        price: 120,
+	        group: 'ILLIT',
+	        url: 'альбомы общие женских групп/illit/2/1.html',
+	        image: 'альбомы общие женских групп/illit/2/1.jpg',
+	        description: 'Список треков: "Little Monster", "Do the Dance", "Jellyous", "Oops!", "Bamsopoong"',
+	        releaseDate: '16 июня 2025',
+	        type: 'третий мини-альбом',
+	        tracks: 5
+	    },
+	    {
+	        id: 'illit-super-real-me',
+	        name: 'ILLIT - 1st Mini Album [SUPER REAL ME]',
+	        price: 80,
+	        group: 'ILLIT',
+	        url: 'альбомы общие женских групп/illit/3/1.html',
+	        image: 'альбомы общие женских групп/illit/3/1.jpg',
+	        description: 'Список треков: "My World", "Magnetic", "Midnight Fiction", "Lucky Girl Syndrome"',
+	        releaseDate: '25 марта 2024',
+	        type: 'дебютный мини-альбом',
+	        tracks: 4
+	    },
+	    // Kiss of life
+	    {
+	        id: 'kissoflife-midas-touch',
+	        name: 'KISS OF LIFE - Midas Touch',
+	        price: 115,
+	        group: 'Kiss of life',
+	        url: 'альбомы общие женских групп/kissoflife/1/1.html',
+	        image: 'альбомы общие женских групп/kissoflife/1/1.jpg',
+	        description: 'Список треков: "Midas Touch", "Nothing"',
+	        releaseDate: '3 апреля 2024',
+	        type: 'первый сингловый альбом',
+	        tracks: 2
+	    },
+	    {
+	        id: 'kissoflife-lose-yourself',
+	        name: 'KISS OF LIFE - Lose Yourself',
+	        price: 115,
+	        group: 'Kiss of life',
+	        url: 'альбомы общие женских групп/kissoflife/2/1.html',
+	        image: 'альбомы общие женских групп/kissoflife/2/1.jpg',
+	        description: 'Список треков: "Get Loud", "R.E.M", "Chemistry", "Igloo", "Too Many Alex", "Back to Me", "No One but Us"',
+	        releaseDate: '15 октября 2024',
+	        type: 'третий мини-альбом',
+	        tracks: 7
+	    },
+	    {
+	        id: 'kissoflife-kiss-of-life',
+	        name: 'KISS OF LIFE - KISS OF LIFE',
+	        price: 115,
+	        group: 'Kiss of life',
+	        url: 'альбомы общие женских групп/kissoflife/3/1.html',
+	        image: 'альбомы общие женских групп/kissoflife/3/1.jpg',
+	        description: 'Список треков: "Shhh", "Bye My Neverland", "Sugarcoat", "Countdown", "Kitty Cat", "Play Love Games"',
+	        releaseDate: '5 июля 2023',
+	        type: 'дебютный мини-альбом',
+	        tracks: 6
+	    },
+	    // IVE
+	    {
+	        id: 'ive-empathy',
+	        name: 'IVE - 3rd EP Album [IVE EMPATHY]',
+	        price: 85,
+	        group: 'IVE',
+	        url: 'альбомы общие женских групп/ive/1/1.html',
+	        image: 'альбомы общие женских групп/ive/1/1.jpg',
+	        description: 'Список треков: "Rebel Heart", "Flu", "You Wanna Cry", "Thank U", "Attitude", "TKO"',
+	        releaseDate: '3 февраля 2025',
+	        type: 'третий мини-альбом',
+	        tracks: 6
+	    },
+	    {
+	        id: 'ive-secret',
+	        name: 'IVE - IVE SECRET',
+	        price: 90,
+	        group: 'IVE',
+	        url: 'альбомы общие женских групп/ive/2/1.html',
+	        image: 'альбомы общие женских групп/ive/2/1.jpg',
+	        description: 'Список треков: "XOXZ", "Wild Bird", "Dear, My Feelings", "Gotcha", "Beats", "Midnight Kiss"',
+	        releaseDate: '25 августа 2025',
+	        type: 'четвёртый мини-альбом',
+	        tracks: 6
+	    },
+	    {
+	        id: 'ive-switch',
+	        name: 'IVE - IVE SWITCH',
+	        price: 90,
+	        group: 'IVE',
+	        url: 'альбомы общие женских групп/ive/3/1.html',
+	        image: 'альбомы общие женских групп/ive/3/1.jpg',
+	        description: 'Список треков: "Heya", "Accendio", "Blue Heart", "Ice Queen", "Wow", "Reset"',
+	        releaseDate: '29 апреля 2024',
+	        type: 'второй мини-альбом',
+	        tracks: 6
+	    },
+	    // TWICE
+	    {
+	        id: 'twice-strategy',
+	        name: 'TWICE - STRATEGY',
+	        price: 80,
+	        group: 'TWICE',
+	        url: 'альбомы общие женских групп/twice/1/1.html',
+	        image: 'альбомы общие женских групп/twice/1/1.jpg',
+	        description: 'Список треков: "Strategy", "Kiss My Troubles Away", "Like It Like It", "Sweetest Obsession", "Keeper", "Magical", "Strategy"',
+	        releaseDate: '6 декабря 2024',
+	        type: 'четырнадцатый мини-альбом',
+	        tracks: 7
+	    },
+	    {
+	        id: 'twice-ten-story-goes-on',
+	        name: 'TWICE - TEN: The Story Goes On',
+	        price: 150,
+	        group: 'TWICE',
+	        url: 'альбомы общие женских групп/twice/2/1.html',
+	        image: 'альбомы общие женских групп/twice/2/1.jpg',
+	        description: 'Список треков: "Me + You", "Meeeeee", "Fix a Drink", "Move Like That", "Decaffeinated", "ATM", "Stone Cold", "Chess", "In My Room", "Dive In"',
+	        releaseDate: '10 октября 2025',
+	        type: 'особый альбом',
+	        tracks: 10
+	    },
+	    {
+	        id: 'twice-between-1-2',
+	        name: 'TWICE - BETWEEN 1&2',
+	        price: 80,
+	        group: 'TWICE',
+	        url: 'альбомы общие женских групп/twice/3/1.html',
+	        image: 'альбомы общие женских групп/twice/3/1.jpg',
+	        description: 'Список треков: "Talk that Talk", "Queen of Hearts", "Basics", "Trouble", "Brave", "Gone", "When We Were Kids"',
+	        releaseDate: '26 августа 2022',
+	        type: '11-ый мини-альбом',
+	        tracks: 7
+	    },
+	    // LE SSERAFIM
+	    {
+	        id: 'lesserafim-spaghetti',
+	        name: 'LE SSERAFIM - SPAGHETTI',
+	        price: 100,
+	        group: 'LE SSERAFIM',
+	        url: 'альбомы общие женских групп/lesserafim/1/1.html',
+	        image: 'альбомы общие женских групп/lesserafim/1/1.jpg',
+	        description: 'Список треков: "Spaghetti", "Pearlies"',
+	        releaseDate: '24 октября 2025',
+	        type: 'первый сингловый альбом',
+	        tracks: 2
+	    },
+	    {
+	        id: 'lesserafim-crazy',
+	        name: 'LE SSERAFIM - CRAZY',
+	        price: 120,
+	        group: 'LE SSERAFIM',
+	        url: 'альбомы общие женских групп/lesserafim/2/1.html',
+	        image: 'альбомы общие женских групп/lesserafim/2/1.jpg',
+	        description: 'Список треков: "Chasing Lightning", "Crazy", "Pierrot", "1-800-hot-n-fun", "Crazier"',
+	        releaseDate: '30 августа 2024',
+	        type: 'четвёртый мини-альбом',
+	        tracks: 5
+	    },
+	    {
+	        id: 'lesserafim-hot',
+	        name: 'LE SSERAFIM - HOT',
+	        price: 120,
+	        group: 'LE SSERAFIM',
+	        url: 'альбомы общие женских групп/lesserafim/3/1.html',
+	        image: 'альбомы общие женских групп/lesserafim/3/1.jpg',
+	        description: 'Список треков: "Born Fire", "Hot", "Come Over", "Ash", "So Cynical"',
+	        releaseDate: '14 марта 2025',
+	        type: 'пятый мини-альбом',
+	        tracks: 5
+	    },
+	    // Kep1er
+	    {
+	        id: 'kep1er-kep1going-on',
+	        name: 'Kep1er - Kep1going On',
+	        price: 120,
+	        group: 'Kep1er',
+	        url: 'альбомы общие женских групп/kep1er/1/1.html',
+	        image: 'альбомы общие женских групп/kep1er/1/1.jpg',
+	        description: 'Список треков: "Last Carnival", "Shooting Star", "Curious", "Flowers, Flutter, Your Heart", "Double Up!", "Push Button", "Problem", "Dear Diary", "Grand Prix", "Straight Line"',
+	        releaseDate: '3 июня 2024',
+	        type: 'первый полноформатный альбом',
+	        tracks: 10
+	    },
+	    {
+	        id: 'kep1er-bubble-gum',
+	        name: 'Kep1er - BUBBLE GUM',
+	        price: 100,
+	        group: 'Kep1er',
+	        url: 'альбомы общие женских групп/kep1er/2/1.html',
+	        image: 'альбомы общие женских групп/kep1er/2/1.jpg',
+	        description: 'Список треков: "Taste Better", "Bubble Gum", "Don\'t Be Dumb", "Ice Tea", "Yum"',
+	        releaseDate: '19 августа 2025',
+	        type: 'седьмой мини-альбом',
+	        tracks: 5
+	    },
+	    {
+	        id: 'kep1er-magic-hour',
+	        name: 'Kep1er - Magic Hour',
+	        price: 100,
+	        group: 'Kep1er',
+	        url: 'альбомы общие женских групп/kep1er/3/1.html',
+	        image: 'альбомы общие женских групп/kep1er/3/1.jpg',
+	        description: 'Список треков: "Galileo", "The Door", "Love on Lock", "Tropical Light", "Tape"',
+	        releaseDate: '25 сентября 2023',
+	        type: 'пятый мини-альбом',
+	        tracks: 5
+	    },
+	    // ITZY
+	    {
+	        id: 'itzy-girls-will-be-girls',
+	        name: 'ITZY - Girls Will Be Girls',
+	        price: 100,
+	        group: 'ITZY',
+	        url: 'альбомы общие женских групп/itzy/1/1.html',
+	        image: 'альбомы общие женских групп/itzy/1/1.jpg',
+	        description: 'Список треков: "Girls Will Be Girls", "Kiss & Tell", "Locked N Loaded", "Promise", "Walk"',
+	        releaseDate: '9 июня 2025',
+	        type: 'десятый мини-альбом',
+	        tracks: 5
+	    },
+	    {
+	        id: 'yeji-air',
+	        name: 'YEJI (ITZY) - Air',
+	        price: 110,
+	        group: 'ITZY',
+	        url: 'альбомы общие женских групп/itzy/2/1.html',
+	        image: 'альбомы общие женских групп/itzy/2/1.jpg',
+	        description: 'ЭСписок треков: "Air", "Invasion", "Can\'t Slow Me, No", "258"',
+	        releaseDate: '10 марта 2025',
+	        type: 'сольный дебютный мини-альбом',
+	        tracks: 4
+	    },
+	    {
+	        id: 'itzy-born-to-be',
+	        name: 'ITZY - BORN TO BE',
+	        price: 120,
+	        group: 'ITZY',
+	        url: 'альбомы общие женских групп/itzy/3/1.html',
+	        image: 'альбомы общие женских групп/itzy/3/1.jpg',
+	        description: 'Список треков: "Born To Be", "Untouchable", "Mr. Vampire", "Dynamite", "Crown On My Head", "Blossom", "Run Away", "Mine", "Yet, but", "Escalator"',
+	        releaseDate: '8 января 2024',
+	        type: 'восьмой мини-альбом',
+	        tracks: 10
+	    },
+	    // DREAMCATCHER
+	    {
+	        id: 'dreamcatcher-uau',
+	        name: 'DREAMCATCHER - UAU [Playlist #You Are You]',
+	        price: 150,
+	        group: 'DREAMCATCHER',
+	        url: 'альбомы общие женских групп/dreamcatcher/1/1.html',
+	        image: 'альбомы общие женских групп/dreamcatcher/1/1.jpg',
+	        description: 'Список треков: "Sacrifice", "2 Months", "Attitude", "Good Luck"',
+	        releaseDate: '28 мая 2025',
+	        type: 'дебютный мини-альбом',
+	        tracks: 4
+	    },
+	    {
+	        id: 'dreamcatcher-villains',
+	        name: 'Dreamcatcher - VillainS',
+	        price: 150,
+	        group: 'DREAMCATCHER',
+	        url: 'альбомы общие женских групп/dreamcatcher/2/1.html',
+	        image: 'альбомы общие женских групп/dreamcatcher/2/1.jpg',
+	        description: 'Список треков: "Intro: This My Fashion", "OOTD", "Rising", "Shatter", "We Are Young"',
+	        releaseDate: '22 ноября 2023',
+	        type: 'девятый мини-альбом',
+	        tracks: 5
+	    },
+	    {
+	        id: 'dreamcatcher-virtuous',
+	        name: 'Dreamcatcher - VirtuouS',
+	        price: 150,
+	        group: 'DREAMCATCHER',
+	        url: 'альбомы общие женских групп/dreamcatcher/3/1.html',
+	        image: 'альбомы общие женских групп/dreamcatcher/3/1.jpg',
+	        description: 'Список треков: "Intro: 7\' Dreamcatcher", "Justice", "StФmp!", "2 Rings", "Fireflies"',
+	        releaseDate: '10 июля 2024',
+	        type: 'десятый мини-альбом',
+	        tracks: 5
+	    },
+	    // ZEROBASEONE
+	    {
+	        id: 'zb1-melting-point',
+	        name: 'ZEROBASEONE - 2nd Mini ALBUM [MELTING POINT]',
+	        price: 97,
+	        group: 'ZEROBASEONE',
+	        url: 'альбомы общие мужских групп/zb1/1/1.html',
+	        image: 'альбомы общие мужских групп/zb1/1/1.jpg',
+	        description: 'Список треков: "Melting Point", "Take My Hand", "Crush", "Kidz Zone", "Good Night"',
+	        releaseDate: '6 ноября 2023',
+	        type: 'второй мини-альбом',
+	        tracks: 5
+	    },
+	    {
+	        id: 'zb1-cinema-paradise',
+	        name: 'ZEROBASEONE - CINEMA PARADISE',
+	        price: 105,
+	        group: 'ZEROBASEONE',
+	        url: 'альбомы общие мужских групп/zb1/2/1.html',
+	        image: 'альбомы общие мужских групп/zb1/2/1.jpg',
+	        description: 'Список треков: "Good So Bad", "Kill The Romeo"',
+	        releaseDate: '26 августа 2024',
+	        type: 'четвёртый мини-альбом',
+	        tracks: 2
+	    },
+	    {
+	        id: 'zb1-blue-paradise',
+	        name: 'ZEROBASEONE The 5th Mini Album - BLUE PARADISE',
+	        price: 115,
+	        group: 'ZEROBASEONE',
+	        url: 'альбомы общие мужских групп/zb1/3/1.html',
+	        image: 'альбомы общие мужских групп/zb1/3/1.jpg',
+	        description: 'Список треков: "Blue", "Devil Game", "Doctor! Doctor!", "Out of Love", "Step Back", "Cruel", "The Sea", "Insomnia", "Road Movie", "Eternity", "Yura Yura"',
+	        releaseDate: '24 февраля 2025',
+	        type: 'пятый мини-альбом',
+	        tracks: 11
+	    },
+	    // P1Harmony
+	    {
+	        id: 'p1h-sad-song',
+	        name: 'P1Harmony - SAD SONG',
+	        price: 85,
+	        group: 'P1Harmony',
+	        url: 'альбомы общие мужских групп/p1h/1/1.html',
+	        image: 'альбомы общие мужских групп/p1h/1/1.jpg',
+	        description: 'Список треков: "Sad Song", "It\'s Alright", "Last Call", "Welcome To", "All You", "Wasp", "Sad Song"',
+	        releaseDate: '20 сентября 2024',
+	        type: 'седьмой мини-альбом',
+	        tracks: 7
+	    },
+	    {
+	        id: 'p1h-killin-it',
+	        name: 'P1Harmony - Killin\' It',
+	        price: 85,
+	        group: 'P1Harmony',
+	        url: 'альбомы общие мужских групп/p1h/2/1.html',
+	        image: 'альбомы общие мужских групп/p1h/2/1.jpg',
+	        description: 'Список треков: "Killin\' It", "Late Night Calls", "Everybody Clap", "Love Story", "Countdown To Love.", "Emergency", "2Nite", "Let Me Love You", "Street Star", "I See U"',
+	        releaseDate: '5 февраля 2024',
+	        type: 'первый полноформатный альбом',
+	        tracks: 10
+	    },
+	    {
+	        id: 'p1h-harmony-set-in',
+	        name: 'P1Harmony - HARMONY : SET IN',
+	        price: 100,
+	        group: 'P1Harmony',
+	        url: 'альбомы общие мужских групп/p1h/3/1.html',
+	        image: 'альбомы общие мужских групп/p1h/3/1.jpg',
+	        description: 'Список треков: "Back Down", "BFF", "Secret Sauce", "One And Only", "Look At Me Now", "Better Together"',
+	        releaseDate: '30 ноября 2022',
+	        type: 'пятый мини-альбом',
+	        tracks: 6
+	    },
+	    // TXT
+	    {
+	        id: 'txt-eternity',
+	        name: 'TXT - The Dream Chapter: ETERNITY',
+	        price: 105,
+	        group: 'TXT',
+	        url: 'альбомы общие мужских групп/txt/1/1.html',
+	        image: 'альбомы общие мужских групп/txt/1/1.jpg',
+	        description: 'Список треков: "Drama", "Can\'t You See Me?", "Fairy of Shampoo", "Maze in the Mirror", "Puma", "Eternally"',
+	        releaseDate: '18 мая 2020',
+	        type: 'второй мини-альбом',
+	        tracks: 6
+	    },
+	    {
+	        id: 'txt-magic',
+	        name: 'TXT - The Dream Chapter: MAGIC',
+	        price: 105,
+	        group: 'TXT',
+	        url: 'альбомы общие мужских групп/txt/2/1.html',
+	        image: 'альбомы общие мужских групп/txt/2/1.jpg',
+	        description: 'Список треков: "New Rules", "9 and Three Quarters", "Roller Coaster", "Poppin\' Star", "Can\'t We Just Leave The Monster Alive?", "Magic Island", "20cm", "Angel or Devil"',
+	        releaseDate: '21 октября 2019',
+	        type: 'первый студийный альбом',
+	        tracks: 8
+	    },
+	    {
+	        id: 'txt-blue-hour',
+	        name: 'TXT - minisode1 : BLUE HOUR',
+	        price: 85,
+	        group: 'TXT',
+	        url: 'альбомы общие мужских групп/txt/3/1.html',
+	        image: 'альбомы общие мужских групп/txt/3/1.jpg',
+	        description: 'Список треков: "Ghosting", "Blue Hour", "We Lost The Summer", "Wishlist", "Way Home"',
+	        releaseDate: '26 октября 2020',
+	        type: 'третий мини-альбом',
+	        tracks: 5
+	    },
+	    // BTS
+	    {
+	        id: 'bts-skool-luv-affair',
+	        name: 'BTS - SKOOL LUV AFFAIR SPECIAL ADDITION',
+	        price: 215,
+	        group: 'BTS',
+	        url: 'альбомы общие мужских групп/bts/1/1.html',
+	        image: 'альбомы общие мужских групп/bts/1/1.jpg',
+	        description: 'Список треков: "Miss Right", "Like", "Intro: Skool Luv Affair", "Skit: Soulmate", "BTS Cypher, Pt 2: Triptych", "Spine Breaker", "Jump", "Outro: Propose", "Boy In Luv", "Where You From", "Just One Day", "Tomorrow"',
+	        releaseDate: '14 мая 2014',
+	        type: 'переиздание мини-альбома',
+	        tracks: 12
+	    },
+	    {
+	        id: 'bts-dark-wild',
+	        name: 'BTS - DARK & WILD',
+	        price: 90,
+	        group: 'BTS',
+	        url: 'альбомы общие мужских групп/bts/2/1.html',
+	        image: 'альбомы общие мужских групп/bts/2/1.jpg',
+	        description: 'Список треков: "Intro: What Am I To You", "Danger", "War of Hormone", "Hip Hop Lover", "Let Me Know", "Rain", "BTS Cypher Pt.3: Killer", "Interlude: What Are You Doing Now", "Can You Turn Off Your Phone", "Blanket Kick", "24/7 = Heaven", "Look Here", "2nd Grade", "Outro: Do You Think This Makes Sense?"',
+	        releaseDate: '19 августа 2014',
+	        type: 'первый студийный альбом',
+	        tracks: 14
+	    },
+	    {
+	        id: 'bts-orul8-2',
+	        name: 'BTS - O!RUL8,2?',
+	        price: 90,
+	        group: 'BTS',
+	        url: 'альбомы общие мужских групп/bts/3/1.html',
+	        image: 'альбомы общие мужских групп/bts/3/1.jpg',
+	        description: 'Список треков: "Intro: O!RUL8,2?", "N.O", "We On", "Skit: R U Happy Now?", "If I Ruled the World", "Coffee", "BTS Cypher, Pt. 1", "The Rise of Bangtan", "Satoori Rap", "Outro: Luv In Skool"',
+	        releaseDate: '11 сентября 2013',
+	        type: 'первый мини-альбом',
+	        tracks: 10
+	    },
+	    // Enhypen
+	    {
+	        id: 'enhypen-romance-daydream',
+	        name: 'ENHYPEN - ROMANCE : UNTOLD [daydream]',
+	        price: 99,
+	        group: 'Enhypen',
+	        url: 'альбомы общие мужских групп/enhypen/1/1.html',
+	        image: 'альбомы общие мужских групп/enhypen/1/1.jpg',
+	        description: 'Список треков: "Daydream", "No Doubt", "Moonstruck", "XO", "Your Eyes Only", "Hundred Broken Hearts", "Brought The Heat Back", "Paranormal", "Royalty", "Highway 1009"',
+	        releaseDate: '11 ноября 2024',
+	        type: 'переиздание студийного альбома',
+	        tracks: 10
+	    },
+	    {
+	        id: 'enhypen-orange-blood',
+	        name: 'ENHYPEN - ORANGE BLOOD',
+	        price: 85,
+	        group: 'Enhypen',
+	        url: 'альбомы общие мужских групп/enhypen/2/1.html',
+	        image: 'альбомы общие мужских групп/enhypen/2/1.jpg',
+	        description: 'Список треков: "Mortal", "Sweet Venom", "Still Monster", "Blind", "Orange Flower"',
+	        releaseDate: '17 ноября 2023',
+	        type: 'пятый мини-альбом',
+	        tracks: 5
+	    },
+	    {
+	        id: 'enhypen-dimension-answer',
+	        name: 'ENHYPEN - DIMENSION : ANSWER',
+	        price: 150,
+	        group: 'Enhypen',
+	        url: 'альбомы общие мужских групп/enhypen/3/1.html',
+	        image: 'альбомы общие мужских групп/enhypen/3/1.jpg',
+	        description: 'Список треков: "Intro: Whiteout", "Tamed-Dashed", "Upper Side Dreamin\'", "Just a Little Bit", "Go Big or Go Home", "Blockbuster", "Attention, please!", "Interlude: Question", "Blessed-Cursed", "Polaroid Love", "Outro: Day 2"',
+	        releaseDate: '10 января 2022',
+	        type: 'переиздание студийного альбома',
+	        tracks: 11
+	    },
+	    // Ateez
+	    {
+	        id: 'ateez-world-dvd',
+	        name: 'ATEEZ - THE WORLD : TO THE END DVD',
+	        price: 350,
+	        group: 'Ateez',
+	        url: 'альбомы общие мужских групп/ateez/1/1.html',
+	        image: 'альбомы общие мужских групп/ateez/1/1.jpg',
+	        description: 'Это сборный видеорелиз, объединяющий контент из всей серии THE WORLD: включая материалы из EP.1: MOVEMENT, EP.2: OUTLAW, EP.FIN: WILL и SPIN OFF: FROM THE WITNESS.',
+	        releaseDate: '22 октября 2024',
+	        type: 'сборный видеорелиз',
+	        tracks: 11
+	    },
+	    {
+	        id: 'ateez-world-play-code',
+	        name: 'ATEEZ - THE WORLD : TO THE END PLAY CODE',
+	        price: 250,
+	        group: 'Ateez',
+	        url: 'альбомы общие мужских групп/ateez/2/1.html',
+	        image: 'альбомы общие мужских групп/ateez/2/1.jpg',
+	        description: 'Это компиляция из серии THE WORLD, объединяющая треки из EP.1: MOVEMENT, EP.2: OUTLAW, EP.FIN: WILL и SPIN OFF: FROM THE WITNESS.',
+	        releaseDate: '22 октября 2024',
+	        type: 'компиляция',
+	        tracks: 11
+	    },
+	    {
+	        id: 'ateez-world-fin-will',
+	        name: 'ATEEZ - THE WORLD EP.FIN : WILL',
+	        price: 100,
+	        group: 'Ateez',
+	        url: 'альбомы общие мужских групп/ateez/3/1.html',
+	        image: 'альбомы общие мужских групп/ateez/3/1.jpg',
+	        description: 'Список треков: "We Know", "Emergency", "Crazy Form", "Arriba", "Silver Light", "Crescent Part.2", "Dreamy Day", "Matz", "It\'s You", "Youth", "Everything", "Fin: Will"',
+	        releaseDate: '1 декабря 2023',
+	        type: 'второй студийный альбом',
+	        tracks: 12
+	    },
+	    // Seventeen
+	    {
+	        id: 'seventeen-an-ode',
+	        name: 'SEVENTEEN - An Ode',
+	        price: 50,
+	        group: 'Seventeen',
+	        url: 'альбомы общие мужских групп/seventeen/1/1.html',
+	        image: 'альбомы общие мужских групп/seventeen/1/1.jpg',
+	        description: 'Список треков: "Hit", "Lie Again", "Fear", "Let Me Hear You Say", "247", "Second Life", "Network Love", "Back It Up", "Lucky", "Snap Shoot", "Happy Ending"',
+	        releaseDate: '16 сентября 2019',
+	        type: 'третий студийный альбом',
+	        tracks: 11
+	    },
+	    {
+	        id: 'seventeen-10th-mini',
+	        name: 'SEVENTEEN - 10th Mini Album',
+	        price: 85,
+	        group: 'Seventeen',
+	        url: 'альбомы общие мужских групп/seventeen/2/1.html',
+	        image: 'альбомы общие мужских групп/seventeen/2/1.jpg',
+	        description: 'Список треков: "Fearless", "Super", "Fire", "I Don\'t Understand But I Luv U", "F*ck My Life", "1 to 13", "Bittersweet"',
+	        releaseDate: '29 апреля 2023',
+	        type: 'десятый мини-альбом',
+	        tracks: 7
+	    },
+	    {
+	        id: 'hoshi-woozi-beam',
+	        name: 'HOSHI X WOOZI (SEVENTEEN) - BEAM',
+	        price: 115,
+	        group: 'Seventeen',
+	        url: 'альбомы общие мужских групп/seventeen/3/1.html',
+	        image: 'альбомы общие мужских групп/seventeen/3/1.jpg',
+	        description: 'Список треков: "Pinocchio", "96ers", "Stupid Idiot"',
+	        releaseDate: '10 марта 2025',
+	        type: 'сингловый альбом',
+	        tracks: 3
+	    },
+	    // Stray Kids
+	    {
+	        id: 'skz-5star',
+	        name: 'Stray Kids - 5-STAR',
+	        price: 95,
+	        group: 'Stray Kids',
+	        url: 'альбомы общие мужских групп/straykids/1/1.html',
+	        image: 'альбомы общие мужских групп/straykids/1/1.jpg',
+	        description: 'Список треков: "Hall of Fame", "S-Class", "Item", "Super Bowl", "Topline", "DLC", "Get Lit", "Collision", "FNF", "Youtiful", "The Sound", "Mixtape: Time Out"',
+	        releaseDate: '2 июня 2023',
+	        type: 'третий полноформатный альбом',
+	        tracks: 12
+	    },
+	    {
+	        id: 'skz-hiptape',
+	        name: 'Stray Kids - HIPTAPE',
+	        price: 95,
+	        group: 'Stray Kids',
+	        url: 'альбомы общие мужских групп/straykids/2/1.html',
+	        image: 'альбомы общие мужских групп/straykids/2/1.jpg',
+	        description: 'Список треков: "Walkin On Water", "Bounce Back", "U", "Walkin\' On Water", "Railway", "Unfair", "Hallucination", "Youth", "So Good", "Ultra", "Hold my hand", "As we are"',
+	        releaseDate: '13 декабря 2024',
+	        type: 'особый альбом',
+	        tracks: 12
+	    },
+	    {
+	        id: 'skz-karma',
+	        name: 'Stray Kids - KARMA',
+	        price: 95,
+	        group: 'Stray Kids',
+	        url: 'альбомы общие мужских групп/straykids/3/1.html',
+	        image: 'альбомы общие мужских групп/straykids/3/1.jpg',
+	        description: 'Список треков: "Bleep", "Ceremony", "Creed", "Mess", "In My Head", "Half Time", "Phoenix", "Ghost", "0801"',
+	        releaseDate: '22 августа 2025',
+	        type: 'четвёртый полноформатный альбом',
+	        tracks: 9
+	    },
+	    // ONEUS
+	    {
+	        id: 'oneus-5x',
+	        name: 'ONEUS - 5x',
+	        price: 110,
+	        group: 'ONEUS',
+	        url: 'альбомы общие мужских групп/oneus/1/1.html',
+	        image: 'альбомы общие мужских групп/oneus/1/1.jpg',
+	        description: 'Список треков: "X", "Love Me or Loser", "Reload", "Bad", "Time Machine"',
+	        releaseDate: '30 июня 2025',
+	        type: '11-ый мини-альбом',
+	        tracks: 5
+	    },
+	    {
+	        id: 'oneus-pygmalion',
+	        name: 'ONEUS - PYGMALION',
+	        price: 115,
+	        group: 'ONEUS',
+	        url: 'альбомы общие мужских групп/oneus/2/1.html',
+	        image: 'альбомы общие мужских групп/oneus/2/1.jpg',
+	        description: 'Список треков: "Intro: Lethe", "Erase Me", "Unforgettable", "Echo", "Halley\'s Comet"',
+	        releaseDate: '8 мая 2023',
+	        type: 'девятый мини-альбом',
+	        tracks: 5
+	    },
+	    {
+	        id: 'oneus-malus',
+	        name: 'ONEUS - MALUS',
+	        price: 115,
+	        group: 'ONEUS',
+	        url: 'альбомы общие мужских групп/oneus/3/1.html',
+	        image: 'альбомы общие мужских групп/oneus/3/1.jpg',
+	        description: 'Список треков: "Intro: Eden", "Same Scent", "Stupid Love", "Gravitation", "Mermaid", "Full Moon"',
+	        releaseDate: '5 сентября 2022',
+	        type: 'восьмой мини-альбом',
+	        tracks: 6
+	    },
+	    // Boynextdoor
+	    {
+	        id: 'boynextdoor-4th-ep',
+	        name: 'BOYNEXTDOOR - 4th EP',
+	        price: 80,
+	        group: 'Boynextdoor',
+	        url: 'альбомы общие мужских групп/boynextdoor/1/1.html',
+	        image: 'альбомы общие мужских групп/boynextdoor/1/1.jpg',
+	        description: 'Список треков: "123-78", "I Feel Good", "Step by Step", "Is That True?", "Next Mistake", "I LOVE YOU"',
+	        releaseDate: '13 мая 2025',
+	        type: 'четвёртый мини-альбом',
+	        tracks: 6
+	    },
+	    {
+	        id: 'boynextdoor-why',
+	        name: 'BOYNEXTDOOR - WHY..',
+	        price: 85,
+	        group: 'Boynextdoor',
+	        url: 'альбомы общие мужских групп/boynextdoor/2/1.html',
+	        image: 'альбомы общие мужских групп/boynextdoor/2/1.jpg',
+	        description: 'Список треков: "But I Like You", "One and Only", "Serenade", "Crying", "But Sometimes", "ABCDLOVE"',
+	        releaseDate: '4 сентября 2023',
+	        type: 'первый мини-альбом',
+	        tracks: 6
+	    },
+	    {
+	        id: 'boynextdoor-1st-ep',
+	        name: 'BOYNEXTDOOR - 1st EP',
+	        price: 107,
+	        group: 'Boynextdoor',
+	        url: 'альбомы общие мужских групп/boynextdoor/3/1.html',
+	        image: 'альбомы общие мужских групп/boynextdoor/3/1.jpg',
+	        description: 'Список треков: "But I Like You", "One and Only", "Serenade", "Crying", "But Sometimes", "ABCDLOVE"',
+	        releaseDate: '4 сентября 2023',
+	        type: 'первый мини-альбом',
+	        tracks: 6
+	    },
+	    // XLOV
+	    {
+	        id: 'xlov-i-one',
+	        name: 'XLOV - I ONE',
+	        price: 85,
+	        group: 'XLOV',
+	        url: 'альбомы общие мужских групп/xlov/1/1.html',
+	        image: 'альбомы общие мужских групп/xlov/1/1.jpg',
+	        description: 'Список треков: "1&Only", "1 of Lov", "Bizness"',
+	        releaseDate: '13 июня 2025',
+	        type: 'второй сингл',
+	        tracks: 3
+	    },
+	    {
+	        id: 'xlov-imma-be',
+	        name: 'XLOV - 1st Single Album [I\'mma Be]',
+	        price: 85,
+	        group: 'XLOV',
+	        url: 'альбомы общие мужских групп/xlov/2/1.html',
+	        image: 'альбомы общие мужских групп/xlov/2/1.jpg',
+	        description: 'Список треков: "I\'mma Be"',
+	        releaseDate: '7 января 2025',
+	        type: 'дебютный сингловый альбом',
+	        tracks: 1
+	    },
+	    // RIIZE
+	    {
+	        id: 'riize-get-a-guitar',
+	        name: 'RIIZE - Get A Guitar',
+	        price: 60,
+	        group: 'RIIZE',
+	        url: 'альбомы общие мужских групп/riize/1/1.html',
+	        image: 'альбомы общие мужских групп/riize/1/1.jpg',
+	        description: 'Список треков: "Get A Guitar", "Memories"',
+	        releaseDate: '4 сентября 2023',
+	        type: 'дебютный сингловый альбом',
+	        tracks: 2
+	    },
+	    {
+	        id: 'riize-odyssey-1',
+	        name: 'RIIZE - ODYSSEY',
+	        price: 115,
+	        group: 'RIIZE',
+	        url: 'альбомы общие мужских групп/riize/2/1.html',
+	        image: 'альбомы общие мужских групп/riize/2/1.jpg',
+	        description: 'Список треков: "Odyssey", "Bag Bad Back", "Ember to Solar", "Fly Up", "Show Me Love", "Passage", "Midnight Mirage", "The End of the Day", "Inside My Love", "Another Life"',
+	        releaseDate: '19 мая 2025',
+	        type: 'первый студийный альбом',
+	        tracks: 10
+	    },
+	    {
+	        id: 'riize-odyssey-2',
+	        name: 'RIIZE - ODYSSEY',
+	        price: 110,
+	        group: 'RIIZE',
+	        url: 'альбомы общие мужских групп/riize/3/1.html',
+	        image: 'альбомы общие мужских групп/riize/3/1.jpg',
+	        description: 'Список треков: "Odyssey", "Bag Bad Back", "Ember to Solar", "Fly Up", "Show Me Love", "Passage", "Midnight Mirage", "The End of the Day", "Inside My Love", "Another Life"',
+	        releaseDate: '19 мая 2025',
+	        type: 'первый студийный альбом',
+	        tracks: 10
+	    }
+	],
+
+	init: function() {
+	    this.loadContext();
+	    console.log('Музыкальный помощник инициализирован с ' + this.albumsDatabase.length + ' альбомами и ' + this.groupsDatabase.length + ' группами');
+	},
+
+	loadContext: function() {
+	    try {
+	        const savedContext = localStorage.getItem('musicAssistantContext');
+	        if (savedContext) {
+	            this.context = JSON.parse(savedContext);
+	        }
+	    } catch (error) {
+	        console.error('Ошибка загрузки контекста:', error);
+	    }
+	},
+
+	saveContext: function() {
+	    try {
+	        localStorage.setItem('musicAssistantContext', JSON.stringify(this.context));
+	    } catch (error) {
+	        console.error('Ошибка сохранения контекста:', error);
+	    }
+	},
+
+	processQuery: function(userMessage) {
+	    this.context.conversationHistory.push({
+	        role: 'user',
+	        message: userMessage,
+	        timestamp: new Date().toISOString()
+	    });
+
+	    const analysis = this.analyzeQuery(userMessage);
+
+	    let response = '';
+
+	    if (analysis.isGreeting) {
+	        response = this.getGreetingResponse();
+	    } else if (analysis.isAskingForAllGroups) {
+	        response = this.getAllGroupsResponse(analysis);
+	    } else if (analysis.isAskingForAllAlbums) {
+	        response = this.getAllAlbumsResponse(analysis);
+	    } else if (analysis.isAskingForGenderGroups) {
+	        response = this.getGenderGroupsResponse(analysis);
+	    } else if (analysis.isAskingAboutGroup || analysis.groups.length > 0) {
+	        response = this.getGroupResponse(analysis);
+	    } else if (analysis.isAskingForRecommendation || !analysis.hasSpecificRequest) {
+	        response = this.getRecommendationResponse(analysis);
+	    } else if (analysis.isAskingAboutAlbum || this.isAlbumQuery(userMessage)) {
+	        response = this.getAlbumResponse(analysis, userMessage);
+	    } else {
+	        response = this.getGeneralResponse(analysis);
+	    }
+
+	    this.context.conversationHistory.push({
+	        role: 'assistant',
+	        message: response,
+	        timestamp: new Date().toISOString()
+	    });
+
+	    this.saveContext();
+	    return response;
+	},
+
+	analyzeQuery: function(query) {
+	    const lowerQuery = query.toLowerCase().trim();
+
+	    const analysis = {
+	        groups: [],
+	        keywords: [],
+	        maxPrice: null,
+
+	        isGreeting: this.isGreeting(lowerQuery),
+	        isAskingForRecommendation: this.isAskingForRecommendation(lowerQuery),
+	        isAskingAboutGroup: this.isAskingAboutGroup(lowerQuery),
+	        isAskingAboutAlbum: this.isAskingAboutAlbum(lowerQuery),
+	        isAskingForAllGroups: this.isAskingForAllGroups(lowerQuery),
+	        isAskingForAllAlbums: this.isAskingForAllAlbums(lowerQuery),
+	        isAskingForGenderGroups: this.isAskingForGenderGroups(lowerQuery),
+
+	        hasSpecificRequest: false,
+	        requestedGender: null,
+	        albumNames: []
+	    };
+
+	    // Определение запроса по полу группы
+	    if (lowerQuery.includes('мужск') || lowerQuery.includes('male') || lowerQuery.includes('бой') || lowerQuery.includes('парни')) {
+	        analysis.requestedGender = 'male';
+	    }
+	    if (lowerQuery.includes('женск') || lowerQuery.includes('female') || lowerQuery.includes('гёрл') || lowerQuery.includes('девушки')) {
+	        analysis.requestedGender = 'female';
+	    }
+
+	    // Поиск групп по названию
+	    this.groupsDatabase.forEach(group => {
+	        const groupNameLower = group.name.toLowerCase();
+
+	        if (lowerQuery.includes(groupNameLower)) {
+	            analysis.groups.push(group.name);
+	        }
+
+	        const nameParts = groupNameLower.split(' ');
+	        nameParts.forEach(part => {
+	            if (part.length > 2 && lowerQuery.includes(part)) {
+	                if (!analysis.groups.includes(group.name)) {
+	                    analysis.groups.push(group.name);
+	                }
+	            }
+	        });
+
+	        const russianNames = {
+	            'aespa': 'эспа',
+	            'bts': 'битс',
+	            'twice': 'твайс',
+	            'stray kids': 'стрэй кидз',
+	            'itzy': 'итзи',
+	            'enhypen': 'энхайпен',
+	            'red velvet': 'ред вельвет',
+	            'dreamcatcher': 'дримкетчер',
+	            'le sserafim': 'лессерафим',
+	            'zerobaseone': 'зеробейсуан',
+	            'p1harmony': 'пиван гармони',
+	            'txt': 'ти икс ти',
+	            'ateez': 'атиз',
+	            'seventeen': 'севентиин',
+	            'oneus': 'онис',
+	            'boynextdoor': 'бой некст дор',
+	            'xlov': 'икс лав',
+	            'riize': 'райз',
+	            'katseye': 'катсай',
+	            'babymonster': 'бейби монстер',
+	            'illit': 'илит',
+	            'kiss of life': 'кисс оф лайф',
+	            'ive': 'айв',
+	            'kep1er': 'кеплер'
+	        };
+
+	        for (const [eng, rus] of Object.entries(russianNames)) {
+	            if (groupNameLower === eng && lowerQuery.includes(rus)) {
+	                if (!analysis.groups.includes(group.name)) {
+	                    analysis.groups.push(group.name);
+	                }
+	            }
+	        }
+
+	        group.members.forEach(member => {
+	            const memberLower = member.toLowerCase();
+	            if (lowerQuery.includes(memberLower)) {
+	                if (!analysis.groups.includes(group.name)) {
+	                    analysis.groups.push(group.name);
+	                }
+	            }
+	        });
+
+	        group.genres.forEach(genre => {
+	            const genreLower = genre.toLowerCase();
+	            if (lowerQuery.includes(genreLower)) {
+	                if (!analysis.groups.includes(group.name)) {
+	                    analysis.groups.push(group.name);
+	                }
+	            }
+	        });
+	    });
+
+	    // Поиск альбомов по названию
+	    this.albumsDatabase.forEach(album => {
+	        const albumNameLower = album.name.toLowerCase();
+	        if (lowerQuery.includes(albumNameLower) || 
+	            (album.name.includes('-') && lowerQuery.includes(album.name.split('-')[1]?.toLowerCase().trim()))) {
+	            analysis.albumNames.push(album.name);
+	        }
+	    });
+
+	    const priceMatch = lowerQuery.match(/до\s*(\d+)/);
+	    if (priceMatch) {
+	        analysis.maxPrice = parseInt(priceMatch[1]);
+	    }
+
+	    analysis.keywords = analysis.groups.map(g => g.toLowerCase())
+	        .concat(analysis.albumNames.map(a => a.toLowerCase()));
+
+	    analysis.hasSpecificRequest = analysis.keywords.length > 0 ||
+	                                analysis.groups.length > 0 ||
+	                                analysis.albumNames.length > 0 ||
+	                                analysis.requestedGender !== null;
+
+	    return analysis;
+	},
+
+	isGreeting: function(query) {
+	    const greetings = ['привет', 'здравствуй', 'хай', 'hello', 'hi', 'добрый', 'начать', 'помощь'];
+	    return greetings.some(greeting => query.includes(greeting));
+	},
+
+	isAskingForRecommendation: function(query) {
+	    const recommendationWords = ['посоветуй', 'рекоменд', 'подбери', 'найди', 'ищу', 'хочу', 'нужен', 'помоги найти', 'подскажи', 'выбери'];
+	    return recommendationWords.some(word => query.includes(word));
+	},
+
+	isAskingAboutGroup: function(query) {
+	    const groupWords = ['расскажи о', 'что такое', 'кто такие', 'группа', 'исполнитель', 'артист', 'описание группы', 'про группу'];
+	    return groupWords.some(word => query.includes(word));
+	},
+
+	isAskingAboutAlbum: function(query) {
+	    const albumWords = ['альбом', 'описание альбома', 'про альбом', 'расскажи про альбом'];
+	    return albumWords.some(word => query.includes(word));
+	},
+
+	isAskingForAllGroups: function(query) {
+	    const allGroupsWords = ['все группы', 'всех групп', 'список групп', 'перечень групп', 'какие группы есть', 'опиши все группы', 'описание всех групп'];
+	    return allGroupsWords.some(word => query.includes(word));
+	},
+
+	isAskingForAllAlbums: function(query) {
+	    const allAlbumsWords = ['все альбомы', 'всех альбомов', 'список альбомов', 'перечень альбомов', 'какие альбомы есть', 'опиши все альбомы', 'описание всех альбомов'];
+	    return allAlbumsWords.some(word => query.includes(word));
+	},
+
+	isAskingForGenderGroups: function(query) {
+	    const genderGroupsWords = ['мужские группы', 'женские группы', 'бой группы', 'гёрл группы', 'парни', 'девушки', 'группы мужские', 'группы женские'];
+	    return genderGroupsWords.some(word => query.includes(word));
+	},
+
+	isAlbumQuery: function(query) {
+	    return this.albumsDatabase.some(album => 
+	        query.toLowerCase().includes(album.name.toLowerCase())
+	    );
+	},
+
+	getGreetingResponse: function() {
+	    return "Привет! Я ваш помощник по выбору K-pop альбомов. Я могу рассказать о группах, показать все альбомы или помочь подобрать музыку по вашим предпочтениям. Что вас интересует?";
+	},
+
+	getRecommendationResponse: function(analysis) {
+	    if (analysis.hasSpecificRequest && analysis.groups.length > 0) {
+	        return this.getGroupRecommendations(analysis);
+	    }
+
+	    if (!this.context.userPreferences.genres.length && !this.context.userPreferences.groups.length) {
+	        return "Расскажите, какая музыка вам нравится? Может, есть любимые жанры или группы? Это поможет мне подобрать что-то подходящее для вас.";
+	    }
+
+	    let availableGroups = this.groupsDatabase.filter(group => 
+	        !this.context.userPreferences.excludedGroups.includes(group.name)
+	    );
+
+	    if (this.context.userPreferences.genres.length > 0) {
+	        availableGroups = availableGroups.filter(group =>
+	            group.genres.some(genre => 
+	                this.context.userPreferences.genres.some(userGenre => 
+	                    genre.toLowerCase().includes(userGenre.toLowerCase())
+	                )
+	            )
+	        );
+	    }
+
+	    if (availableGroups.length === 0) {
+	        this.context.userPreferences.excludedGroups = [];
+	        availableGroups = this.groupsDatabase;
+	    }
+
+	    const randomGroup = availableGroups[Math.floor(Math.random() * availableGroups.length)];
+	    
+	    let response = `Попробуйте группу **${randomGroup.name}**. `;
+	    response += randomGroup.description + '\n\n';
+	    
+	    const groupAlbums = this.albumsDatabase.filter(album => album.group === randomGroup.name);
+	    if (groupAlbums.length > 0) {
+	        response += "**Альбомы этой группы:**\n";
+	        groupAlbums.slice(0, 3).forEach(album => {
+	            response += this.formatAlbumForChat(album);
+	        });
+	    }
+	    
+	    response += `\n[Подробнее о группе ${randomGroup.name}](${randomGroup.url})\n\n`;
+	    response += "Эта группа вам подходит? Если нет, скажите 'не подходит' или 'это не совсем то', и я подберу другой вариант.";
+	    
+	    return response;
+	},
+
+	getGroupRecommendations: function(analysis) {
+	    const groupName = analysis.groups[0];
+	    const groupInfo = this.groupsDatabase.find(g => g.name.toLowerCase() === groupName.toLowerCase());
+
+	    if (!groupInfo) {
+	        return `К сожалению, у меня нет информации о группе ${groupName}. Попробуйте назвать другую группу.`;
+	    }
+
+	    let response = `**${groupInfo.name}**\n\n`;
+	    response += groupInfo.description + '\n\n';
+	    
+	    const groupAlbums = this.albumsDatabase.filter(album => album.group === groupInfo.name);
+	    if (groupAlbums.length > 0) {
+	        response += "**Альбомы этой группы:**\n";
+	        groupAlbums.forEach(album => {
+	            response += this.formatAlbumForChat(album);
+	        });
+	    }
+	    
+	    response += `\n[Подробнее о группе ${groupInfo.name}](${groupInfo.url})`;
+	    
+	    return response;
+	},
+
+	getGroupResponse: function(analysis) {
+	    if (analysis.groups.length === 0) {
+	        return "О какой группе вам хотелось бы узнать? Назовите группу, и я расскажу о ней подробно.";
+	    }
+
+	    const responses = [];
+	    
+	    analysis.groups.forEach(groupName => {
+	        const groupInfo = this.groupsDatabase.find(g => g.name.toLowerCase() === groupName.toLowerCase());
+
+	        if (groupInfo) {
+	            let response = `**${groupInfo.name}**\n\n`;
+	            response += groupInfo.description + '\n\n';
+	            response += `**Участники:** ${groupInfo.members.join(', ')}\n`;
+	            response += `**Дебют:** ${groupInfo.debutYear} год\n`;
+	            response += `**Жанры:** ${groupInfo.genres.join(', ')}\n`;
+	            
+	            const groupAlbums = this.albumsDatabase.filter(album => album.group === groupInfo.name);
+	            if (groupAlbums.length > 0) {
+	                response += "**Альбомы:**\n";
+	                groupAlbums.slice(0, 3).forEach(album => {
+	                    response += `• ${album.name} — ${album.price} руб. (${album.type})\n`;
+	                });
+	            }
+	            
+	            response += `\n[Подробнее о группе ${groupInfo.name}](${groupInfo.url})\n\n`;
+	            responses.push(response);
+	        }
+	    });
+
+	    return responses.join('\n---\n\n');
+	},
+
+	getAllGroupsResponse: function(analysis) {
+	    let response = "**Все K-pop группы в нашем магазине:**\n\n";
+
+	    this.groupsDatabase.forEach((group, index) => {
+	        response += `**${index + 1}. ${group.name}**\n`;
+	        response += `Участники: ${group.members.join(', ')}\n`;
+	        response += `Дебют: ${group.debutYear} год | Жанры: ${group.genres.join(', ')}\n`;
+	        response += `${group.description}\n`;
+	        response += `[Подробнее о группе](${group.url})\n\n`;
+	        response += "---\n\n";
+	    });
+
+	    return response;
+	},
+
+	getAllAlbumsResponse: function(analysis) {
+	    let response = "**Все альбомы в нашем магазине:**\n\n";
+
+	    this.albumsDatabase.forEach((album, index) => {
+	        response += `<div class="album-info-chat">
+	            <img src="${album.image}" alt="${album.name}" onclick="window.location.href='${album.url}'" style="cursor: pointer;">
+	            <div class="album-details-chat">
+	                <strong>${index + 1}. ${album.name}</strong><br>
+	                Группа: ${album.group}<br>
+	                Цена: ${album.price} руб.<br>
+	                Тип: ${album.type}<br>
+	                Дата выхода: ${album.releaseDate}<br>
+	                Треков: ${album.tracks}<br>
+	                ${album.description}<br>
+	                <a href="${album.url}" class="album-link-chat" target="_blank">Подробнее об альбоме</a>
+	            </div>
+	        </div><br>`;
+	    });
+
+	    return response;
+	},
+
+	getGenderGroupsResponse: function(analysis) {
+	    let response = "";
+	    
+	    if (analysis.requestedGender === 'female') {
+	        const femaleGroups = this.groupsDatabase.filter(g => g.gender === 'female');
+	        response += "**Женские K-pop группы:**\n\n";
+	        
+	        femaleGroups.forEach((group, index) => {
+	            response += `**${index + 1}. ${group.name}**\n`;
+	            response += `${group.description}\n`;
+	            response += `[Подробнее о группе](${group.url})\n\n`;
+	        });
+	        
+	    } else if (analysis.requestedGender === 'male') {
+	        const maleGroups = this.groupsDatabase.filter(g => g.gender === 'male');
+	        response += "**Мужские K-pop группы:**\n\n";
+	        
+	        maleGroups.forEach((group, index) => {
+	            response += `**${index + 1}. ${group.name}**\n`;
+	            response += `${group.description}\n`;
+	            response += `[Подробнее о группе](${group.url})\n\n`;
+	        });
+	    }
+	    
+	    return response;
+	},
+
+	getAlbumResponse: function(analysis, query) {
+	    let foundAlbums = [];
+	    
+	    // Поиск по названию альбома
+	    this.albumsDatabase.forEach(album => {
+	        const albumNameLower = album.name.toLowerCase();
+	        const queryLower = query.toLowerCase();
+	        
+	        if (queryLower.includes(albumNameLower) || 
+	            (album.name.includes('-') && queryLower.includes(album.name.split('-')[1]?.toLowerCase().trim()))) {
+	            foundAlbums.push(album);
+	        }
+	    });
+
+	    // Если не нашли по полному названию, ищем по части
+	    if (foundAlbums.length === 0) {
+	        const queryWords = query.toLowerCase().split(' ');
+	        this.albumsDatabase.forEach(album => {
+	            const albumWords = album.name.toLowerCase().split(' ');
+	            const matchCount = queryWords.filter(word => 
+	                albumWords.some(albumWord => albumWord.includes(word) && word.length > 2)
+	            ).length;
+	            
+	            if (matchCount >= 2) {
+	                foundAlbums.push(album);
+	            }
+	        });
+	    }
+
+	    if (foundAlbums.length === 0) {
+	        return "Не нашел такого альбома. Попробуйте назвать альбом точнее, например: 'Aespa - Armageddon' или 'TXT - The Dream Chapter: ETERNITY'";
+	    }
+
+	    let response = "";
+	    
+	    foundAlbums.forEach(album => {
+	        response += this.formatAlbumForChat(album);
+	    });
+
+	    return response;
+	},
+
+	formatAlbumForChat: function(album) {
+	    return `<div class="album-info-chat">
+	        <img src="${album.image}" alt="${album.name}" onclick="window.location.href='${album.url}'" style="cursor: pointer;">
+	        <div class="album-details-chat">
+	            <strong>${album.name}</strong><br>
+	            Группа: ${album.group}<br>
+	            Цена: ${album.price} руб.<br>
+	            Дата выхода: ${album.releaseDate}<br>
+	            Треков: ${album.tracks}<br>
+	            ${album.description}<br>
+	            <a href="${album.url}" class="album-link-chat" target="_blank">Подробнее об альбоме</a>
+	        </div>
+	    </div><br>`;
+	},
+
+	getGeneralResponse: function(analysis) {
+	    if (analysis.keywords.length > 0) {
+	        if (analysis.groups.length > 0) {
+	            return this.getGroupResponse(analysis);
+	        }
+	        if (analysis.albumNames.length > 0) {
+	            return this.getAlbumResponse(analysis, analysis.albumNames[0]);
+	        }
+	    }
+
+	    return "Я не совсем понял ваш вопрос. Вы можете спросить о конкретной группе, альбоме, попросить показать все группы или все альбомы. Также я могу помочь подобрать музыку по вашим предпочтениям.";
+	},
+
+	updateUserPreferences: function(preferences) {
+	    if (preferences.genres) {
+	        this.context.userPreferences.genres = [...new Set([...this.context.userPreferences.genres, ...preferences.genres])];
+	    }
+	    if (preferences.groups) {
+	        this.context.userPreferences.groups = [...new Set([...this.context.userPreferences.groups, ...preferences.groups])];
+	    }
+	    if (preferences.budget) {
+	        this.context.userPreferences.budget = preferences.budget;
+	    }
+	    if (preferences.excludeGroup) {
+	        this.context.userPreferences.excludedGroups.push(preferences.excludeGroup);
+	    }
+	    
+	    this.saveContext();
+	}
+        };
+
+        // ======================
+        // ИНИЦИАЛИЗАЦИЯ СТРАНИЦЫ
+        // ======================
+
+        document.addEventListener('DOMContentLoaded', function () {
+   
+    function checkAuth() {
+        const savedUser = localStorage.getItem('user');
+        const authBtn = document.getElementById('auth-btn');
+        
+        if (savedUser && authBtn) {
+	const user = JSON.parse(savedUser);
+	authBtn.textContent = user.name;
+	authBtn.onclick = logout;
+	console.log(' Пользователь авторизован:', user.name);
+	return true;
+        }
+        return false;
+    }
+
+    function logout() {
+        localStorage.removeItem('user');
+        const authBtn = document.getElementById('auth-btn');
+        if (authBtn) {
+	authBtn.textContent = 'Войти / Регистрация';
+	authBtn.onclick = openAuthModal;
+        }
+        alert('Вы вышли из аккаунта');
+        location.reload();
+    }
+
+    // Запускаем проверку
+    const isLoggedIn = checkAuth();
+    
+    // Инициализация системы корзины
+    if (window.CartSystem) {
+        window.CartSystem.init();
+    }
+
+    // Инициализация помощника
+    MusicAssistant.init();
+
+    // Основные переменные
+    const menuBtn = document.getElementById('menu-btn');
+    const catalogMenu = document.getElementById('catalog-menu');
+    const authBtn = document.getElementById('auth-btn');
+    const authModal = document.getElementById('auth-modal');
+    const closeAuthModal = document.getElementById('close-auth-modal');
+    const assistantBtn = document.getElementById('assistant-btn');
+    const assistantModal = document.getElementById('assistant-modal');
+    const overlay = document.getElementById('overlay');
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const chat = document.getElementById('assistant-chat');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
+    const favoritesBtn = document.getElementById('favorites-btn');
+    const searchInput = document.getElementById('search-input');
+    const searchBtn = document.getElementById('search-btn');
+    const clearFavoritesBtn = document.getElementById('clear-favorites-btn');
+    const closeModalButtons = document.querySelectorAll('.close-modal');
+    const modals = document.querySelectorAll('.modal');
+    const femaleGroupCategory = document.getElementById('female-group-category');
+    const maleGroupCategory = document.getElementById('male-group-category');
+    const femaleGroupSubcategory = document.getElementById('female-group-subcategory');
+    const maleGroupSubcategory = document.getElementById('male-group-subcategory');
+
+    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+    // База данных для поиска (упрощенная версия)
+    const searchDatabase = MusicAssistant.albumsDatabase.concat(
+        MusicAssistant.groupsDatabase.map(group => ({
+	type: 'group',
+	name: group.name,
+	url: group.url
+        }))
+    );
+
+    // Функция для выполнения поиска
+    function performSearch(query) {
+        const resultsContainer = document.getElementById('search-results');
+        resultsContainer.innerHTML = '';
+        
+        if (!query.trim()) {
+	resultsContainer.classList.remove('active');
+	return;
+        }
+        
+        const searchTerm = query.toLowerCase().trim();
+        
+        // Поиск по всем элементам базы данных
+	    const results = searchDatabase.filter(item => {
+	        const nameMatch = item.name.toLowerCase().includes(searchTerm);
+	        const groupMatch = item.group ? item.group.toLowerCase().includes(searchTerm) : false;
+	        
+	        return nameMatch || groupMatch;
+	    });
+	    
+	    if (results.length === 0) {
+	        resultsContainer.innerHTML = '<div class="search-result-item">Ничего не найдено</div>';
+	    } else {
+	        // Группируем результаты по типу
+	        const groups = results.filter(item => item.type === 'group');
+	        const albums = results.filter(item => item.type !== 'group');
+	        
+	        if (groups.length > 0) {
+	            resultsContainer.innerHTML += '<div class="search-result-group">Группы:</div>';
+	            groups.forEach(group => {
+	                resultsContainer.innerHTML += `
+	                    <div class="search-result-item" onclick="window.location.href='${group.url}'">
+	                        ${group.name}
+	                    </div>
+	                `;
+	            });
+	        }
+	        
+	        if (albums.length > 0) {
+	            resultsContainer.innerHTML += '<div class="search-result-group">Альбомы:</div>';
+	            albums.forEach(album => {
+	                resultsContainer.innerHTML += `
+	                    <div class="search-result-item search-result-album" onclick="window.location.href='${album.url}'">
+	                        ${album.name} (${album.group})
+	                    </div>
+	                `;
+	            });
+	        }
+	    }
+	    
+	    resultsContainer.classList.add('active');
+	}
+
+	// Функции для чата
+	function addUserMessage(text) {
+	    const msg = document.createElement('div');
+	    msg.className = 'chat-message user';
+	    msg.innerHTML = `<div class="message-content">${text}</div>`;
+	    chat.appendChild(msg);
+	    chat.scrollTop = chat.scrollHeight;
+	}
+
+	function addBotMessage(text) {
+	    const msg = document.createElement('div');
+	    msg.className = 'chat-message bot';
+
+	    // Сохраняем оригинальный HTML для кликов по изображениям
+	    let formattedText = text;
+	    
+	    // Добавляем обработку HTML для изображений
+	    if (text.includes('<div class="album-info-chat">')) {
+	        msg.innerHTML = formattedText;
+	    } else {
+	        formattedText = text
+	            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+	            .replace(/\n/g, '<br>')
+	            .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" style="color: var(--accent-color); text-decoration: underline;">$1</a>');
+	        
+	        msg.innerHTML = `<div class="message-content">${formattedText}</div>`;
+	    }
+	    
+	    chat.appendChild(msg);
+	    chat.scrollTop = chat.scrollHeight;
+	    
+	    // Добавляем обработчики кликов для изображений
+	    setTimeout(() => {
+	        const images = msg.querySelectorAll('img[onclick]');
+	        images.forEach(img => {
+	            img.addEventListener('click', function() {
+	                const url = this.getAttribute('onclick').match(/window\.location\.href='(.*?)'/)[1];
+	                if (url) window.location.href = url;
+	            });
+	        });
+	        
+	        const links = msg.querySelectorAll('a');
+	        links.forEach(link => {
+	            link.addEventListener('click', function(e) {
+	                if (this.getAttribute('href') && !this.getAttribute('href').startsWith('#')) {
+	                    e.preventDefault();
+	                    window.open(this.getAttribute('href'), '_blank');
+	                }
+	            });
+	        });
+	    }, 100);
+	}
+
+	function showTypingIndicator() {
+	    const typing = document.createElement('div');
+	    typing.className = 'typing-indicator';
+	    typing.innerHTML = `
+	        <div class="typing-dot"></div>
+	        <div class="typing-dot"></div>
+	        <div class="typing-dot"></div>
+	    `;
+	    chat.appendChild(typing);
+	    chat.scrollTop = chat.scrollHeight;
+	    return typing;
+	}
+
+	function removeTypingIndicator(typingElement) {
+	    if (typingElement && typingElement.parentNode) {
+	        typingElement.parentNode.removeChild(typingElement);
+	    }
+	}
+
+	function sendMessage() {
+	    const text = userInput.value.trim();
+	    if (!text) return;
+
+	    addUserMessage(text);
+	    userInput.value = '';
+	    userInput.focus();
+
+	    const typingIndicator = showTypingIndicator();
+
+	    setTimeout(() => {
+	        const response = MusicAssistant.processQuery(text);
+	        removeTypingIndicator(typingIndicator);
+	        addBotMessage(response);
+	        
+	        // Обработка ответов пользователя
+	        const lowerText = text.toLowerCase();
+	        if (lowerText.includes('не подходит') || lowerText.includes('это не совсем то') || lowerText.includes('не то')) {
+	            const lastGroupMatch = response.match(/\*\*(.*?)\*\*/);
+	            if (lastGroupMatch) {
+	                const groupName = lastGroupMatch[1];
+	                MusicAssistant.updateUserPreferences({ excludeGroup: groupName });
+	            }
+	        }
+	    }, 800 + Math.random() * 700);
+	}
+
+	sendBtn?.addEventListener('click', sendMessage);
+	userInput?.addEventListener('keypress', (e) => {
+	    if (e.key === 'Enter') sendMessage();
+	});
+
+	assistantBtn?.addEventListener('click', () => {
+	    closeAllModals();
+	    assistantModal.style.display = 'block';
+	    overlay.style.display = 'block';
+	    if (chat.children.length === 0) {
+	        addBotMessage("Привет! Я ваш помощник по выбору K-pop альбомов. Я могу рассказать о группах, показать все альбомы или помочь подобрать музыку по вашим предпочтениям. Что вас интересует?");
+	    }
+	    setTimeout(() => userInput.focus(), 100);
+	});
+
+	function openModal(modal) {
+	    closeAllModals();
+	    modal.style.display = 'flex';
+	    overlay.style.display = 'block';
+	}
+
+	function closeAllModals() {
+	    authModal.style.display = 'none';
+	    catalogMenu.classList.remove('active');
+	    assistantModal.style.display = 'none';
+	    overlay.style.display = 'none';
+	    modals.forEach(modal => modal.classList.remove('active'));
+	    document.getElementById('search-results').classList.remove('active');
+	}
+
+	menuBtn?.addEventListener('click', () => {
+	    closeAllModals();
+	    catalogMenu.classList.add('active');
+	    overlay.style.display = 'block';
+	});
+
+	authBtn?.addEventListener('click', () => openModal(authModal));
+	closeAuthModal?.addEventListener('click', () => closeAllModals());
+
+	overlay?.addEventListener('click', closeAllModals);
+
+	tabBtns.forEach(tab => {
+	    tab.addEventListener('click', () => {
+	        tabBtns.forEach(t => t.classList.remove('active'));
+	        tab.classList.add('active');
+	        loginForm.style.display = tab.dataset.tab === 'login' ? 'block' : 'none';
+	        registerForm.style.display = tab.dataset.tab === 'register' ? 'block' : 'none';
+	    });
+	});
+
+loginForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const email = loginForm.querySelector('input[type="email"]').value;
+    const password = loginForm.querySelector('input[type="password"]').value;
+    
+    try {
+        const response = await fetch('http://localhost:8000/api.php?action=login', {
+	method: 'POST',
+	headers: { 'Content-Type': 'application/json' },
+	body: JSON.stringify({ email, password })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+	alert(' Вход успешен! Добро пожаловать, ' + result.user.name);
+	localStorage.setItem('user', JSON.stringify(result.user));
+	document.getElementById('auth-btn').textContent = result.user.name;
+	closeAllModals();
+	loginForm.reset();
+        } else {
+	alert(' Ошибка: ' + result.error);
+        }
+    } catch (error) {
+        alert(' Ошибка соединения: ' + error.message);
+    }
+});
+
+registerForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const inputs = registerForm.querySelectorAll('input');
+    const name = inputs[0].value;
+    const email = inputs[1].value;
+    const password = inputs[2].value;
+    const confirmPassword = inputs[3].value;
+    
+    if (password !== confirmPassword) {
+        alert('❌ Пароли не совпадают!');
+        return;
+    }
+    
+    try {
+        const response = await fetch('http://localhost:8000/api.php?action=register', {
+	method: 'POST',
+	headers: { 'Content-Type': 'application/json' },
+	body: JSON.stringify({ name, email, password })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+	alert(' Регистрация успешна! Добро пожаловать, ' + result.user.name);
+	localStorage.setItem('user', JSON.stringify(result.user));
+	document.getElementById('auth-btn').textContent = result.user.name;
+	closeAllModals();
+	registerForm.reset();
+        } else {
+	alert(' Ошибка: ' + result.error);
+        }
+    } catch (error) {
+        alert(' Ошибка соединения: ' + error.message);
+    }
+});
+
+	femaleGroupCategory?.addEventListener('click', function(e) {
+	    if (e.target.closest('i')) {
+	        femaleGroupSubcategory.classList.toggle('active');
+	        const icon = this.querySelector('i');
+	        if (femaleGroupSubcategory.classList.contains('active')) {
+	            icon.classList.remove('fa-chevron-right');
+	            icon.classList.add('fa-chevron-down');
+	        } else {
+	            icon.classList.remove('fa-chevron-down');
+	            icon.classList.add('fa-chevron-right');
+	        }
+	    }
+	});
+
+	maleGroupCategory?.addEventListener('click', function(e) {
+	    if (e.target.closest('i')) {
+	        maleGroupSubcategory.classList.toggle('active');
+	        const icon = this.querySelector('i');
+	        if (maleGroupSubcategory.classList.contains('active')) {
+	            icon.classList.remove('fa-chevron-right');
+	            icon.classList.add('fa-chevron-down');
+	        } else {
+	            icon.classList.remove('fa-chevron-down');
+	            icon.classList.add('fa-chevron-right');
+	        }
+	    }
+	});
+
+	function updateCounters() {
+	    document.getElementById('favorites-count').textContent = favorites.length;
+	}
+
+	favoritesBtn?.addEventListener('click', showFavorites);
+
+	function showFavorites() {
+	    const favoritesItems = document.getElementById('favorites-items');
+	    const modal = document.getElementById('favorites-modal');
+	    const favoritesActions = document.getElementById('favorites-actions');
+
+	    if (favorites.length === 0) {
+	        favoritesItems.innerHTML = '<div class="empty-message">В избранном пока нет товаров</div>';
+	        favoritesActions.style.display = 'none';
+	    } else {
+	        favoritesItems.innerHTML = favorites.map(item => `
+	            <div class="favorite-item">
+	                <img src="${item.image}" alt="${item.name}" class="item-image">
+	                <div class="item-details">
+	                    <div class="item-name">${item.name}</div>
+	                    <div class="item-price">${item.price} руб.</div>
+	                </div>
+	                <button class="delete-btn" onclick="removeFromFavorites('${item.id}')" title="Удалить из избранного">
+	                    <i class="fas fa-trash"></i>
+	                </button>
+	            </div>
+	        `).join('');
+	        favoritesActions.style.display = 'flex';
+	    }
+
+	    modal.classList.add('active');
+	    document.getElementById('overlay').style.display = 'block';
+	}
+
+	window.removeFromFavorites = function(productId) {
+	    favorites = favorites.filter(item => item.id !== productId);
+	    localStorage.setItem('favorites', JSON.stringify(favorites));
+	    updateCounters();
+	    showFavorites();
+	    alert('Товар удален из избранного');
+	};
+
+	clearFavoritesBtn?.addEventListener('click', function() {
+	    if (confirm('Вы уверены, что хотите очистить избранное?')) {
+	        favorites = [];
+	        localStorage.setItem('favorites', JSON.stringify(favorites));
+	        updateCounters();
+	        showFavorites();
+	        alert('Избранное очищено');
+	    }
+	});
+
+	closeModalButtons.forEach(button => {
+	    button.addEventListener('click', () => {
+	        modals.forEach(modal => modal.classList.remove('active'));
+	        overlay.style.display = 'none';
+	    });
+	});
+
+	modals.forEach(modal => {
+	    modal.addEventListener('click', (e) => {
+	        if (e.target === modal) {
+	            modal.classList.remove('active');
+	            overlay.style.display = 'none';
+	        }
+	    });
+	});
+
+	updateCounters();
+
+	// УЛУЧШЕННЫЙ ПОИСК
+	let searchTimeout;
+	
+	searchInput?.addEventListener('input', function() {
+	    clearTimeout(searchTimeout);
+	    
+	    searchTimeout = setTimeout(() => {
+	        performSearch(this.value);
+	    }, 300);
+	});
+
+	searchInput?.addEventListener('keypress', function(e) {
+	    if (e.key === 'Enter') {
+	        performSearch(this.value);
+	    }
+	});
+
+	searchBtn?.addEventListener('click', function() {
+	    performSearch(searchInput.value);
+	});
+
+	document.addEventListener('click', function(e) {
+	    if (!e.target.closest('.search-container')) {
+	        document.getElementById('search-results').classList.remove('active');
+	    }
+	});
+
+	// Продукты просто открывают свои страницы при клике
+	const products = document.querySelectorAll('.product');
+	products.forEach(product => {
+	    // Обработчик уже есть в onclick
+	});
+        });
+    </script>
+</body>
+</html>

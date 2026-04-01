@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Альбом KATSEYE - SIS</title>
+  <style>
+    /* 🔒 Антискролл: запрещаем прокрутку на всех уровнях */
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* ← ключевая строка */
+      height: 100%;
+      width: 100%;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .product-card {
+      width: 380px;
+      height: 680px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+    .product-image {
+      position: relative;
+      width: 100%;
+      height: 380px;
+      overflow: hidden;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer; /* Добавляем курсор для всей области изображения */
+    }
+
+    .image-wrapper {
+      padding: 30px 30px 20px 30px;
+      width: 100%;
+      height: calc(100% - 0px);
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .image-container {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: white;
+      border-radius: 8px;
+      position: relative;
+      cursor: pointer; /* Курсор для контейнера */
+    }
+
+    .main-image {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      transition: opacity 0.3s ease;
+      cursor: pointer; /* Курсор для изображения */
+    }
+
+    .product-info {
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-title {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      color: #222;
+      line-height: 1.4;
+    }
+
+    .price {
+      font-weight: bold;
+      color: #7a37b5;
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+    }
+
+    .version-select {
+      margin: 8px 0; /* Уменьшен отступ сверху/снизу */
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .version-select label {
+      font-size: 0.9rem;
+      color: #666;
+      white-space: nowrap; /* Запрещаем перенос текста */
+    }
+
+    select {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      width: 180px; /* Увеличено с 150px до 180px */
+      cursor: pointer;
+      /* Стили для стрелочки */
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 15px center; /* Сдвинуто с 10px до 15px */
+      background-size: 12px;
+      padding-right: 35px; /* Увеличено с 10px до 35px */
+    }
+
+    select:focus {
+      outline: none;
+      border: 1px solid #ccc;
+      box-shadow: none;
+    }
+    .action-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .quantity-input {
+      width: 60px;
+      text-align: center;
+      border: 1px solid #ddd;
+      padding: 8px;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .quantity-input:focus {
+      border-color: #c4a8d9;
+      box-shadow: 0 0 0 2px rgba(196, 168, 217, 0.3);
+    }
+
+    .btn-add-to-cart {
+      background-color: #c4a8d9;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-add-to-cart:hover {
+      background-color: #a886c4;
+    }
+
+    .btn-add-to-cart.in-cart {
+      background-color: white;
+      color: #c4a8d9;
+      border: 2px solid #c4a8d9;
+    }
+
+    .heart-icon {
+      font-size: 1.4rem;
+      color: #ccc;
+      cursor: pointer;
+      transition: color 0.3s, transform 0.2s;
+    }
+
+    .heart-icon:hover {
+      color: #ff6b6b;
+      transform: scale(1.1);
+    }
+
+    .heart-icon.active {
+      color: #ff6b6b;
+    }
+
+    .in-stock {
+      color: #4caf50;
+      font-size: 0.9rem;
+      margin: 8px 0; /* Уменьшен отступ сверху/снизу */
+    }
+
+    .version-info {
+      font-size: 0.9rem;
+      color: #555;
+      margin: 6px 0; /* Уменьшен отступ сверху/снизу */
+      line-height: 1.4;
+    }
+
+    @media (max-width: 480px) {
+      .product-card {
+        width: 350px;
+        height: 650px;
+      }
+      
+      .product-image {
+        height: 350px;
+      }
+      
+      .image-wrapper {
+        padding: 30px 30px 20px 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="product-card">
+    <!-- Изображение товара -->
+    <div class="product-image" id="productImage">
+      <div class="image-wrapper">
+        <div class="image-container" id="imageContainer">
+          <img id="mainImage" src="1.jpg" alt="Альбом KATSEYE - SIS" class="main-image" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Информация о товаре -->
+    <div class="product-info">
+      <h2 class="product-title">Альбом KATSEYE - SIS</h2>
+      <p class="price">100.00 руб.</p>
+
+      <!-- Уменьшены отступы между элементами для более компактного расположения -->
+      <div class="version-select">
+        <label for="version">Версия альбома:</label>
+        <select id="version">
+          <option value="ver.1" selected>ver.1</option>
+          <option value="ver.2">ver.2</option>
+        </select>
+      </div>
+
+      <p class="version-info">
+        SOFT — 1 VER.<br>
+        STRONG — 2 VER.
+      </p>
+
+      <!-- Строка: количество + кнопка + сердечко -->
+      <div class="action-row">
+        <input type="number" id="quantity" class="quantity-input" value="1" min="1" max="12" />
+        <button class="btn-add-to-cart" id="add-to-cart-btn">В корзину</button>
+        <span class="heart-icon" id="favorite-icon">♡</span>
+      </div>
+
+      <p class="in-stock">Есть в наличии</p>
+    </div>
+  </div>
+
+  <script>
+    // Глобальные переменные для хранения состояния
+    let currentCartState = [];
+    let currentFavoritesState = [];
+    
+    // Ключевое изменение: Используем динамический ID с версией
+
+    // Функция для получения ID товара с учетом версии
+    function getProductId() {
+      const version = document.getElementById('version').value;
+      return 'katseye-sis-' + version; // Динамический ID с версией
+    }
+
+    // Функция проверки, находится ли текущий товар в корзине
+    function isInCart() {
+      const productId = getProductId();
+      return currentCartState.some(item => item.id === productId);
+    }
+
+    // Функция проверки, находится ли текущий товар в избранном
+    function isInFavorites() {
+      // Для избранного можно использовать общий ID без версии
+      const productId = 'katseye-sis';
+      return currentFavoritesState.some(item => item.id === productId);
+    }
+
+    // Функция обновления состояния кнопок
+    function updateButtonStates() {
+      const addToCartBtn = document.getElementById('add-to-cart-btn');
+      const favoriteIcon = document.getElementById('favorite-icon');
+      
+      // Обновляем состояние кнопки корзины
+      if (isInCart()) {
+        addToCartBtn.classList.add('in-cart');
+        addToCartBtn.textContent = 'В корзине';
+        addToCartBtn.title = 'Нажмите, чтобы удалить из корзины';
+      } else {
+        addToCartBtn.classList.remove('in-cart');
+        addToCartBtn.textContent = 'В корзину';
+        addToCartBtn.title = 'Нажмите, чтобы добавить в корзину';
+      }
+      
+      // Обновляем состояние кнопки избранного
+      if (isInFavorites()) {
+        favoriteIcon.classList.add('active');
+        favoriteIcon.textContent = '♥';
+        favoriteIcon.title = 'Нажмите, чтобы удалить из избранного';
+      } else {
+        favoriteIcon.classList.remove('active');
+        favoriteIcon.textContent = '♡';
+        favoriteIcon.title = 'Нажмите, чтобы добавить в избранное';
+      }
+    }
+
+    // Функция отправки запроса на обновление состояния
+    function requestStateUpdate() {
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({
+          type: 'REQUEST_STATE'
+        }, '*');
+      }
+    }
+
+    // Защита от значений меньше 1 и больше 12
+    document.getElementById('quantity').addEventListener('input', function () {
+      if (this.value < 1) this.value = 1;
+      if (this.value > 12) this.value = 12;
+    });
+
+    // Получаем базовый путь для корректных ссылок на изображения
+    function getBasePath() {
+      const currentPath = window.location.href;
+      const pathParts = currentPath.split('/');
+      // Убираем имя файла (2.html) и получаем путь к папке товара
+      return pathParts.slice(0, -1).join('/');
+    }
+
+    // Функция для добавления товара в корзину
+    function addToCart() {
+      const quantity = parseInt(document.getElementById('quantity').value);
+      const version = document.getElementById('version').value;
+      const versionSelect = document.getElementById('version');
+      const versionText = versionSelect.options[versionSelect.selectedIndex].text;
+      const price = 100.00;
+      const totalPrice = (price * quantity).toFixed(2);
+      const basePath = getBasePath();
+      
+      // Ключевое изменение: используем динамический ID с версией
+      const productId = getProductId();
+      
+      const product = {
+        id: productId, // Динамический ID с версией
+        name: 'Альбом KATSEYE - SIS',
+        quantity: quantity,
+        price: parseFloat(totalPrice),
+        image: basePath + '/1.jpg',
+        version: versionText, // Текст версии
+        versionCode: version // Код версии
+      };
+      
+      // Проверяем, находится ли товар уже в корзине
+      if (isInCart()) {
+        // Удаляем товар из корзины
+        removeFromCart(productId);
+      } else {
+        // Добавляем товар в корзину
+        // Отправляем сообщение родительскому окну
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({
+            type: 'ADD_TO_CART',
+            product: product
+          }, '*');
+        }
+        
+        // Обновляем локальное состояние
+        const existingIndex = currentCartState.findIndex(item => item.id === productId);
+        if (existingIndex > -1) {
+          currentCartState[existingIndex] = product;
+        } else {
+          currentCartState.push(product);
+        }
+        
+        // Обновляем кнопки
+        updateButtonStates();
+        
+        // Отправляем запрос на синхронизацию состояния
+        requestStateUpdate();
+        
+        // Показываем уведомление с полной информацией
+        alert(`Альбом KATSEYE - SIS\nВерсия: ${versionText}\nКоличество: ${quantity}\nДобавлен в корзину!`);
+      }
+    }
+
+    // Функция для удаления товара из корзины
+    function removeFromCart(productId) {
+      // Отправляем сообщение родительскому окну
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({
+          type: 'REMOVE_FROM_CART',
+          productId: productId
+        }, '*');
+      }
+      
+      // Обновляем локальное состояние
+      currentCartState = currentCartState.filter(item => item.id !== productId);
+      
+      // Обновляем кнопки
+      updateButtonStates();
+      
+      // Отправляем запрос на синхронизацию состояния
+      requestStateUpdate();
+      
+      // При удалении из корзины НЕ показываем уведомление
+    }
+
+    // Функция для добавления/удаления из избранного
+    function toggleFavorite() {
+      const basePath = getBasePath();
+      const versionSelect = document.getElementById('version');
+      const versionText = versionSelect.options[versionSelect.selectedIndex].text;
+      
+      // Для избранного используем общий ID без версии
+      const productId = 'katseye-sis';
+      
+      const product = {
+        id: productId, // Общий ID для всех версий
+        name: 'Альбом KATSEYE - SIS',
+        price: 100.00,
+        image: basePath + '/1.jpg',
+        version: versionText
+      };
+      
+      const favoriteIcon = document.getElementById('favorite-icon');
+      
+      // Переключаем состояние
+      if (favoriteIcon.classList.contains('active')) {
+        // Удаляем из избранного
+        favoriteIcon.classList.remove('active');
+        favoriteIcon.textContent = '♡';
+        
+        // Обновляем локальное состояние
+        currentFavoritesState = currentFavoritesState.filter(item => item.id !== productId);
+        
+        // Отправляем сообщение родительскому окну
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({
+            type: 'REMOVE_FROM_FAVORITES',
+            productId: productId
+          }, '*');
+        }
+        
+        // При удалении из избранного НЕ показываем уведомление
+      } else {
+        // Добавляем в избранное
+        favoriteIcon.classList.add('active');
+        favoriteIcon.textContent = '♥';
+        
+        // Обновляем локальное состояние
+        currentFavoritesState.push(product);
+        
+        // Отправляем сообщение родительскому окну
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({
+            type: 'ADD_TO_FAVORITES',
+            product: product
+          }, '*');
+        }
+        
+        // Отправляем запрос на синхронизацию состояния
+        requestStateUpdate();
+        
+        // Показываем уведомление только при добавлении (С версией)
+        alert(`Альбом KATSEYE - SIS\nВерсия: ${versionText}\nДобавлен в избранное!`);
+      }
+      
+      // Обновляем кнопки
+      updateButtonStates();
+    }
+
+    // Функция для получения полного пути к изображению
+    function getFullImagePath(imageName) {
+      const basePath = getBasePath();
+      return basePath + '/' + imageName;
+    }
+
+    // Обновляем пути к изображениям при загрузке
+    function initializeImages() {
+      const basePath = getBasePath();
+      document.getElementById('mainImage').src = basePath + '/1.jpg';
+    }
+
+    // Обработчики событий
+    document.getElementById('version').addEventListener('change', function() {
+      const selectedVersion = this.value;
+      
+      // ОБНОВЛЯЕМ КНОПКИ ПРИ СМЕНЕ ВЕРСИИ
+      updateButtonStates();
+      
+      // Отправляем сообщение о смене страницы
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({
+          type: 'PAGE_CHANGED'
+        }, '*');
+      }
+      
+      // Запрашиваем обновленное состояние
+      requestStateUpdate();
+    });
+
+    const heartIcon = document.getElementById('favorite-icon');
+    heartIcon.addEventListener('click', toggleFavorite);
+
+    const addToCartBtn = document.getElementById('add-to-cart-btn');
+    addToCartBtn.addEventListener('click', addToCart);
+
+    // ДОБАВЛЕННЫЙ КОД ДЛЯ РАБОТЫ С РОДИТЕЛЬСКИМ ОКНОМ:
+    // Функция для отправки сообщения родительскому окну
+    function navigateToDetails() {
+      const basePath = getBasePath();
+      
+      // Отправляем сообщение родительскому окну
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({
+          type: 'NAVIGATE',
+          url: basePath + '/1.html'
+        }, '*');
+      } else {
+        // Если открыто напрямую, а не в iframe
+        window.location.href = '1.html';
+      }
+    }
+
+    // Обработчики клика для перехода на детальную страницу
+    document.getElementById('imageContainer').addEventListener('click', navigateToDetails);
+    document.getElementById('mainImage').addEventListener('click', function(e) {
+      e.stopPropagation(); // Предотвращаем двойной вызов
+      navigateToDetails();
+    });
+    document.getElementById('productImage').addEventListener('click', navigateToDetails);
+
+    // Обработчик сообщений от родительского окна
+    window.addEventListener('message', function(event) {
+      if (event.data && event.data.type === 'INIT') {
+        // Сохраняем базовый путь для формирования корректных URL
+        window.basePath = event.data.basePath;
+        
+        // Инициализируем изображения с правильными путями
+        initializeImages();
+        
+        // Запрашиваем актуальное состояние
+        requestStateUpdate();
+      }
+      
+      // Обработка сообщений о состоянии корзины и избранного
+      if (event.data && event.data.type === 'UPDATE_CART_STATE') {
+        currentCartState = event.data.cartItems || [];
+        updateButtonStates();
+      }
+      
+      if (event.data && event.data.type === 'UPDATE_FAVORITES_STATE') {
+        currentFavoritesState = event.data.favoritesItems || [];
+        updateButtonStates();
+      }
+      
+      // Обработка удаления из корзины
+      if (event.data && event.data.type === 'REMOVE_FROM_CART') {
+        const productId = event.data.productId;
+        currentCartState = currentCartState.filter(item => item.id !== productId);
+        updateButtonStates();
+      }
+      
+      // Обработка удаления из избранного
+      if (event.data && event.data.type === 'REMOVE_FROM_FAVORITES') {
+        const productId = event.data.productId;
+        currentFavoritesState = currentFavoritesState.filter(item => item.id !== productId);
+        updateButtonStates();
+      }
+      
+      // Обработка очистки корзины
+      if (event.data && event.data.type === 'CLEAR_CART') {
+        currentCartState = [];
+        updateButtonStates();
+      }
+      
+      // Обработка очистки избранного
+      if (event.data && event.data.type === 'CLEAR_FAVORITES') {
+        currentFavoritesState = [];
+        updateButtonStates();
+      }
+    });
+
+    // Дополнительная обработка: если страница загружена в iframe, убираем стандартное поведение
+    if (window.parent !== window) {
+      document.addEventListener('click', function(e) {
+        // Предотвращаем любые переходы внутри iframe
+        e.preventDefault();
+      }, true);
+      
+      // Запрашиваем актуальное состояние корзины и избранного при загрузке
+      requestStateUpdate();
+      
+      // Также отправляем сообщение о загрузке страницы
+      window.parent.postMessage({
+        type: 'PAGE_CHANGED'
+      }, '*');
+      
+      // Дополнительная синхронизация через 1 секунду после загрузки
+      setTimeout(requestStateUpdate, 1000);
+    }
+
+    // Инициализация изображений при загрузке
+    initializeImages();
+    
+    // Инициализация состояния кнопок при загрузке
+    updateButtonStates();
+    
+    // Дополнительная синхронизация: периодически обновляем состояние
+    setInterval(requestStateUpdate, 3000); // Каждые 3 секунды
+  </script>
+
+  <script src="../../auth.js"></script>
+</body>
+</html>

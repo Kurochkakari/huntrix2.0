@@ -1,0 +1,2636 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Альбом TWICE - STRATEGY | Huntrix</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* ЦВЕТОВАЯ ПАЛИТРА С ГОЛУБЫМИ ОТТЕНКАМИ */
+    :root {
+      --primary-color: #5d8aa8; /* Основной голубой */
+      --secondary-color: #7ba7cc; /* Вторичный голубой */
+      --accent-color: #c1d9e8; /* Акцентный светло-голубой */
+      --background-color: #f0f8ff; /* AliceBlue фон */
+      --text-color: #2c3e50; /* Темный текст для контраста */
+      --light-color: #ffffff;
+      --dark-color: #4a6fa5; /* Темно-голубой */
+      --gray-light: #f5f5f5;
+      --gray: #ddd;
+      --spacing-xs: 0.5rem;
+      --spacing-sm: 1rem;
+      --spacing-md: 1.5rem;
+      --spacing-lg: 2rem;
+      --spacing-xl: 3rem;
+      --border-radius: 8px;
+      --shadow: 0 2px 10px rgba(0,0,0,0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: filter 0.3s ease;
+    }
+
+    body.zoomed {
+      overflow: hidden;
+    }
+
+    /* СТИЛИ ШАПКИ */
+    header {
+      padding: var(--spacing-md) 0;
+      background: var(--light-color);
+      box-shadow: var(--shadow);
+      z-index: 100;
+      width: 100%;
+      top: 0;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--spacing-md);
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo-img {
+      max-height: 60px;
+      width: auto;
+      object-fit: contain;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .logo-img:hover {
+      transform: scale(1.05);
+    }
+    
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-lg);
+      position: relative;
+    }
+    
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+    }
+    
+    .auth-btn {
+      background: var(--dark-color);
+      color: var(--light-color);
+      padding: 0.6rem 1.2rem;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      white-space: nowrap;
+    }
+    
+    .auth-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    
+    .icon-btn {
+      position: relative;
+      font-size: 1.5rem;
+      color: var(--dark-color);
+      cursor: pointer;
+      transition: transform 0.2s;
+      background: none;
+      border: none;
+      padding: 5px;
+    }
+    
+    .icon-btn:hover {
+      transform: scale(1.1);
+    }
+    
+    .icon-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--accent-color);
+      color: var(--text-color);
+      font-size: 0.8rem;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    
+    #menu-btn {
+      font-size: 1.4rem;
+      cursor: pointer;
+      background: var(--dark-color);
+      color: var(--light-color);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: var(--transition);
+      border: none;
+      outline: none;
+      margin-left: 4cm;
+    }
+    
+    #menu-btn:hover {
+      transform: scale(1.1);
+    }
+
+    /* КАТАЛОГ */
+    #catalog-menu {
+      position: fixed;
+      top: 0;
+      right: -300px;
+      width: 300px;
+      height: 100vh;
+      background: var(--light-color);
+      padding: var(--spacing-lg);
+      transition: right 0.3s ease;
+      box-shadow: -4px 0 10px rgba(0,0,0,0.1);
+      z-index: 1000;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      border-left: 3px solid var(--secondary-color);
+    }
+    
+    #catalog-menu.active {
+      right: 0;
+    }
+    
+    #catalog-menu h3 {
+      text-align: center;
+      margin-bottom: var(--spacing-lg);
+      color: var(--dark-color);
+      font-size: 1.8rem;
+    }
+    
+    .category-item {
+      background: var(--accent-color);
+      color: var(--text-color);
+      border: 1px solid var(--secondary-color);
+      border-radius: var(--border-radius);
+      padding: var(--spacing-sm);
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-bottom: var(--spacing-sm);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .category-item:hover {
+      transform: scale(1.03);
+    }
+    
+    .category-item span {
+      display: block;
+      font-size: 1.1rem;
+      color: var(--text-color);
+      font-weight: bold;
+    }
+    
+    .category-item i {
+      font-size: 1.2rem;
+      transition: var(--transition);
+    }
+    
+    .category-item:hover i {
+      transform: translateX(5px);
+    }
+    
+    .subcategory {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      margin-left: 0;
+      margin-bottom: 0;
+    }
+    
+    .subcategory.active {
+      max-height: 1000px;
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .subcategory-item {
+      background: var(--light-color);
+      color: var(--text-color);
+      border: 1px solid var(--secondary-color);
+      border-radius: var(--border-radius);
+      padding: var(--spacing-sm);
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-top: var(--spacing-xs);
+      margin-bottom: var(--spacing-xs);
+    }
+    
+    .subcategory-item:hover {
+      transform: scale(1.02);
+    }
+    
+    /* СТРОКА ПОИСКА */
+    .search-section {
+      background: var(--light-color);
+      padding: var(--spacing-md) 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      border-bottom: 2px solid var(--secondary-color);
+      border-top: 2px solid var(--secondary-color);
+    }
+    
+    .search-container {
+      display: flex;
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
+    }
+    
+    .search-input {
+      flex: 1;
+      padding: 0.8rem 1.2rem;
+      border: 1px solid var(--secondary-color);
+      border-radius: var(--border-radius) 0 0 var(--border-radius);
+      outline: none;
+      font-size: 16px;
+      transition: var(--transition);
+      background: var(--light-color);
+    }
+    
+    .search-input:focus {
+      border-color: var(--secondary-color);
+    }
+    
+    .search-btn {
+      padding: 0 1.5rem;
+      background: var(--dark-color);
+      color: var(--light-color);
+      border: 1px solid var(--secondary-color);
+      border-left: none;
+      border-radius: 0 var(--border-radius) var(--border-radius) 0;
+      cursor: pointer;
+      transition: var(--transition);
+      transform: none !important;
+    }
+    
+    .search-btn:hover {
+      background: var(--dark-color);
+      transform: none !important;
+    }
+    
+    .search-results {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid var(--secondary-color);
+      border-top: none;
+      border-radius: 0 0 var(--border-radius) var(--border-radius);
+      max-height: 300px;
+      overflow-y: auto;
+      z-index: 100;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      display: none;
+    }
+    
+    .search-results.active {
+      display: block;
+    }
+    
+    .search-result-item {
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid var(--gray);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .search-result-item:hover {
+      background-color: var(--accent-color);
+    }
+    
+    .search-result-item:last-child {
+      border-bottom: none;
+    }
+    
+    .search-result-group {
+      font-weight: bold;
+      color: var(--dark-color);
+      background-color: var(--gray-light);
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid var(--gray);
+    }
+    
+    .search-result-album {
+      color: var(--text-color);
+    }
+
+    /* ОСНОВНОЕ СОДЕРЖИМОЕ */
+    .main-content {
+      flex: 1;
+      padding: var(--spacing-xl) 0;
+    }
+
+    .product-page {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin-bottom: 40px;
+      padding: 20px 0;
+    }
+
+    .product-image {
+      flex: 1;
+      min-width: 300px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .image-container {
+      width: 100%;
+      max-width: 500px;
+      height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .main-image {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      transition: opacity 0.3s ease;
+    }
+
+    /* Специальный стиль для первого изображения без белых бортиков */
+    .main-image.first-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .dots-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 15px;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #ccc;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .dot.active {
+      background-color: var(--dark-color);
+      transform: scale(1.2);
+    }
+
+    .product-info {
+      flex: 1;
+      min-width: 300px;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      height: fit-content;
+    }
+
+    .product-title {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+      color: #222;
+    }
+
+    .price {
+      color: var(--dark-color);
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+      font-weight: normal;
+    }
+
+    .price-value {
+      color: var(--dark-color);
+      font-weight: normal;
+    }
+
+    .price-currency {
+      color: var(--dark-color);
+    }
+
+    .version-select {
+      margin: 20px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .version-select label {
+      font-size: 0.95rem;
+      color: var(--text-color);
+      font-weight: 500;
+    }
+
+    select {
+      padding: 10px;
+      border: 1px solid var(--gray);
+      border-radius: 6px;
+      font-size: 0.95rem;
+      width: 180px;
+      cursor: pointer;
+      background-color: var(--light-color);
+      transition: border-color 0.3s;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%232c3e50' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 15px center;
+      background-size: 12px;
+      padding-right: 35px;
+    }
+    
+    select:focus {
+      border-color: var(--secondary-color);
+      outline: none;
+      background-color: white;
+    }
+
+    /* Блок с количеством и действиями */
+    .action-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .quantity-input {
+      width: 70px;
+      text-align: center;
+      border: 1px solid var(--gray);
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      outline: none;
+      background-color: var(--light-color);
+    }
+
+    .quantity-input:focus {
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 2px rgba(123, 167, 204, 0.3);
+      background-color: white;
+    }
+
+    .btn-add-to-cart {
+      background-color: var(--dark-color);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      flex: 1;
+      min-width: 140px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-add-to-cart:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .btn-add-to-cart.in-cart {
+      background-color: white;
+      color: var(--dark-color);
+      border: 2px solid var(--dark-color);
+    }
+
+    .heart-icon {
+      font-size: 1.5rem;
+      color: #ccc;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: all 0.3s;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+    }
+
+    .heart-icon:hover {
+      transform: scale(1.1);
+    }
+
+    .heart-icon.active {
+      color: var(--dark-color);
+    }
+
+    .in-stock {
+      color: #4caf50;
+      font-size: 0.9rem;
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    .links-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 25px 0 15px 0;
+      padding-top: 20px;
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .external-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--dark-color);
+      text-decoration: none;
+      font-size: 0.95rem;
+      padding: 12px 16px;
+      border: 1px solid var(--secondary-color);
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      background-color: var(--accent-color);
+      font-weight: 500;
+    }
+
+    .external-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    .external-link::before {
+      content: "";
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .external-link:nth-child(1)::before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234a6fa5'%3E%3Cpath d='M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z'/%3E%3C/svg%3E");
+    }
+
+    .external-link:nth-child(2)::before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234a6fa5'%3E%3Cpath d='M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm.501 18c-4.615 0-8.433-3.253-9.422-7.569l1.047.003c.899 3.54 4.031 6.266 7.934 6.266 4.386 0 7.946-3.555 7.946-7.937 0-4.382-3.56-7.937-7.946-7.937-3.632 0-6.683 2.435-7.666 5.745l1.068.015c.858-2.814 3.521-4.76 6.598-4.76 3.842 0 6.947 3.101 6.947 6.932 0 3.831-3.105 6.932-6.947 6.932zm-.492-4.865l-3.202-3.995 1.101-.881 2.651 3.315 4.099-4.117.865.86-4.948 4.818z'/%3E%3C/svg%3E");
+    }
+
+    .external-link::after {
+      content: "↗";
+      font-size: 0.8rem;
+      margin-left: auto;
+    }
+
+    .description-section {
+      margin-top: 20px;
+      padding: 25px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .description-title {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      color: #222;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    .details {
+      font-size: 0.95rem;
+      margin: 12px 0;
+      line-height: 1.7;
+    }
+
+    .details-list {
+      margin-left: 20px;
+      line-height: 1.8;
+    }
+
+    /* Стили для увеличенного изображения */
+    .image-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .image-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .zoomed-image-container {
+      max-width: 90%;
+      max-height: 90%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .zoomed-image {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s ease;
+    }
+
+    /* Специальные стили для разных изображений при увеличении */
+    .zoomed-image.first-image {
+      max-width: 50%;
+      max-height: 50%;
+    }
+
+    .zoomed-image.smaller {
+      max-width: 70%;
+      max-height: 80%;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      font-size: 2rem;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s ease;
+      z-index: 1001;
+    }
+
+    .close-button:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .image-counter {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+    }
+
+    /* Новые стили для стрелок */
+    .nav-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: white;
+      font-size: 3rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1001;
+      padding: 10px;
+      transition: all 0.3s ease;
+      opacity: 0.7;
+    }
+
+    .nav-button:hover {
+      opacity: 1;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .prev-button {
+      left: 30px;
+    }
+
+    .next-button {
+      right: 30px;
+    }
+
+    /* ФУТЕР (полностью обновлен как в первом файле) */
+    footer {
+      background: var(--light-color);
+      color: var(--text-color);
+      padding: var(--spacing-xl) 0;
+      margin-top: 40px;
+      border-top: 3px solid var(--primary-color);
+      width: 100%;
+    }
+    
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .footer-section {
+      background: var(--accent-color);
+      padding: var(--spacing-md);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--secondary-color);
+      height: fit-content;
+    }
+    
+    .footer-section h3 {
+      margin-bottom: var(--spacing-md);
+      font-size: 1.2rem;
+      position: relative;
+      padding-bottom: var(--spacing-xs);
+      color: var(--text-color);
+    }
+    
+    .footer-section h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 2px;
+      background: var(--dark-color);
+    }
+    
+    .footer-section p, .footer-section address {
+      margin-bottom: var(--spacing-sm);
+      line-height: 1.6;
+      color: var(--text-color);
+    }
+    
+    .footer-links {
+      list-style: none;
+    }
+    
+    .footer-links li {
+      margin-bottom: var(--spacing-xs);
+    }
+    
+    .footer-links a {
+      color: var(--text-color);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    
+    .footer-links a:hover {
+      padding-left: var(--spacing-xs);
+    }
+    
+    .social-links {
+      display: flex;
+      gap: var(--spacing-sm);
+      margin-top: var(--spacing-sm);
+    }
+    
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: var(--dark-color);
+      border-radius: 50%;
+      color: var(--light-color);
+      font-size: 1.2rem;
+      transition: var(--transition);
+    }
+    
+    .social-links a:hover {
+      transform: translateY(-3px);
+    }
+    
+    .footer-map-section {
+      text-align: center;
+      margin-top: var(--spacing-lg);
+      padding-top: var(--spacing-lg);
+      border-top: 1px solid var(--dark-color);
+    }
+
+    .footer-map-section h3 {
+      margin-bottom: var(--spacing-md);
+      color: var(--text-color);
+      font-size: 1.3rem;
+    }
+
+    .map-container {
+      height: 250px;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      margin: 0 auto;
+      max-width: 600px;
+      box-shadow: var(--shadow);
+      border: 2px solid var(--secondary-color);
+    }
+
+    .map-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      margin-top: var(--spacing-lg);
+      padding-top: var(--spacing-md);
+      border-top: 1px solid var(--primary-color);
+      background: var(--accent-color);
+      padding: var(--spacing-md);
+      border-radius: var(--border-radius);
+      color: var(--text-color);
+    }
+
+    /* Модальные окна */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      border: 2px solid var(--secondary-color);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid var(--accent-color);
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      color: var(--dark-color);
+      font-weight: bold;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--dark-color);
+      transition: var(--transition);
+    }
+
+    .close-modal:hover {
+      transform: scale(1.1);
+    }
+
+    .cart-item, .favorite-item {
+      display: flex;
+      align-items: center;
+      padding: 15px 0;
+      border-bottom: 1px solid var(--gray);
+      position: relative;
+    }
+
+    .cart-item:last-child, .favorite-item:last-child {
+      border-bottom: none;
+    }
+
+    .item-image {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-right: 15px;
+      border: 1px solid var(--secondary-color);
+    }
+
+    .item-details {
+      flex: 1;
+    }
+
+    .item-name {
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: var(--text-color);
+    }
+
+    .item-price {
+      color: var(--dark-color);
+      font-weight: bold;
+    }
+
+    .delete-btn {
+      background: none;
+      border: none;
+      color: var(--dark-color);
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 5px;
+      transition: all 0.3s ease;
+      border-radius: 4px;
+    }
+
+    .delete-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .empty-message {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-color);
+      font-size: 1.1rem;
+    }
+
+    .modal-actions {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .btn-clear {
+      background: var(--dark-color);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+    }
+
+    .btn-clear:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .btn-checkout {
+      background: var(--dark-color);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+    }
+
+    .btn-checkout:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .total-price {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--dark-color);
+      text-align: right;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 2px solid var(--accent-color);
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+
+    /* Модальное окно авторизации */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .auth-modal {
+      width: 90%;
+      max-width: 400px;
+      background: var(--light-color);
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+      border: 2px solid var(--secondary-color);
+    }
+
+    .auth-modal-header {
+      display: flex;
+      justify-content: space-between;
+      background: var(--accent-color);
+      padding: var(--spacing-sm);
+      position: relative;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: var(--spacing-sm);
+      text-align: center;
+      cursor: pointer;
+      font-weight: bold;
+      border-bottom: 3px solid transparent;
+      color: var(--text-color);
+    }
+
+    .tab-btn.active {
+      border-bottom: 3px solid var(--dark-color);
+      color: var(--dark-color);
+    }
+
+    .close-auth-modal {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: var(--text-color);
+      cursor: pointer;
+      transition: var(--transition);
+      background: transparent;
+      border: none;
+      z-index: 1;
+    }
+
+    .close-auth-modal:hover {
+      color: var(--dark-color);
+      transform: rotate(90deg);
+    }
+
+    .auth-modal-body {
+      padding: var(--spacing-lg);
+    }
+
+    .auth-modal-body form input {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: var(--spacing-sm);
+      border: 1px solid var(--secondary-color);
+      border-radius: var(--border-radius);
+      outline: none;
+      font-size: 16px;
+      background: var(--light-color);
+      color: var(--text-color);
+    }
+
+    .auth-modal-body button {
+      width: 100%;
+      padding: 0.8rem;
+      background: var(--dark-color);
+      color: var(--light-color);
+      border: none;
+      border-radius: var(--border-radius);
+      font-weight: bold;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .auth-modal-body button:hover {
+      background: var(--dark-color);
+      transform: translateY(-2px);
+    }
+
+    /* Анимации */
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes slideOut {
+      from {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+    }
+
+    /* Мобильная адаптация */
+    @media (max-width: 768px) {
+      .product-page {
+        flex-direction: column;
+      }
+
+      .image-container {
+        height: 400px;
+      }
+
+      .action-row {
+        flex-wrap: wrap;
+      }
+
+      .btn-add-to-cart {
+        min-width: auto;
+        padding: 12px;
+        font-size: 0.95rem;
+      }
+
+      .heart-icon {
+        margin-left: 0;
+        order: 1;
+        margin-top: 10px;
+        text-align: center;
+        width: 100%;
+      }
+
+      .links-container {
+        margin: 20px 0 10px 0;
+      }
+
+      .nav-button {
+        font-size: 2.5rem;
+        padding: 8px;
+      }
+
+      .prev-button {
+        left: 15px;
+      }
+
+      .next-button {
+        right: 15px;
+      }
+
+      .zoomed-image.first-image {
+        max-width: 60%;
+        max-height: 50%;
+      }
+
+      .zoomed-image.smaller {
+        max-width: 85%;
+        max-height: 75%;
+      }
+
+      .logo-img {
+        max-height: 45px;
+      }
+      
+      #menu-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 1.2rem;
+        margin-left: 2cm;
+      }
+      
+      .header-right {
+        gap: var(--spacing-sm);
+      }
+      
+      .header-controls {
+        gap: var(--spacing-sm);
+      }
+      
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .map-container {
+        height: 200px;
+      }
+      
+      #catalog-menu {
+        right: 10px;
+        left: 10px;
+      }
+
+      .cart-item, .favorite-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .delete-btn {
+        position: absolute;
+        top: 15px;
+        right: 0;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .image-container {
+        height: 300px;
+      }
+
+      .product-info {
+        padding: 20px;
+      }
+
+      .external-link {
+        padding: 10px 14px;
+        font-size: 0.9rem;
+      }
+
+      .nav-button {
+        font-size: 2rem;
+        padding: 6px;
+      }
+
+      .prev-button {
+        left: 10px;
+      }
+
+      .next-button {
+        right: 10px;
+      }
+
+      .zoomed-image.first-image {
+        max-width: 70%;
+        max-height: 45%;
+      }
+
+      .zoomed-image.smaller {
+        max-width: 90%;
+        max-height: 70%;
+      }
+
+      .header-content {
+        flex-wrap: wrap;
+      }
+      
+      .header-right {
+        width: 100%;
+        justify-content: space-between;
+        margin-top: var(--spacing-sm);
+      }
+      
+      #menu-btn {
+        margin-left: 0;
+        order: 3;
+      }
+      
+      .auth-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+      }
+      
+      .search-container {
+        flex-direction: column;
+        gap: var(--spacing-xs);
+      }
+      
+      .search-input {
+        border-radius: var(--border-radius);
+      }
+      
+      .search-btn {
+        border-radius: var(--border-radius);
+        padding: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ШАПКА -->
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <!-- Логотип слева -->
+        <div class="logo">
+          <a href="#" onclick="goBackToAlbumList(); return false;">
+            <img src="../../../шапка/1.jpg" alt="Huntrix" class="logo-img">
+          </a>
+        </div>
+        
+        <!-- Правая часть хедера -->
+        <div class="header-right">
+          <!-- Кнопки входа и корзины -->
+          <div class="header-controls">
+            <button id="auth-btn" class="auth-btn">Войти / Регистрация</button>
+            <button class="icon-btn" id="favorites-btn" aria-label="Избранное">
+              <i class="fas fa-heart"></i>
+              <span class="icon-count" id="favorites-count">0</span>
+            </button>
+            <button class="icon-btn" id="cart-btn" aria-label="Корзина покупок">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="icon-count" id="cart-count">0</span>
+            </button>
+          </div>
+          
+          <!-- Кнопка каталога -->
+          <div style="position: relative;">
+            <button id="menu-btn" class="menu-btn" aria-label="Открыть меню">
+              <i class="fas fa-bars"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- СТРОКА ПОИСКА -->
+  <div class="search-section">
+    <div class="container">
+      <div class="search-container">
+        <input type="text" class="search-input" id="search-input" placeholder="Поиск альбомов, исполнителей..." aria-label="Поиск по каталогу">
+        <button class="search-btn" id="search-btn" aria-label="Найти"><i class="fas fa-search"></i></button>
+        <div class="search-results" id="search-results">
+          <!-- Результаты поиска будут добавляться сюда -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ОСНОВНОЕ СОДЕРЖИМОЕ -->
+  <div class="main-content">
+    <div class="container">
+      <div class="product-page">
+        <!-- Левая часть: изображение -->
+        <div class="product-image">
+          <div class="image-container">
+            <img id="mainImage" src="1.jpg" alt="Альбом TWICE - STRATEGY" class="main-image first-image" />
+          </div>
+          
+          <!-- Точки-индикаторы -->
+          <div class="dots-container">
+            <div class="dot active" data-index="0"></div>
+            <div class="dot" data-index="1"></div>
+          </div>
+        </div>
+
+        <!-- Правая часть: информация -->
+        <div class="product-info">
+          <h1 class="product-title">Альбом TWICE - STRATEGY</h1>
+          <p class="price">Цена: <span id="priceValue" class="price-value">80.00</span> <span class="price-currency">руб.</span></p>
+
+          <!-- Строка: количество + кнопка + сердечко -->
+          <div class="action-row">
+            <input type="number" id="quantity" class="quantity-input" value="1" min="1" max="12" />
+            <button class="btn-add-to-cart" id="add-to-cart-btn">В корзину</button>
+            <span class="heart-icon" id="favorite-icon">♡</span>
+          </div>
+
+          <p class="in-stock">Есть в наличии</p>
+
+          <!-- Ссылки на YouTube и информацию о группе -->
+          <div class="links-container">
+            <a href="https://youtu.be/PBscgBlJW5M?si=TnF7vyBuqJ3500Mj" target="_blank" class="external-link">
+              Посмотреть видео на YouTube
+            </a>
+            <a href="../group/1.html" class="external-link">
+              Узнать больше о группе TWICE
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Описание -->
+      <div class="description-section">
+        <h2 class="description-title">Описание</h2>
+        <p class="details"><strong>Дата релиза:</strong> 6 декабря 2024</p>
+
+        <div class="version-details">
+          <p class="details">
+            <strong>Наполнение:</strong>
+          </p>
+
+          <ul class="details-list">
+            <li>Обложка</li>
+            <li>CD-R</li>
+            <li>Фотокарточка (1 из 9)</li>
+            <li>Сет стикеров</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ФУТЕР (полностью обновлен как в первом файле) -->
+  <footer id="contacts">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-section">
+          <h3>О компании</h3>
+          <p>Huntrix — это больше, чем сайт. Это пространство, где каждый может найти свою музыку или группу.</p>
+          <p>Наша миссия — помочь людям услышать то, что отзовётся внутри: вдохновит на перемены, утешит в трудный момент или подарит силы идти вперёд, даже когда кажется, что это невозможно.</p>
+          <p>Ведь музыка — спутник души. Так давайте найдём вашего.</p>
+          <div class="social-links">
+            <a href="https://t.me/testkpopsapo" target="_blank" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+            <a href="https://vkvideo.ru/video-229346252_456240351" target="_blank" aria-label="ВКонтакте"><i class="fab fa-vk"></i></a>
+            <a href="https://www.instagram.com/mettea_minsk/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@chickencurryshow" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h3>Контакты</h3>
+          <address>
+            <p><i class="fas fa-map-marker-alt"></i> Минск, ул. Интернациональная, д. 7</p>
+            <p><i class="fas fa-phone"></i> +375 (29) 562-34-73</p>
+            <p><i class="fas fa-envelope"></i> info@huntrix.com</p>
+          </address>
+        </div>
+
+        <div class="footer-section">
+          <h3>Часы работы</h3>
+          <p>Пн-Пт: 10:00 - 20:00</p>
+          <p>Сб-Вс: 11:00 - 18:00</p>
+        </div>
+
+        <div class="footer-section">
+          <h3>Полезные ссылки</h3>
+          <ul class="footer-links">
+            <li><a href="../../../buy.html">Доставка и оплата</a></li>
+            <li><a href="mailto:info@huntrix.com">Возврат и обмен</a></li>
+            <li><a href="#" onclick="document.getElementById('assistant-btn').click(); return false;">Частые вопросы</a></li>
+            <li><a href="https://www.youtube.com/watch?v=LGEAOUPB5xc" target="_blank">Блог</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-map-section">
+        <h3>Как нас найти</h3>
+        <div class="map-container">
+          <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A1a7d39b5b6c9c5b5b5b5b5b5b5b5b5b5b5b5b5b5&amp;source=constructor" frameborder="0" title="Карта расположения магазина Huntrix"></iframe>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2025 Huntrix. Все права защищены.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- КАТАЛОГ (обновлен с тестами) -->
+  <div id="catalog-menu">
+    <h3>КАТАЛОГ</h3>
+    <div class="category">
+      <div class="category-item" id="female-group-category">
+        <span onclick="window.location.href='../../../girls.html'">FEMALE GROUP</span>
+        <i class="fas fa-chevron-right"></i>
+      </div>
+      <div class="subcategory" id="female-group-subcategory">
+        <div class="subcategory-item" onclick="window.location.href='../../../альбомы общие женских групп/KATSEYE/1.html'">KATSEYE</div>
+        <div class="subcategory-item" onclick="window.location.href='../../../альбомы общие женских групп/aespa/1.html'">Aespa</div>
+        <div class="subcategory-item" onclick="window.location.href='../../../альбомы общие женских групп/redvelvet/1.html'">Red Velvet</div>
+        <div class="subcategory-item" onclick="window.location.href='../../../альбомы общие женских групп/babymonster/1.html'">BABYMONSTER</div>
+        <div class="subcategory-item" onclick="window.location.href='../../../альбомы общие женских групп/illit/1.html'">ILLIT</div>
+        <div class="subcategory-item" onclick="window.location.href='../../../альбомы общие женских групп/kissoflife/1.html'">Kiss of life</div>
+        <div class="subcategory-item" onclick="window.location.href='../../../альбомы общие женских групп/ive/1.html'">IVE</div>
+        <div class="subcategory-item" onclick="window.location.href='../../../альбомы общие женских групп/twice/1.html'">TWICE</div>
+        <div class="subcategory-item" onclick="window.location.href='../../../альбомы общие женских групп/lesserafim/1.html'">LE SSERAFIM</div>
+        <div class="subcategory-item" onclick="window.location.href='../../../альбомы общие женских групп/kep1er/1.html'">Kep1er</div>
+        <div class="subcategory-item" onclick="window.location.href='../../../альбомы общие женских групп/itzy/1.html'">ITZY</div>
+        <div class="subcategory-item" onclick="window.location.href='../../../альбомы общие женских групп/dreamcatcher/1.html'">DREAMCATCHER</div>
+      </div>
+      
+      <div class="category-item" id="male-group-category">
+        <span onclick="window.location.href='../../../men.html'">MALE GROUP</span>
+        <i class="fas fa-chevron-right"></i>
+      </div>
+      <div class="subcategory" id="male-group-subcategory">
+        <div class="subcategory-item" onclick="window.location.href='../../../альбомы общие мужских групп/zb1/1.html'">ZEROBASEONE</div>
+        <div class="subcategory-item" onclick="window.location.href='../../../альбомы общие мужских групп/p1h/1.html'">P1Harmony</div>
+        <div class="subcategory-item" onclick="window.location.href='../../../альбомы общие мужских групп/txt/1.html'">TXT</div>
+        <div class="subcategory-item" onclick="window.location.href='../../../альбомы общие мужских групп/bts/1.html'">BTS</div>
+        <div class="subcategory-item" onclick="window.location.href='../../../альбомы общие мужских групп/enhypen/1.html'">Enhypen</div>
+        <div class="subcategory-item" onclick="window.location.href='../../../альбомы общие мужских групп/ateez/1.html'">Ateez</div>
+        <div class="subcategory-item" onclick="window.location.href='../../../альбомы общие мужских групп/seventeen/1.html'">Seventeen</div>
+        <div class="subcategory-item" onclick="window.location.href='../../../альбомы общие мужских групп/straykids/1.html'">Stray Kids</div>
+        <div class="subcategory-item" onclick="window.location.href='../../../альбомы общие мужских групп/oneus/1.html'">ONEUS</div>
+        <div class="subcategory-item" onclick="window.location.href='../../../альбомы общие мужских групп/boynextdoor/1.html'">Boynextdoor</div>
+        <div class="subcategory-item" onclick="window.location.href='../../../альбомы общие мужских групп/xlov/1.html'">XLOV</div>
+        <div class="subcategory-item" onclick="window.location.href='../../../альбомы общие мужских групп/riize/1.html'">RIIZE</div>
+      </div>
+      
+      <!-- ДОБАВЛЕНЫ ТЕСТЫ -->
+      <div class="category-item" onclick="window.location.href='../../../тестики/женские/1.html'">
+        <span>FEMALE GROUP TESTS</span>
+      </div>
+      <div class="category-item" onclick="window.location.href='../../../тестики/мужские/1.html'">
+        <span>MALE GROUP TESTS</span>
+      </div>
+      <div class="category-item" onclick="document.getElementById('contacts').scrollIntoView({behavior: 'smooth'});">
+        <span>CONTACTS</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ОВЕРЛЕЙ ДЛЯ УВЕЛИЧЕННОГО ИЗОБРАЖЕНИЯ -->
+  <div class="image-overlay">
+    <button class="close-button">&times;</button>
+    <button class="nav-button prev-button">&#10094;</button>
+    <button class="nav-button next-button">&#10095;</button>
+    <div class="zoomed-image-container">
+      <img class="zoomed-image" src="" alt="Увеличенное изображение альбома" />
+    </div>
+    <div class="image-counter">
+      <span class="current-index">1</span> / <span class="total-images">2</span>
+    </div>
+  </div>
+
+  <!-- МОДАЛЬНОЕ ОКНО КОРЗИНЫ -->
+  <div class="modal" id="cart-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Корзина</h2>
+        <button class="close-modal">&times;</button>
+      </div>
+      <div id="cart-items">
+        <!-- Товары будут добавляться сюда -->
+      </div>
+      <div id="cart-total" class="total-price" style="display: none;">
+        Итого: <span id="total-price-value">0</span> руб.
+      </div>
+      <div class="modal-actions" id="cart-actions" style="display: none;">
+        <button class="btn-checkout" id="checkout-btn">Оформить заказ</button>
+        <button class="btn-clear" id="clear-cart-btn">Очистить корзину</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- МОДАЛЬНОЕ ОКНО ИЗБРАННОГО -->
+  <div class="modal" id="favorites-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Избранное</h2>
+        <button class="close-modal">&times;</button>
+      </div>
+      <div id="favorites-items">
+        <!-- Товары будут добавляться сюда -->
+      </div>
+      <div class="modal-actions" id="favorites-actions" style="display: none;">
+        <button class="btn-clear" id="clear-favorites-btn">Очистить избранное</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ -->
+  <div class="modal-overlay" id="auth-modal">
+    <div class="auth-modal">
+      <div class="auth-modal-header">
+        <div class="tab-btn active" data-tab="login">Вход</div>
+        <div class="tab-btn" data-tab="register">Регистрация</div>
+        <button class="close-auth-modal" id="close-auth-modal" aria-label="Закрыть">&times;</button>
+      </div>
+      <div class="auth-modal-body">
+        <form id="login-form">
+          <input type="email" placeholder="Email" required aria-label="Email">
+          <input type="password" placeholder="Пароль" required aria-label="Пароль">
+          <button type="submit">Войти</button>
+        </form>
+        <form id="register-form" style="display: none;">
+          <input type="text" placeholder="Имя" required aria-label="Имя">
+          <input type="email" placeholder="Email" required aria-label="Email">
+          <input type="password" placeholder="Пароль" required aria-label="Пароль">
+          <input type="password" placeholder="Подтвердите пароль" required aria-label="Подтверждение пароля">
+          <button type="submit">Зарегистрироваться</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay"></div>
+
+  <script>
+    // Глобальные переменные для хранения данных
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+    let basePath = window.location.pathname.split('/').slice(0, -1).join('/');
+    if (!basePath) basePath = '.'; 
+
+    // Функция обновления счетчиков
+    function updateCounters() {
+      const cartTotalItems = cart.reduce((total, item) => total + (item.quantity || 1), 0);
+      document.getElementById('cart-count').textContent = cartTotalItems;
+      document.getElementById('favorites-count').textContent = favorites.length;
+      
+      // Обновляем текст кнопки авторизации
+      const authBtn = document.getElementById('auth-btn');
+      if (authBtn) {
+        if (isLoggedIn && currentUser) {
+          authBtn.textContent = currentUser.name;
+          authBtn.title = `Email: ${currentUser.email}\nНажмите для выхода`;
+        } else {
+          authBtn.textContent = 'Войти / Регистрация';
+          authBtn.title = '';
+        }
+      }
+      
+      // Обновляем состояние кнопок на странице
+      updateButtonStates();
+    }
+
+    // Функция обновления состояния кнопок
+    function updateButtonStates() {
+      const addToCartBtn = document.getElementById('add-to-cart-btn');
+      const favoriteIcon = document.getElementById('favorite-icon');
+      
+      if (addToCartBtn && favoriteIcon) {
+        const productId = 'twice-strategy';
+        
+        // Проверяем, есть ли товар в корзине
+        const inCart = cart.some(item => item.id === productId);
+        
+        // Обновляем кнопку корзины
+        if (inCart) {
+          addToCartBtn.classList.add('in-cart');
+          addToCartBtn.textContent = 'В корзине';
+          addToCartBtn.title = 'Нажмите, чтобы удалить из корзины';
+        } else {
+          addToCartBtn.classList.remove('in-cart');
+          addToCartBtn.textContent = 'В корзину';
+          addToCartBtn.title = '';
+        }
+        
+        // Проверяем, есть ли товар в избранном
+        const inFavorites = favorites.some(item => item.id === 'twice-strategy');
+        
+        // Обновляем иконку избранного
+        if (inFavorites) {
+          favoriteIcon.classList.add('active');
+          favoriteIcon.textContent = '♥';
+          favoriteIcon.title = 'Удалить из избранного';
+        } else {
+          favoriteIcon.classList.remove('active');
+          favoriteIcon.textContent = '♡';
+          favoriteIcon.title = 'Добавить в избранное';
+        }
+      }
+    }
+
+    // Функция добавления в корзину
+    function addToCart(product) {
+      const existingItemIndex = cart.findIndex(item => item.id === product.id);
+      
+      if (existingItemIndex > -1) {
+        // Если товар уже есть в корзине, обновляем количество
+        cart[existingItemIndex].quantity = (cart[existingItemIndex].quantity || 1) + (product.quantity || 1);
+        showNotification(`Добавлено еще ${product.quantity || 1} шт. "${product.name}" в корзину!`);
+      } else {
+        // Если товара нет, добавляем новый
+        cart.push(product);
+        showNotification(`Товар "${product.name}" добавлен в корзину!`);
+      }
+      
+      // Сохраняем в localStorage
+      localStorage.setItem('cart', JSON.stringify(cart));
+      
+      // Обновляем счетчики и состояния кнопок
+      updateCounters();
+      
+      return true;
+    }
+
+    // Функция удаления из корзины (при повторном нажатии на кнопку "В корзине")
+    function removeFromCart(productId) {
+      // Находим товар в корзине
+      const existingItemIndex = cart.findIndex(item => item.id === productId);
+      
+      if (existingItemIndex > -1) {
+        const itemName = cart[existingItemIndex].name;
+        // Удаляем товар из корзины
+        cart.splice(existingItemIndex, 1);
+        
+        // Сохраняем в localStorage
+        localStorage.setItem('cart', JSON.stringify(cart));
+        
+        // Обновляем счетчики и состояния кнопок
+        updateCounters();
+        
+        // Показываем уведомление
+        showNotification(`Товар "${itemName}" удален из корзины`);
+        
+        // Если открыто модальное окно корзины, обновляем его
+        if (document.getElementById('cart-modal').classList.contains('active')) {
+          showCart();
+        }
+        
+        return true;
+      }
+      return false;
+    }
+
+    // Функция обработки нажатия на кнопку корзины
+    function handleCartButtonClick() {
+      const quantity = parseInt(document.getElementById('quantity').value);
+      const price = parseFloat(document.getElementById('priceValue').textContent);
+      const productId = 'twice-strategy';
+      
+      const product = {
+        id: productId,
+        name: 'Альбом TWICE - STRATEGY',
+        quantity: quantity,
+        price: price,
+        basePrice: 80.00,
+        image: basePath + '/1.jpg' 
+      };
+      
+      // Проверяем, есть ли уже товар в корзине
+      const existingItemIndex = cart.findIndex(item => item.id === productId);
+      
+      if (existingItemIndex > -1) {
+        // Если товар уже в корзине, удаляем его (повторное нажатие)
+        removeFromCart(productId);
+      } else {
+        // Если товара нет в корзине, добавляем его
+        addToCart(product);
+      }
+    }
+
+    // Функция добавления/удаления из избранного
+    function handleFavoriteClick() {
+      const product = {
+        id: 'twice-strategy',
+        name: 'Альбом TWICE - STRATEGY',
+        price: 80.00,
+        image: basePath + '/1.jpg' 
+      };
+      
+      const existingIndex = favorites.findIndex(item => item.id === product.id);
+      
+      if (existingIndex > -1) {
+        // Удаляем из избранного
+        favorites.splice(existingIndex, 1);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        updateCounters();
+        showNotification('Товар удален из избранного');
+      } else {
+        // Добавляем в избранное
+        favorites.push(product);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        updateCounters();
+        showNotification(`Товар "${product.name}" добавлен в избранное!`);
+      }
+    }
+
+    // Функция очистки корзины
+    function clearCart() {
+      if (confirm('Вы уверены, что хотите очистить корзину?')) {
+        cart = [];
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCounters();
+        showCart();
+        showNotification('Корзина очищена');
+      }
+    }
+
+    // Функция очистки избранного
+    function clearFavorites() {
+      if (confirm('Вы уверены, что хотите очистить избранное?')) {
+        favorites = [];
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        updateCounters();
+        showFavorites();
+        showNotification('Избранное очищено');
+      }
+    }
+
+    // Функция расчета общей суммы
+    function calculateTotal() {
+      let total = 0;
+      cart.forEach(item => {
+        total += (item.price || 0) * (item.quantity || 1);
+      });
+      return total.toFixed(2);
+    }
+
+    // Функция оформления заказа
+    function goToCheckout() {
+      if (!isLoggedIn) {
+        alert('Для оформления заказа необходимо войти в систему.');
+        showAuthModal();
+        return;
+      }
+      
+      if (cart.length === 0) {
+        alert('Корзина пуста. Добавьте товары в корзину перед оформлением заказа.');
+        return;
+      }
+      
+      localStorage.setItem('checkoutItems', JSON.stringify(cart));
+      localStorage.setItem('checkoutSource', 'cart');
+      
+      window.location.href = '../../../buy.html';
+    }
+
+    // Функция отображения корзины
+    function showCart() {
+      const cartItems = document.getElementById('cart-items');
+      const modal = document.getElementById('cart-modal');
+      const cartActions = document.getElementById('cart-actions');
+      const cartTotal = document.getElementById('cart-total');
+      const totalPriceValue = document.getElementById('total-price-value');
+      
+      if (cart.length === 0) {
+        cartItems.innerHTML = '<div class="empty-message">Корзина пуста</div>';
+        cartActions.style.display = 'none';
+        cartTotal.style.display = 'none';
+      } else {
+        cartItems.innerHTML = cart.map(item => `
+          <div class="cart-item">
+            <img src="${item.image || '1.jpg'}" alt="${item.name}" class="item-image">
+            <div class="item-details">
+              <div class="item-name">${item.name}</div>
+              <div class="item-price">${item.price} руб. × ${item.quantity || 1} шт.</div>
+            </div>
+            <button class="delete-btn" onclick="removeCartItem('${item.id}')" title="Удалить из корзины">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        `).join('');
+        cartActions.style.display = 'flex';
+        cartTotal.style.display = 'block';
+        totalPriceValue.textContent = calculateTotal();
+      }
+      
+      modal.classList.add('active');
+      document.getElementById('overlay').style.display = 'block';
+    }
+
+    // Функция удаления товара из корзины (из модального окна)
+    function removeCartItem(productId) {
+      if (removeFromCart(productId)) {
+        // Товар удален, функция removeFromCart уже обновит состояние
+      }
+    }
+
+    // Функция отображения избранного
+    function showFavorites() {
+      const favoritesItems = document.getElementById('favorites-items');
+      const modal = document.getElementById('favorites-modal');
+      const favoritesActions = document.getElementById('favorites-actions');
+      
+      if (favorites.length === 0) {
+        favoritesItems.innerHTML = '<div class="empty-message">В избранном пока нет товаров</div>';
+        favoritesActions.style.display = 'none';
+      } else {
+        favoritesItems.innerHTML = favorites.map(item => `
+          <div class="favorite-item">
+            <img src="${item.image || '1.jpg'}" alt="${item.name}" class="item-image">
+            <div class="item-details">
+              <div class="item-name">${item.name}</div>
+              <div class="item-price">${item.price} руб.</div>
+            </div>
+            <button class="delete-btn" onclick="removeFavoriteItem('${item.id}')" title="Удалить из избранного">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        `).join('');
+        favoritesActions.style.display = 'flex';
+      }
+      
+      modal.classList.add('active');
+      document.getElementById('overlay').style.display = 'block';
+    }
+
+    // Функция удаления из избранного (из модального окна)
+    function removeFavoriteItem(productId) {
+      const existingIndex = favorites.findIndex(item => item.id === productId);
+      
+      if (existingIndex > -1) {
+        favorites.splice(existingIndex, 1);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        updateCounters();
+        showFavorites();
+        showNotification('Товар удален из избранного');
+      }
+    }
+
+    // Функция показа уведомления
+    function showNotification(message, type = 'success') {
+      const notification = document.createElement('div');
+      const bgColor = type === 'warning' ? '#ff6b6b' : '#4a6fa5';
+
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${bgColor};
+        color: white;
+        padding: 15px 25px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        z-index: 9999;
+        animation: slideIn 0.3s ease;
+        max-width: 300px;
+        font-weight: bold;
+      `;
+
+      notification.textContent = message;
+      document.body.appendChild(notification);
+
+      setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => notification.remove(), 300);
+      }, 3000);
+    }
+
+    // Функция показа модального окна авторизации
+    function showAuthModal() {
+      const authModal = document.getElementById('auth-modal');
+      const overlay = document.getElementById('overlay');
+
+      if (authModal && overlay) {
+        authModal.style.display = 'flex';
+        overlay.style.display = 'block';
+      }
+    }
+
+    // Функция выхода из системы
+    function logout() {
+      if (confirm('Вы уверены, что хотите выйти?')) {
+        isLoggedIn = false;
+        currentUser = null;
+        localStorage.setItem('isLoggedIn', 'false');
+        localStorage.removeItem('currentUser');
+        updateCounters();
+        showNotification('Вы успешно вышли из системы.');
+      }
+    }
+
+            // База данных для поиска
+            const searchDatabase = [
+                // Женские группы
+                { type: 'group', name: 'KATSEYE', url: '../../../альбомы общие женских групп/KATSEYE/1.html' },
+                { type: 'group', name: 'Aespa', url: '../../../альбомы общие женских групп/aespa/1.html' },
+                { type: 'group', name: 'Red Velvet', url: '../../../альбомы общие женских групп/redvelvet/1.html' },
+                { type: 'group', name: 'BABYMONSTER', url: '../../../альбомы общие женских групп/babymonster/1.html' },
+                { type: 'group', name: 'ILLIT', url: '../../../альбомы общие женских групп/illit/1.html' },
+                { type: 'group', name: 'Kiss of life', url: '../../../альбомы общие женских групп/kissoflife/1.html' },
+                { type: 'group', name: 'IVE', url: '../../../альбомы общие женских групп/ive/1.html' },
+                { type: 'group', name: 'TWICE', url: '../../../альбомы общие женских групп/twice/1.html' },
+                { type: 'group', name: 'LE SSERAFIM', url: '../../../альбомы общие женских групп/lesserafim/1.html' },
+                { type: 'group', name: 'Kep1er', url: '../../../альбомы общие женских групп/kep1er/1.html' },
+                { type: 'group', name: 'ITZY', url: '../../../альбомы общие женских групп/itzy/1.html' },
+                { type: 'group', name: 'DREAMCATCHER', url: '../../../альбомы общие женских групп/dreamcatcher/1.html' },
+                
+                // Мужские группы
+                { type: 'group', name: 'ZEROBASEONE', url: '../../../альбомы общие мужских групп/zb1/1.html' },
+                { type: 'group', name: 'P1Harmony', url: '../../../альбомы общие мужских групп/p1h/1.html' },
+                { type: 'group', name: 'TXT', url: '../../../альбомы общие мужских групп/txt/1.html' },
+                { type: 'group', name: 'BTS', url: '../../../альбомы общие мужских групп/bts/1.html' },
+                { type: 'group', name: 'Enhypen', url: '../../../альбомы общие мужских групп/enhypen/1.html' },
+                { type: 'group', name: 'Ateez', url: '../../../альбомы общие мужских групп/ateez/1.html' },
+                { type: 'group', name: 'Seventeen', url: '../../../альбомы общие мужских групп/seventeen/1.html' },
+                { type: 'group', name: 'Stray Kids', url: '../../../альбомы общие мужских групп/straykids/1.html' },
+                { type: 'group', name: 'ONEUS', url: '../../../альбомы общие мужских групп/oneus/1.html' },
+                { type: 'group', name: 'Boynextdoor', url: '../../../альбомы общие мужских групп/boynextdoor/1.html' },
+                { type: 'group', name: 'XLOV', url: '../../../альбомы общие мужских групп/xlov/1.html' },
+                { type: 'group', name: 'RIIZE', url: '../../../альбомы общие мужских групп/riize/1.html' },
+                
+                // Тесты
+                { type: 'test', name: 'FEMALE GROUP TESTS', url: '../../../тестики/женские/1.html' },
+                { type: 'test', name: 'MALE GROUP TESTS', url: '../../../тестики/мужские/1.html' },
+                
+                // Альбомы женских групп
+                { type: 'album', name: 'Aespa - Armageddon', group: 'Aespa', url: '../../../альбомы общие женских групп/aespa/1/1.html' },
+                { type: 'album', name: 'Aespa - Drama', group: 'Aespa', url: '../../../альбомы общие женских групп/aespa/2/1.html' },
+                { type: 'album', name: 'Aespa - Girls', group: 'Aespa', url: '../../../альбомы общие женских групп/aespa/3/1.html' },
+                { type: 'album', name: 'KATSEYE - SIS', group: 'KATSEYE', url: '../../../альбомы общие женских групп/KATSEYE/1/1.html' },
+                { type: 'album', name: 'KATSEYE - BEAUTIFUL CHAOS', group: 'KATSEYE', url: '../../../альбомы общие женских групп/KATSEYE/2/1.html' },
+                { type: 'album', name: 'Red Velvet - Queendom', group: 'Red Velvet', url: '../../../альбомы общие женских групп/redvelvet/1/1.html' },
+                { type: 'album', name: 'Red Velvet - The ReVe Festival 2022 [Feel My Rhythm]', group: 'Red Velvet', url: '../../../альбомы общие женских групп/redvelvet/2/1.html' },
+                { type: 'album', name: 'IRENE - 1st Mini Album [Like A Flower]', group: 'Red Velvet', url: '../../../альбомы общие женских групп/redvelvet/3/1.html' },
+                { type: 'album', name: 'BABYMONSTER - DRIP', group: 'BABYMONSTER', url: '../../../альбомы общие женских групп/babymonster/1/1.html' },
+                { type: 'album', name: 'BABYMONSTER - DRIP ZIP', group: 'BABYMONSTER', url: '../../../альбомы общие женских групп/babymonster/2/1.html' },
+                { type: 'album', name: 'BABYMONS7ER - 1st MINI ALBUM [BABYMONS7ER]', group: 'BABYMONSTER', url: '../../../альбомы общие женских групп/babymonster/3/1.html' },
+                { type: 'album', name: 'ILLIT - 2nd Mini Album [I\'LL LIKE YOU]', group: 'ILLIT', url: '../../../альбомы общие женских групп/illit/1/1.html' },
+                { type: 'album', name: 'ILLIT - Bomb', group: 'ILLIT', url: '../../../альбомы общие женских групп/illit/2/1.html' },
+                { type: 'album', name: 'ILLIT - 1st Mini Album [SUPER REAL ME]', group: 'ILLIT', url: '../../../альбомы общие женских групп/illit/3/1.html' },
+                { type: 'album', name: 'KISS OF LIFE - Midas Touch', group: 'Kiss of life', url: '../../../альбомы общие женских групп/kissoflife/1/1.html' },
+                { type: 'album', name: 'KISS OF LIFE - Lose Yourself', group: 'Kiss of life', url: '../../../альбомы общие женских групп/kissoflife/2/1.html' },
+                { type: 'album', name: 'KISS OF LIFE - KISS OF LIFE', group: 'Kiss of life', url: '../../../альбомы общие женских групп/kissoflife/3/1.html' },
+                { type: 'album', name: 'IVE - 3rd EP Album [IVE EMPATHY]', group: 'IVE', url: '../../../альбомы общие женских групп/ive/1/1.html' },
+                { type: 'album', name: 'IVE - IVE SECRET', group: 'IVE', url: '../../../альбомы общие женских групп/ive/2/1.html' },
+                { type: 'album', name: 'IVE - IVE SWITCH', group: 'IVE', url: '../../../альбомы общие женских групп/ive/3/1.html' },
+                { type: 'album', name: 'TWICE - STRATEGY', group: 'TWICE', url: '../../../альбомы общие женских групп/twice/1/1.html' },
+                { type: 'album', name: 'TWICE - TEN: The Story Goes On', group: 'TWICE', url: '../../../альбомы общие женских групп/twice/2/1.html' },
+                { type: 'album', name: 'TWICE - BETWEEN 1&2', group: 'TWICE', url: '../../../альбомы общие женских групп/twice/3/1.html' },
+                { type: 'album', name: 'LE SSERAFIM - SPAGHETTI', group: 'LE SSERAFIM', url: '../../../альбомы общие женских групп/lesserafim/1/1.html' },
+                { type: 'album', name: 'LE SSERAFIM - CRAZY', group: 'LE SSERAFIM', url: '../../../альбомы общие женских групп/lesserafim/2/1.html' },
+                { type: 'album', name: 'LE SSERAFIM - HOT', group: 'LE SSERAFIM', url: '../../../альбомы общие женских групп/lesserafim/3/1.html' },
+                { type: 'album', name: 'Kep1er - Kep1going On', group: 'Kep1er', url: '../../../альбомы общие женских групп/kep1er/1/1.html' },
+                { type: 'album', name: 'Kep1er - BUBBLE GUM', group: 'Kep1er', url: '../../../альбомы общие женских групп/kep1er/2/1.html' },
+                { type: 'album', name: 'Kep1er - Magic Hour', group: 'Kep1er', url: '../../../альбомы общие женских групп/kep1er/3/1.html' },
+                { type: 'album', name: 'ITZY - Girls Will Be Girls', group: 'ITZY', url: '../../../альбомы общие женских групп/itzy/1/1.html' },
+                { type: 'album', name: 'YEJI (ITZY) - Air', group: 'ITZY', url: '../../../альбомы общие женских групп/itzy/2/1.html' },
+                { type: 'album', name: 'ITZY - BORN TO BE', group: 'ITZY', url: '../../../альбомы общие женских групп/itzy/3/1.html' },
+                { type: 'album', name: 'DREAMCATCHER - UAU [Playlist #You Are You]', group: 'DREAMCATCHER', url: '../../../альбомы общие женских групп/dreamcatcher/1/1.html' },
+                { type: 'album', name: 'Dreamcatcher - VillainS', group: 'DREAMCATCHER', url: '../../../альбомы общие женских групп/dreamcatcher/2/1.html' },
+                { type: 'album', name: 'Dreamcatcher - VirtuouS', group: 'DREAMCATCHER', url: '../../../альбомы общие женских групп/dreamcatcher/3/1.html' },
+                
+                // Альбомы мужских групп
+                { type: 'album', name: 'ZEROBASEONE - 2nd Mini ALBUM [MELTING POINT]', group: 'ZEROBASEONE', url: '../../../альбомы общие мужских групп/zb1/1/1.html' },
+                { type: 'album', name: 'ZEROBASEONE - CINEMA PARADISE', group: 'ZEROBASEONE', url: '../../../альбомы общие мужских групп/zb1/2/1.html' },
+                { type: 'album', name: 'ZEROBASEONE The 5th Mini Album - BLUE PARADISE', group: 'ZEROBASEONE', url: '../../../альбомы общие мужских групп/zb1/3/1.html' },
+                { type: 'album', name: 'P1Harmony - SAD SONG', group: 'P1Harmony', url: '../../../альбомы общие мужских групп/p1h/1/1.html' },
+                { type: 'album', name: 'P1Harmony - Killin\' It', group: 'P1Harmony', url: '../../../альбомы общие мужских групп/p1h/2/1.html' },
+                { type: 'album', name: 'P1Harmony - HARMONY : SET IN', group: 'P1Harmony', url: '../../../альбомы общие мужских групп/p1h/3/1.html' },
+                { type: 'album', name: 'TXT - The Dream Chapter: ETERNITY', group: 'TXT', url: '../../../альбомы общие мужских групп/txt/1/1.html' },
+                { type: 'album', name: 'TXT - The Dream Chapter: MAGIC', group: 'TXT', url: '../../../альбомы общие мужских групп/txt/2/1.html' },
+                { type: 'album', name: 'TXT - minisode1 : BLUE HOUR', group: 'TXT', url: '../../../альбомы общие мужских групп/txt/3/1.html' },
+                { type: 'album', name: 'BTS - SKOOL LUV AFFAIR SPECIAL ADDITION', group: 'BTS', url: '../../../альбомы общие мужских групп/bts/1/1.html' },
+                { type: 'album', name: 'BTS - DARK & WILD', group: 'BTS', url: '../../../альбомы общие мужских групп/bts/2/1.html' },
+                { type: 'album', name: 'BTS - O!RUL8,2?', group: 'BTS', url: '../../../альбомы общие мужских групп/bts/3/1.html' },
+                { type: 'album', name: 'ENHYPEN - ROMANCE : UNTOLD [daydream]', group: 'Enhypen', url: '../../../альбомы общие мужских групп/enhypen/1/1.html' },
+                { type: 'album', name: 'ENHYPEN - ORANGE BLOOD', group: 'Enhypen', url: '../../../альбомы общие мужских групп/enhypen/2/1.html' },
+                { type: 'album', name: 'ENHYPEN - DIMENSION : ANSWER', group: 'Enhypen', url: '../../../альбомы общие мужских групп/enhypen/3/1.html' },
+                { type: 'album', name: 'ATEEZ - THE WORLD : TO THE END DVD', group: 'Ateez', url: '../../../альбомы общие мужских групп/ateez/1/1.html' },
+                { type: 'album', name: 'ATEEZ - THE WORLD : TO THE END PLAY CODE', group: 'Ateez', url: '../../../альбомы общие мужских групп/ateez/2/1.html' },
+                { type: 'album', name: 'ATEEZ - THE WORLD EP.FIN : WILL', group: 'Ateez', url: '../../../альбомы общие мужских групп/ateez/3/1.html' },
+                { type: 'album', name: 'SEVENTEEN - An Ode', group: 'Seventeen', url: '../../../альбомы общие мужских групп/seventeen/1/1.html' },
+                { type: 'album', name: 'SEVENTEEN - 10th Mini Album', group: 'Seventeen', url: '../../../альбомы общие мужских групп/seventeen/2/1.html' },
+                { type: 'album', name: 'HOSHI X WOOZI (SEVENTEEN) - BEAM', group: 'Seventeen', url: '../../../альбомы общие мужских групп/seventeen/3/1.html' },
+                { type: 'album', name: 'Stray Kids - 5-STAR', group: 'Stray Kids', url: '../../../альбомы общие мужских групп/straykids/1/1.html' },
+                { type: 'album', name: 'Stray Kids - HIPTAPE', group: 'Stray Kids', url: '../../../альбомы общие мужских групп/straykids/2/1.html' },
+                { type: 'album', name: 'Stray Kids - KARMA', group: 'Stray Kids', url: '../../../альбомы общие мужских групп/straykids/3/1.html' },
+                { type: 'album', name: 'ONEUS - 5x', group: 'ONEUS', url: '../../../альбомы общие мужских групп/oneus/1/1.html' },
+                { type: 'album', name: 'ONEUS - PYGMALION', group: 'ONEUS', url: '../../../альбомы общие мужских групп/oneus/2/1.html' },
+                { type: 'album', name: 'ONEUS - MALUS', group: 'ONEUS', url: '../../../альбомы общие мужских групп/oneus/3/1.html' },
+                { type: 'album', name: 'BOYNEXTDOOR - 4th EP', group: 'Boynextdoor', url: '../../../альбомы общие мужских групп/boynextdoor/1/1.html' },
+                { type: 'album', name: 'BOYNEXTDOOR - WHY..', group: 'Boynextdoor', url: '../../../альбомы общие мужских групп/boynextdoor/2/1.html' },
+                { type: 'album', name: 'BOYNEXTDOOR - 1st EP', group: 'Boynextdoor', url: '../../../альбомы общие мужских групп/boynextdoor/3/1.html' },
+                { type: 'album', name: 'XLOV - I ONE', group: 'XLOV', url: '../../../альбомы общие мужских групп/xlov/1/1.html' },
+                { type: 'album', name: 'XLOV - 1st Single Album [I\'mma Be]', group: 'XLOV', url: '../../../альбомы общие мужских групп/xlov/2/1.html' },
+                { type: 'album', name: 'RIIZE - Get A Guitar', group: 'RIIZE', url: '../../../альбомы общие мужских групп/riize/1/1.html' },
+                { type: 'album', name: 'RIIZE - ODYSSEY', group: 'RIIZE', url: '../../../альбомы общие мужских групп/riize/2/1.html' },
+                { type: 'album', name: 'RIIZE - ODYSSEY', group: 'RIIZE', url: '../../../альбомы общие мужских групп/riize/3/1.html' }
+            ];
+
+    // Функция для выполнения поиска
+    function performSearch(query) {
+      const resultsContainer = document.getElementById('search-results');
+      resultsContainer.innerHTML = '';
+      
+      if (!query.trim()) {
+        resultsContainer.classList.remove('active');
+        return;
+      }
+      
+      const searchTerm = query.toLowerCase().trim();
+      
+      // Поиск по всем элементам базы данных
+      const results = searchDatabase.filter(item => {
+        const nameMatch = item.name.toLowerCase().includes(searchTerm);
+        const groupMatch = item.group ? item.group.toLowerCase().includes(searchTerm) : false;
+        
+        return nameMatch || groupMatch;
+      });
+      
+      if (results.length === 0) {
+        resultsContainer.innerHTML = '<div class="search-result-item">Ничего не найдено</div>';
+      } else {
+        // Группируем результаты по типу
+        const groups = results.filter(item => item.type === 'group');
+        const tests = results.filter(item => item.type === 'test');
+        const albums = results.filter(item => item.type === 'album');
+        
+        if (groups.length > 0) {
+          resultsContainer.innerHTML += '<div class="search-result-group">Группы:</div>';
+          groups.forEach(group => {
+            resultsContainer.innerHTML += `
+              <div class="search-result-item" onclick="window.location.href='${group.url}'">
+                ${group.name}
+              </div>
+            `;
+          });
+        }
+        
+        if (tests.length > 0) {
+          resultsContainer.innerHTML += '<div class="search-result-group">Тесты:</div>';
+          tests.forEach(test => {
+            resultsContainer.innerHTML += `
+              <div class="search-result-item" onclick="window.location.href='${test.url}'">
+                ${test.name}
+              </div>
+            `;
+          });
+        }
+        
+        if (albums.length > 0) {
+          resultsContainer.innerHTML += '<div class="search-result-group">Альбомы:</div>';
+          albums.forEach(album => {
+            resultsContainer.innerHTML += `
+              <div class="search-result-item search-result-album" onclick="window.location.href='${album.url}'">
+                ${album.name} (${album.group})
+              </div>
+            `;
+          });
+        }
+      }
+      
+      resultsContainer.classList.add('active');
+    }
+
+    // Функция для открытия модального окна
+    function openModal(modal) {
+      closeAllModals();
+      modal.style.display = 'flex';
+      document.getElementById('overlay').style.display = 'block';
+    }
+
+    // Функция для закрытия всех модальных окон
+    function closeAllModals() {
+      const authModal = document.getElementById('auth-modal');
+      const catalogMenu = document.getElementById('catalog-menu');
+      const overlay = document.getElementById('overlay');
+      const modals = document.querySelectorAll('.modal');
+      const searchResults = document.getElementById('search-results');
+      
+      if (authModal) authModal.style.display = 'none';
+      if (catalogMenu) catalogMenu.classList.remove('active');
+      if (overlay) overlay.style.display = 'none';
+      if (modals) modals.forEach(modal => modal.classList.remove('active'));
+      if (searchResults) searchResults.classList.remove('active');
+    }
+
+    // Инициализация при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function () {
+      // Инициализация счетчиков
+      updateCounters();
+      
+      // Основные переменные
+      const menuBtn = document.getElementById('menu-btn');
+      const catalogMenu = document.getElementById('catalog-menu');
+      const authModal = document.getElementById('auth-modal');
+      const closeAuthModal = document.getElementById('close-auth-modal');
+      const overlay = document.getElementById('overlay');
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const loginForm = document.getElementById('login-form');
+      const registerForm = document.getElementById('register-form');
+      const favoritesBtn = document.getElementById('favorites-btn');
+      const searchInput = document.getElementById('search-input');
+      const searchBtn = document.getElementById('search-btn');
+      const clearFavoritesBtn = document.getElementById('clear-favorites-btn');
+      const closeModalButtons = document.querySelectorAll('.close-modal');
+      const modals = document.querySelectorAll('.modal');
+      const femaleGroupCategory = document.getElementById('female-group-category');
+      const maleGroupCategory = document.getElementById('male-group-category');
+      const femaleGroupSubcategory = document.getElementById('female-group-subcategory');
+      const maleGroupSubcategory = document.getElementById('male-group-subcategory');
+      const addToCartBtn = document.getElementById('add-to-cart-btn');
+      const favoriteIcon = document.getElementById('favorite-icon');
+      const cartBtn = document.getElementById('cart-btn');
+      const clearCartBtn = document.getElementById('clear-cart-btn');
+      const checkoutBtn = document.getElementById('checkout-btn');
+      const authBtn = document.getElementById('auth-btn');
+      const quantityInput = document.getElementById('quantity');
+      const priceValue = document.getElementById('priceValue');
+
+      // Галерея изображений с точками
+      const images = ['1.jpg', '2.jpg'];
+      const mainImage = document.getElementById('mainImage');
+      const dots = document.querySelectorAll('.dot');
+      const imageOverlay = document.querySelector('.image-overlay');
+      const zoomedImage = document.querySelector('.zoomed-image');
+      const closeButton = document.querySelector('.close-button');
+      const prevButton = document.querySelector('.prev-button');
+      const nextButton = document.querySelector('.next-button');
+      const currentIndexSpan = document.querySelector('.current-index');
+      const totalImagesSpan = document.querySelector('.total-images');
+
+      totalImagesSpan.textContent = images.length;
+      let currentIndex = 0;
+
+      // Функция для обновления изображения
+      function updateImage(index) {
+        mainImage.src = images[index];
+        zoomedImage.src = images[index];
+        
+        // Обновляем классы для разных изображений
+        zoomedImage.classList.remove('first-image', 'smaller');
+        if (index === 0) {
+          mainImage.classList.add('first-image');
+          zoomedImage.classList.add('first-image');
+        } else {
+          mainImage.classList.remove('first-image');
+          // Для остальных картинок применяем класс smaller
+          if (index >= 1 && index <= 1) {
+            zoomedImage.classList.add('smaller');
+          } else {
+            zoomedImage.classList.remove('smaller');
+          }
+        }
+        
+        dots.forEach(dot => dot.classList.remove('active'));
+        dots[index].classList.add('active');
+        
+        currentIndexSpan.textContent = index + 1;
+        currentIndex = index;
+      }
+
+      // Добавляем обработчики событий для точек
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+          updateImage(index);
+        });
+      });
+
+      // Функция для открытия увеличенного изображения
+      function openZoomedImage(index) {
+        updateImage(index);
+        imageOverlay.classList.add('active');
+        document.body.classList.add('zoomed');
+      }
+
+      // Функция для закрытия увеличенного изображения
+      function closeZoomedImage() {
+        imageOverlay.classList.remove('active');
+        document.body.classList.remove('zoomed');
+      }
+
+      // Обработчик для клика по изображению
+      document.querySelector('.image-container').addEventListener('click', (e) => {
+        e.preventDefault();
+        openZoomedImage(currentIndex);
+      });
+
+      // Обработчик для кнопки закрытия
+      closeButton.addEventListener('click', closeZoomedImage);
+
+      // Обработчик для кнопки "назад"
+      prevButton.addEventListener('click', () => {
+        let newIndex = currentIndex - 1;
+        if (newIndex < 0) newIndex = images.length - 1;
+        updateImage(newIndex);
+      });
+
+      // Обработчик для кнопки "вперед"
+      nextButton.addEventListener('click', () => {
+        let newIndex = currentIndex + 1;
+        if (newIndex >= images.length) newIndex = 0;
+        updateImage(newIndex);
+      });
+
+      // Закрытие по клику на оверлей
+      imageOverlay.addEventListener('click', (e) => {
+        if (e.target === imageOverlay) {
+          closeZoomedImage();
+        }
+      });
+
+      // Закрытие по нажатию клавиши Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && imageOverlay.classList.contains('active')) {
+          closeZoomedImage();
+        }
+        
+        if (imageOverlay.classList.contains('active')) {
+          if (e.key === 'ArrowLeft') {
+            let newIndex = currentIndex - 1;
+            if (newIndex < 0) newIndex = images.length - 1;
+            updateImage(newIndex);
+          } else if (e.key === 'ArrowRight') {
+            let newIndex = currentIndex + 1;
+            if (newIndex >= images.length) newIndex = 0;
+            updateImage(newIndex);
+          }
+        }
+      });
+
+      // Инициализация первого изображения
+      updateImage(0);
+
+      // Обработчик для обновления цены при изменении количества
+      quantityInput?.addEventListener('input', function() {
+        const quantity = parseInt(this.value);
+        if (quantity < 1) {
+          this.value = 1;
+        } else if (quantity > 12) {
+          this.value = 12;
+        }
+        
+        const basePrice = 80.00;
+        const totalPrice = (basePrice * parseInt(this.value)).toFixed(2);
+        priceValue.textContent = totalPrice;
+      });
+
+      // Обработчик для кнопки корзины с функцией переключения
+      addToCartBtn?.addEventListener('click', handleCartButtonClick);
+
+      // Обработчик для иконки избранного
+      favoriteIcon?.addEventListener('click', handleFavoriteClick);
+
+      // Обработчики для меню каталога
+      menuBtn?.addEventListener('click', () => {
+        closeAllModals();
+        catalogMenu.classList.add('active');
+        overlay.style.display = 'block';
+      });
+
+      closeAuthModal?.addEventListener('click', () => closeAllModals());
+
+      overlay?.addEventListener('click', closeAllModals);
+
+      tabBtns.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabBtns.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          if (loginForm) loginForm.style.display = tab.dataset.tab === 'login' ? 'block' : 'none';
+          if (registerForm) registerForm.style.display = tab.dataset.tab === 'register' ? 'block' : 'none';
+        });
+      });
+
+      // Функционал входа
+      loginForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = e.target.querySelector('input[type="email"]').value;
+        const password = e.target.querySelector('input[type="password"]').value;
+        
+        // Получаем пользователей из localStorage
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        
+        // Ищем пользователя
+        const user = users.find(u => u.email === email && u.password === password);
+        
+        if (user) {
+          isLoggedIn = true;
+          currentUser = user;
+          localStorage.setItem('isLoggedIn', 'true');
+          localStorage.setItem('currentUser', JSON.stringify(user));
+          updateCounters();
+          showNotification(`Добро пожаловать, ${user.name}!`);
+          closeAllModals();
+        } else {
+          alert('Неверный email или пароль');
+        }
+      });
+
+      // Функционал регистрации
+      registerForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = e.target.querySelector('input[type="text"]').value;
+        const email = e.target.querySelector('input[type="email"]').value;
+        const password = e.target.querySelector('input[type="password"]').value;
+        const confirmPassword = e.target.querySelectorAll('input[type="password"]')[1].value;
+        
+        // Валидация
+        if (name.length < 2) {
+          alert('Имя должно содержать минимум 2 символа');
+          return;
+        }
+        
+        if (!email.includes('@')) {
+          alert('Введите корректный email');
+          return;
+        }
+        
+        if (password.length < 6) {
+          alert('Пароль должен содержать минимум 6 символов');
+          return;
+        }
+        
+        if (password !== confirmPassword) {
+          alert('Пароли не совпадают');
+          return;
+        }
+        
+        // Получаем пользователей из localStorage
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        
+        // Проверяем, существует ли уже пользователь с таким email
+        if (users.some(u => u.email === email)) {
+          alert('Пользователь с таким email уже зарегистрирован');
+          return;
+        }
+        
+        // Создаем нового пользователя
+        const newUser = {
+          id: Date.now().toString(),
+          name: name,
+          email: email,
+          password: password,
+          registrationDate: new Date().toISOString()
+        };
+        
+        // Добавляем пользователя
+        users.push(newUser);
+        localStorage.setItem('users', JSON.stringify(users));
+        
+        // Автоматически входим
+        isLoggedIn = true;
+        currentUser = newUser;
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('currentUser', JSON.stringify(newUser));
+        
+        updateCounters();
+        showNotification(`Регистрация успешна! Добро пожаловать, ${name}!`);
+        closeAllModals();
+      });
+
+      femaleGroupCategory?.addEventListener('click', function(e) {
+        if (e.target.closest('i')) {
+          femaleGroupSubcategory.classList.toggle('active');
+          const icon = this.querySelector('i');
+          if (femaleGroupSubcategory.classList.contains('active')) {
+            icon.classList.remove('fa-chevron-right');
+            icon.classList.add('fa-chevron-down');
+          } else {
+            icon.classList.remove('fa-chevron-down');
+            icon.classList.add('fa-chevron-right');
+          }
+        }
+      });
+
+      maleGroupCategory?.addEventListener('click', function(e) {
+        if (e.target.closest('i')) {
+          maleGroupSubcategory.classList.toggle('active');
+          const icon = this.querySelector('i');
+          if (maleGroupSubcategory.classList.contains('active')) {
+            icon.classList.remove('fa-chevron-right');
+            icon.classList.add('fa-chevron-down');
+          } else {
+            icon.classList.remove('fa-chevron-down');
+            icon.classList.add('fa-chevron-right');
+          }
+        }
+      });
+
+      // Обработчики для кнопок корзины и избранного
+      cartBtn?.addEventListener('click', showCart);
+      favoritesBtn?.addEventListener('click', showFavorites);
+
+      // Обработчики для кнопок очистки
+      clearCartBtn?.addEventListener('click', clearCart);
+      clearFavoritesBtn?.addEventListener('click', clearFavorites);
+
+      // Обработчик для кнопки оформления заказа
+      checkoutBtn?.addEventListener('click', goToCheckout);
+
+      // Обработчик для кнопки авторизации
+      authBtn?.addEventListener('click', () => {
+        if (isLoggedIn) {
+          logout();
+        } else {
+          showAuthModal();
+        }
+      });
+
+      closeModalButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          modals.forEach(modal => modal.classList.remove('active'));
+          overlay.style.display = 'none';
+        });
+      });
+
+      modals.forEach(modal => {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) {
+            modal.classList.remove('active');
+            overlay.style.display = 'none';
+          }
+        });
+      });
+
+      // УЛУЧШЕННЫЙ ПОИСК
+      let searchTimeout;
+      
+      // Поиск при вводе каждой буквы с задержкой
+      searchInput?.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        
+        searchTimeout = setTimeout(() => {
+          performSearch(this.value);
+        }, 300);
+      });
+
+      // Поиск при нажатии Enter
+      searchInput?.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          performSearch(this.value);
+        }
+      });
+
+      // Поиск при клике на кнопку
+      searchBtn?.addEventListener('click', function() {
+        performSearch(searchInput.value);
+      });
+
+      // Закрытие результатов поиска при клике вне
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.search-container')) {
+          const searchResults = document.getElementById('search-results');
+          if (searchResults) searchResults.classList.remove('active');
+        }
+      });
+    });
+// Функция для возврата к списку альбомов
+function goBackToAlbumList() {
+    try {
+        if (window.parent && window.parent !== window) {
+            window.parent.postMessage({ type: 'CLOSE_FULLSCREEN' }, '*');
+            return;
+        }
+    } catch (e) {}
+    window.location.href = '../1.html';
+}  </script>
+  <script src="../../auth.js"></script>
+</body>
+</html>

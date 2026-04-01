@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Страница не найдена | Kpop Heaven</title>
+    <link href="https://fonts.googleapis.com/css2?family=Seeds+Cyr&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html, body {
+            height: 100%;
+            width: 100%;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+        
+        .error-container {
+            background-color: white;
+            border: 20px solid #e6e6fa; /* Светло-лавандовый */
+            padding: 40px 30px;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            position: relative;
+        }
+        
+        .error-code {
+            font-family: 'Seeds Cyr', system-ui, sans-serif;
+            font-size: clamp(80px, 20vw, 120px); /* Адаптивный размер */
+            color: #9370DB;
+            line-height: 1;
+            margin-bottom: 16px;
+            font-weight: 700;
+            text-shadow: 2px 2px 0px rgba(147, 112, 219, 0.1);
+        }
+        
+        .error-message {
+            font-size: clamp(18px, 4vw, 22px);
+            margin-bottom: 24px;
+            color: #555;
+            line-height: 1.4;
+        }
+        
+        .offline-message {
+            margin-top: 20px;
+            font-size: clamp(14px, 3vw, 16px);
+            color: #777;
+            line-height: 1.5;
+        }
+        
+        /* Анимации для лучшего UX */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .error-container {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        /* Адаптивность для очень маленьких устройств */
+        @media (max-width: 480px) {
+            .error-container {
+                border-width: 12px;
+                padding: 30px 20px;
+            }
+            
+            body {
+                padding: 12px;
+            }
+        }
+        
+        /* Поддержка темной темы */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #1a1a1a;
+                color: #f0f0f0;
+            }
+            
+            .error-container {
+                background-color: #2d2d2d;
+                border-color: #4a4063;
+            }
+            
+            .error-code {
+                color: #a78bfa;
+            }
+            
+            .error-message {
+                color: #ddd;
+            }
+            
+            .offline-message {
+                color: #aaa;
+            }
+        }
+        
+        /* Поддержка устройств с очень высоким DPI */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .error-container {
+                border-width: 16px;
+            }
+        }
+        
+        /* Поддержка пейджеров (старые устройства) */
+        @media (pointer: coarse) and (hover: none) {
+            .error-container {
+                border-width: 16px;
+            }
+        }
+        
+        /* Улучшение доступности для людей с ослабленным зрением */
+        @media (prefers-reduced-motion: reduce) {
+            .error-container {
+                animation: none;
+            }
+        }
+        
+        /* Улучшение читаемости для Windows High Contrast Mode */
+        @media (forced-colors: active) {
+            .error-container {
+                border: 20px solid border;
+                forced-color-adjust: none;
+            }
+            
+            .error-code {
+                color: highlight;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Ошибка 404 -->
+    <div class="error-container" role="alert" aria-live="polite">
+        <div class="error-code" aria-label="404">404</div>
+        <p class="error-message">Упс! Страница не найдена</p>
+        <p class="offline-message">Возможно, проблема с подключением к интернету</p>
+    </div>
+
+    <script>
+        // Проверка подключения к интернету
+        window.addEventListener('load', function() {
+            if (!navigator.onLine) {
+                document.querySelector('.offline-message').textContent = 'Похоже, у вас нет подключения к интернету';
+            }
+            
+            // Обновление статуса при изменении соединения
+            window.addEventListener('online', function() {
+                document.querySelector('.offline-message').textContent = 'Соединение восстановлено';
+                setTimeout(() => {
+                    document.querySelector('.offline-message').textContent = 'Возможно, проблема с подключением к интернету';
+                }, 3000);
+            });
+            
+            window.addEventListener('offline', function() {
+                document.querySelector('.offline-message').textContent = 'Похоже, у вас нет подключения к интернету';
+            });
+        });
+    </script>
+</body>
+</html>
