@@ -361,27 +361,16 @@
 	overflow: hidden;
         }
         
-        .product-image::before {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: -100%;
-	width: 100%;
-	height: 100%;
-	background: linear-gradient(90deg, transparent, rgba(186, 220, 176, 0.7), transparent);
-	transition: left 1s ease;
-	z-index: 1;
-	pointer-events: none;
-        }
-        
-        .product:hover .product-image::before {
-	left: 100%;
-        }
-        
-        .product img {
+        .product-image img {
 	width: 100%;
 	height: 200px;
 	object-fit: cover;
+	transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        
+        .product:hover .product-image img {
+	transform: scale(1.08);
+	box-shadow: 0 0 25px rgba(186, 220, 176, 0.8);
         }
 
         /* ИСПРАВЛЕНИЕ №1: Сделал фон блока белым, а текст темным */
@@ -4341,15 +4330,8 @@ registerForm?.addEventListener('submit', async (e) => {
 	// Продукты просто открывают свои страницы при клике
 	const products = document.querySelectorAll('.product');
 	products.forEach(product => {
-	    const img = product.querySelector('img');
-	    if (img && !product.querySelector('.product-image')) {
-	        const wrapper = document.createElement('div');
-	        wrapper.className = 'product-image';
-	        product.insertBefore(wrapper, img);
-	        wrapper.appendChild(img);
-	    }
+	    // Обработчик уже есть в onclick
 	});
-        });
     </script>
 </body>
 </html>

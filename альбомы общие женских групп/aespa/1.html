@@ -305,6 +305,7 @@
     }
 
     .card-image-container {
+      position: relative;
       width: 100%;
       height: 380px;
       overflow: hidden;
@@ -314,11 +315,11 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.3s ease;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
 
     .card-wrapper:hover .card-image-container img {
-      transform: scale(1.05);
+      transform: scale(1.08);
     }
 
     .card-iframe {
