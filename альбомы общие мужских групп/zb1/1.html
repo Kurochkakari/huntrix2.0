@@ -298,27 +298,20 @@
     }
     
     .card-image-container {
-      position: relative;
-      overflow: hidden;
       width: 100%;
       height: 380px;
+      overflow: hidden;
     }
     
-    .card-image-container::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
+    .card-image-container img {
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(221, 160, 221, 0.6), transparent);
-      transition: left 0.8s ease;
-      z-index: 1;
-      pointer-events: none;
+      object-fit: cover;
+      transition: transform 0.3s ease;
     }
     
-    .card-wrapper:hover > .card-image-container::before {
-      left: 100%;
+    .card-wrapper:hover > .card-image-container img {
+      transform: scale(1.05);
     }
     
     .card-wrapper:hover {
