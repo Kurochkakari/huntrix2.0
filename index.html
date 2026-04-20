@@ -4335,15 +4335,8 @@ registerForm?.addEventListener('submit', async (e) => {
 	// Продукты просто открывают свои страницы при клике
 	const products = document.querySelectorAll('.product');
 	products.forEach(product => {
-	    const img = product.querySelector('img');
-	    if (img && !product.querySelector('.product-image')) {
-	        const wrapper = document.createElement('div');
-	        wrapper.className = 'product-image';
-	        product.insertBefore(wrapper, img);
-	        wrapper.appendChild(img);
-	    }
+	    // Обработчик уже есть в onclick
 	});
-        });
     </script>
 </body>
 </html>
