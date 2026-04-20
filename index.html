@@ -361,16 +361,38 @@
 	overflow: hidden;
         }
         
-        .product-image img {
+        .product-image {
+	position: relative;
+	overflow: hidden;
+        }
+        
+        .product-image::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: -50%;
+	width: 40%;
+	height: 100%;
+	background: linear-gradient(90deg, transparent, rgba(200, 230, 180, 0.6), transparent);
+	transform: skewX(-25deg);
+	transition: left 0.7s linear;
+	z-index: 1;
+	pointer-events: none;
+        }
+        
+        .product:hover .product-image::after {
+	left: 150%;
+        }
+        
+        .product:hover {
+	box-shadow: 0 5px 25px rgba(179, 196, 160, 0.6);
+	border-color: #a8c896;
+        }
+        
+        .product img {
 	width: 100%;
 	height: 200px;
 	object-fit: cover;
-	transition: transform 0.4s ease, box-shadow 0.4s ease;
-        }
-        
-        .product:hover .product-image img {
-	transform: scale(1.08);
-	box-shadow: 0 0 25px rgba(186, 220, 176, 0.8);
         }
 
         /* ИСПРАВЛЕНИЕ №1: Сделал фон блока белым, а текст темным */
@@ -1672,7 +1694,7 @@
 	        <!-- Продукт 2 -->
 	        <div class="product" data-product-id="aespa-armageddon" onclick="window.location.href='альбомы общие женских групп/aespa/1/1.html'">
 	            <div class="product-image">
-	                <img src="альбомы общие женских групп/aespa/1/1.jpg" alt="Aespa Album">
+	                <img loading="lazy" src="альбомы общие женских групп/aespa/1/1.jpg" alt="Aespa Album">
 	            </div>
 	            <div class="product-info">
 	                <div class="product-title">Aespa - Armageddon</div>
@@ -1682,7 +1704,7 @@
 	        <!-- Продукт 3 -->
 	        <div class="product" data-product-id="skz-5star" onclick="window.location.href='альбомы общие мужских групп/straykids/1/1.html'">
 	            <div class="product-image">
-	                <img src="альбомы общие мужских групп/straykids/1/1.jpg" alt="Stray Kids Album">
+	                <img loading="lazy" src="альбомы общие мужских групп/straykids/1/1.jpg" alt="Stray Kids Album">
 	            </div>
 	            <div class="product-info">
 	                <div class="product-title">Stray Kids - 5-STAR</div>
@@ -1698,7 +1720,7 @@
 	        <!-- Продукт 1 -->
 	        <div class="product" data-product-id="katseye-sis" onclick="window.location.href='альбомы общие женских групп/KATSEYE/1/1.html'">
 	            <div class="product-image">
-	                <img src="альбомы общие женских групп/KATSEYE/1/1.jpg" alt="KATSEYE Album">
+	                <img loading="lazy" src="альбомы общие женских групп/KATSEYE/1/1.jpg" alt="KATSEYE Album">
 	            </div>
 	            <div class="product-info">
 	                <div class="product-title">KATSEYE - SIS</div>
@@ -1708,7 +1730,7 @@
 	        <!-- Продукт 2 -->
 	        <div class="product" data-product-id="enhypen-romance" onclick="window.location.href='альбомы общие мужских групп/enhypen/1/1.html'">
 	            <div class="product-image">
-	                <img src="альбомы общие мужских групп/enhypen/1/1.jpg" alt="ENHYPEN Album">
+	                <img loading="lazy" src="альбомы общие мужских групп/enhypen/1/1.jpg" alt="ENHYPEN Album">
 	            </div>
 	            <div class="product-info">
 	                <div class="product-title">ENHYPEN - ROMANCE : UNTOLD [daydream]</div>
@@ -1717,7 +1739,7 @@
 	        </div>
 	        <!-- Продукт 3 -->
 	        <div class="product" data-product-id="lesserafim-spaghetti" onclick="window.location.href='альбомы общие женских групп/lesserafim/1/1.html'">
-	            <img src="альбомы общие женских групп/lesserafim/1/1.jpg" alt="LE SSERAFIM Album">
+	            <img loading="lazy" src="альбомы общие женских групп/lesserafim/1/1.jpg" alt="LE SSERAFIM Album">
 	            <div class="product-info">
 	                <div class="product-title">LE SSERAFIM - SPAGHETTI</div>
 	                <div class="product-price">100.00 руб.</div>
@@ -4330,8 +4352,15 @@ registerForm?.addEventListener('submit', async (e) => {
 	// Продукты просто открывают свои страницы при клике
 	const products = document.querySelectorAll('.product');
 	products.forEach(product => {
-	    // Обработчик уже есть в onclick
+	    const img = product.querySelector('img');
+	    if (img && !product.querySelector('.product-image')) {
+	        const wrapper = document.createElement('div');
+	        wrapper.className = 'product-image';
+	        product.insertBefore(wrapper, img);
+	        wrapper.appendChild(img);
+	    }
 	});
+        });
     </script>
 </body>
 </html>
