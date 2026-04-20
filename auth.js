@@ -50,6 +50,11 @@ function getUserId() {
     return storedId ? parseInt(storedId) : null;
 }
 
+// Резервная проверка - также возвращаем null если не авторизован
+function getCurrentUserId() {
+    return getUserId();
+}
+
 // Проверка авторизации
 function isLoggedIn() {
     return currentUser !== null || localStorage.getItem('user_id') !== null;
@@ -702,6 +707,24 @@ async function saveOrder(orderData) {
         return { success: false, message: 'Ошибка оформления заказа' };
     }
 }
+
+// === ОПТИМИЗАЦИЯ ЗАГРУЗКИ ===
+(function() {
+    document.addEventListener('DOMContentLoaded', function() {
+        if ('loading' in HTMLImageElement.prototype) {
+            document.querySelectorAll('img').forEach(img => {
+                if (!img.loading || img.loading === 'eager') {
+                    img.loading = 'lazy';
+                }
+            });
+        }
+        
+        const link = document.createElement('link');
+        link.rel = 'preconnect';
+        link.href = 'https://cdnjs.cloudflare.com';
+        document.head.appendChild(link);
+    });
+})();
 
 // === РАБОТА С ТЕСТАМИ ===
 

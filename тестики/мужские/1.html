@@ -5635,50 +5635,43 @@
     <script src="../auth.js"></script>
     <script>
         // Сохранение результатов тестов в БД
+        async function saveTestResultToDb(winnerKey, resultData) {
+            await new Promise(resolve => {
+                const checkAuth = setInterval(() => {
+                    if (window.getUserId !== undefined) {
+                        clearInterval(checkAuth);
+                        resolve();
+                    }
+                }, 100);
+                setTimeout(() => { clearInterval(checkAuth); resolve(); }, 2000);
+            });
+
+            const userId = window.getUserId ? window.getUserId() : localStorage.getItem('user_id');
+            if (userId) {
+                await window.saveTestResult({
+                    test_id: currentTestId,
+                    member_id: winnerKey,
+                    result_details: {
+                        memberName: resultData.name,
+                        description: resultData.description,
+                        image: resultData.image
+                    }
+                });
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', async function() {
             const originalShowResult = window.showResult;
             if (typeof originalShowResult === 'function') {
-                window.showResult = async function(result) {
-                    originalShowResult(result);
+                window.showResult = async function(winner) {
+                    await originalShowResult(winner);
                     
-                    if (result.memberId && currentTestId) {
-                        const userId = getUserId();
-                        if (userId) {
-                            await saveTestResult({
-                                test_id: currentTestId,
-                                member_id: result.memberId,
-                                result_details: {
-                                    memberName: result.memberName,
-                                    score: result.score,
-                                    totalQuestions: result.totalQuestions
-                                }
-                            });
-                        }
+                    const winnerKey = typeof winner === 'string' ? winner : (winner.memberId || winner.key);
+                    const resultData = currentTest?.results?.[winnerKey];
+                    
+                    if (resultData && currentTestId) {
+                        saveTestResultToDb(winnerKey, resultData);
                     }
-                };
-            }
-            
-            const originalFinishTest = window.finishTest;
-            if (typeof originalFinishTest === 'function') {
-                window.finishTest = async function(answers) {
-                    const result = calculateResult(answers);
-                    
-                    if (result.memberId && currentTestId) {
-                        const userId = getUserId();
-                        if (userId) {
-                            await saveTestResult({
-                                test_id: currentTestId,
-                                member_id: result.memberId,
-                                result_details: {
-                                    memberName: result.memberName,
-                                    score: result.score,
-                                    totalQuestions: result.totalQuestions
-                                }
-                            });
-                        }
-                    }
-                    
-                    return originalFinishTest(answers);
                 };
             }
         });
