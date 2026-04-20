@@ -340,7 +340,7 @@
 	margin: 0 auto;
         }
 
-        .product {
+.product {
 	background: var(--light-color);
 	border-radius: var(--border-radius);
 	overflow: hidden;
@@ -351,29 +351,33 @@
 	cursor: pointer;
         }
         
-        .product::before {
+        .product:hover {
+	box-shadow: 0 5px 20px rgba(179, 196, 160, 0.5), 0 0 30px rgba(179, 196, 160, 0.3);
+	border-color: #c5d8a4;
+        }
+        
+        .product-image {
+	position: relative;
+	overflow: hidden;
+        }
+        
+        .product-image::before {
 	content: '';
 	position: absolute;
 	top: 0;
 	left: -100%;
 	width: 100%;
 	height: 100%;
-	background: linear-gradient(90deg, transparent, rgba(230, 250, 230, 0.7), transparent);
-	transition: left 0.8s ease;
+	background: linear-gradient(90deg, transparent, rgba(179, 196, 160, 0.6), transparent);
+	transition: left 1s ease;
 	z-index: 1;
 	pointer-events: none;
         }
         
-        .product:hover::before {
+        .product:hover .product-image::before {
 	left: 100%;
         }
-
-        /* УБРАН ЭФФЕКТ НАВЕДЕНИЯ НА ПРОДУКТЫ */
-        .product:hover {
-	transform: translateY(-5px);
-	box-shadow: 0 5px 15px rgba(64, 80, 42, 0.2), 0 0 20px rgba(230, 250, 230, 0.5);
-        }
-
+        
         .product img {
 	width: 100%;
 	height: 200px;
@@ -1668,7 +1672,9 @@
 	    <div class="product-grid" id="best-sellers-grid">
 	        <!-- Продукт 1 -->
 	        <div class="product" data-product-id="txt-eternity" onclick="window.location.href='альбомы общие мужских групп/txt/1/1.html'">
-	            <img src="альбомы общие мужских групп/txt/1/1.jpg" alt="TXT Album">
+	            <div class="product-image">
+	                <img src="альбомы общие мужских групп/txt/1/1.jpg" alt="TXT Album">
+	            </div>
 	            <div class="product-info">
 	                <div class="product-title">TXT - The Dream Chapter: ETERNITY</div>
 	                <div class="product-price">105.00 руб.</div>
@@ -1676,7 +1682,9 @@
 	        </div>
 	        <!-- Продукт 2 -->
 	        <div class="product" data-product-id="aespa-armageddon" onclick="window.location.href='альбомы общие женских групп/aespa/1/1.html'">
-	            <img src="альбомы общие женских групп/aespa/1/1.jpg" alt="Aespa Album">
+	            <div class="product-image">
+	                <img src="альбомы общие женских групп/aespa/1/1.jpg" alt="Aespa Album">
+	            </div>
 	            <div class="product-info">
 	                <div class="product-title">Aespa - Armageddon</div>
 	                <div class="product-price">107.00 руб.</div>
@@ -1684,7 +1692,9 @@
 	        </div>
 	        <!-- Продукт 3 -->
 	        <div class="product" data-product-id="skz-5star" onclick="window.location.href='альбомы общие мужских групп/straykids/1/1.html'">
-	            <img src="альбомы общие мужских групп/straykids/1/1.jpg" alt="Stray Kids Album">
+	            <div class="product-image">
+	                <img src="альбомы общие мужских групп/straykids/1/1.jpg" alt="Stray Kids Album">
+	            </div>
 	            <div class="product-info">
 	                <div class="product-title">Stray Kids - 5-STAR</div>
 	                <div class="product-price">95.00 руб.</div>
@@ -1698,7 +1708,9 @@
 	    <div class="product-grid" id="new-arrivals-grid">
 	        <!-- Продукт 1 -->
 	        <div class="product" data-product-id="katseye-sis" onclick="window.location.href='альбомы общие женских групп/KATSEYE/1/1.html'">
-	            <img src="альбомы общие женских групп/KATSEYE/1/1.jpg" alt="KATSEYE Album">
+	            <div class="product-image">
+	                <img src="альбомы общие женских групп/KATSEYE/1/1.jpg" alt="KATSEYE Album">
+	            </div>
 	            <div class="product-info">
 	                <div class="product-title">KATSEYE - SIS</div>
 	                <div class="product-price">100.00 руб.</div>
@@ -1706,7 +1718,9 @@
 	        </div>
 	        <!-- Продукт 2 -->
 	        <div class="product" data-product-id="enhypen-romance" onclick="window.location.href='альбомы общие мужских групп/enhypen/1/1.html'">
-	            <img src="альбомы общие мужских групп/enhypen/1/1.jpg" alt="ENHYPEN Album">
+	            <div class="product-image">
+	                <img src="альбомы общие мужских групп/enhypen/1/1.jpg" alt="ENHYPEN Album">
+	            </div>
 	            <div class="product-info">
 	                <div class="product-title">ENHYPEN - ROMANCE : UNTOLD [daydream]</div>
 	                <div class="product-price">150.00 руб.</div>
@@ -4327,7 +4341,13 @@ registerForm?.addEventListener('submit', async (e) => {
 	// Продукты просто открывают свои страницы при клике
 	const products = document.querySelectorAll('.product');
 	products.forEach(product => {
-	    // Обработчик уже есть в onclick
+	    const img = product.querySelector('img');
+	    if (img && !product.querySelector('.product-image')) {
+	        const wrapper = document.createElement('div');
+	        wrapper.className = 'product-image';
+	        product.insertBefore(wrapper, img);
+	        wrapper.appendChild(img);
+	    }
 	});
         });
     </script>
