@@ -1664,7 +1664,7 @@
 	        <!-- Продукт 1 -->
 	        <div class="product" data-product-id="txt-eternity" onclick="window.location.href='альбомы общие мужских групп/txt/1/1.html'">
 	            <div class="product-image">
-	                <img src="альбомы общие мужских групп/txt/1/1.jpg" alt="TXT Album">
+	                <img loading="lazy" src="альбомы общие мужских групп/txt/1/1.jpg" alt="TXT Album">
 	            </div>
 	            <div class="product-info">
 	                <div class="product-title">TXT - The Dream Chapter: ETERNITY</div>
@@ -1674,7 +1674,7 @@
 	        <!-- Продукт 2 -->
 	        <div class="product" data-product-id="aespa-armageddon" onclick="window.location.href='альбомы общие женских групп/aespa/1/1.html'">
 	            <div class="product-image">
-	                <img src="альбомы общие женских групп/aespa/1/1.jpg" alt="Aespa Album">
+	                <img loading="lazy" src="альбомы общие женских групп/aespa/1/1.jpg" alt="Aespa Album">
 	            </div>
 	            <div class="product-info">
 	                <div class="product-title">Aespa - Armageddon</div>
@@ -1684,7 +1684,7 @@
 	        <!-- Продукт 3 -->
 	        <div class="product" data-product-id="skz-5star" onclick="window.location.href='альбомы общие мужских групп/straykids/1/1.html'">
 	            <div class="product-image">
-	                <img src="альбомы общие мужских групп/straykids/1/1.jpg" alt="Stray Kids Album">
+	                <img loading="lazy" src="альбомы общие мужских групп/straykids/1/1.jpg" alt="Stray Kids Album">
 	            </div>
 	            <div class="product-info">
 	                <div class="product-title">Stray Kids - 5-STAR</div>
@@ -1700,7 +1700,7 @@
 	        <!-- Продукт 1 -->
 	        <div class="product" data-product-id="katseye-sis" onclick="window.location.href='альбомы общие женских групп/KATSEYE/1/1.html'">
 	            <div class="product-image">
-	                <img src="альбомы общие женских групп/KATSEYE/1/1.jpg" alt="KATSEYE Album">
+	                <img loading="lazy" src="альбомы общие женских групп/KATSEYE/1/1.jpg" alt="KATSEYE Album">
 	            </div>
 	            <div class="product-info">
 	                <div class="product-title">KATSEYE - SIS</div>
@@ -1710,7 +1710,7 @@
 	        <!-- Продукт 2 -->
 	        <div class="product" data-product-id="enhypen-romance" onclick="window.location.href='альбомы общие мужских групп/enhypen/1/1.html'">
 	            <div class="product-image">
-	                <img src="альбомы общие мужских групп/enhypen/1/1.jpg" alt="ENHYPEN Album">
+	                <img loading="lazy" src="альбомы общие мужских групп/enhypen/1/1.jpg" alt="ENHYPEN Album">
 	            </div>
 	            <div class="product-info">
 	                <div class="product-title">ENHYPEN - ROMANCE : UNTOLD [daydream]</div>
@@ -1719,7 +1719,7 @@
 	        </div>
 	        <!-- Продукт 3 -->
 	        <div class="product" data-product-id="lesserafim-spaghetti" onclick="window.location.href='альбомы общие женских групп/lesserafim/1/1.html'">
-	            <img src="альбомы общие женских групп/lesserafim/1/1.jpg" alt="LE SSERAFIM Album">
+	            <img loading="lazy" src="альбомы общие женских групп/lesserafim/1/1.jpg" alt="LE SSERAFIM Album">
 	            <div class="product-info">
 	                <div class="product-title">LE SSERAFIM - SPAGHETTI</div>
 	                <div class="product-price">100.00 руб.</div>
@@ -4328,19 +4328,6 @@ registerForm?.addEventListener('submit', async (e) => {
 	        document.getElementById('search-results').classList.remove('active');
 	    }
 	});
-
-	// Продукты просто открывают свои страницы при клике
-	const products = document.querySelectorAll('.product');
-	products.forEach(product => {
-	    const img = product.querySelector('img');
-	    if (img && !product.querySelector('.product-image')) {
-	        const wrapper = document.createElement('div');
-	        wrapper.className = 'product-image';
-	        product.insertBefore(wrapper, img);
-	        wrapper.appendChild(img);
-	    }
-	});
-        });
     </script>
 </body>
 </html>
