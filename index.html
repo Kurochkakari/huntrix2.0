@@ -352,13 +352,8 @@
         }
         
         .product:hover {
-	box-shadow: 0 5px 20px rgba(179, 196, 160, 0.5), 0 0 30px rgba(179, 196, 160, 0.3);
-	border-color: #c5d8a4;
-        }
-        
-        .product-image {
-	position: relative;
-	overflow: hidden;
+	box-shadow: 0 5px 25px rgba(179, 196, 160, 0.6);
+	border-color: #a8c896;
         }
         
         .product-image {
@@ -383,10 +378,6 @@
         .product:hover .product-image::after {
 	left: 150%;
         }
-        
-        .product:hover {
-	box-shadow: 0 5px 25px rgba(179, 196, 160, 0.6);
-	border-color: #a8c896;
         }
         
         .product img {
@@ -1625,7 +1616,7 @@
 	<div class="header-content">
 	    <div class="logo">
 	        <a href="index.html">
-	            <img src="шапка/1.jpg" alt="Huntrix" class="logo-img">
+	            <img loading="lazy" src="шапка/1.jpg" alt="Huntrix" class="logo-img">
 	        </a>
 	    </div>
 
@@ -4352,15 +4343,8 @@ registerForm?.addEventListener('submit', async (e) => {
 	// Продукты просто открывают свои страницы при клике
 	const products = document.querySelectorAll('.product');
 	products.forEach(product => {
-	    const img = product.querySelector('img');
-	    if (img && !product.querySelector('.product-image')) {
-	        const wrapper = document.createElement('div');
-	        wrapper.className = 'product-image';
-	        product.insertBefore(wrapper, img);
-	        wrapper.appendChild(img);
-	    }
+	    // Обработчик уже есть в onclick
 	});
-        });
     </script>
 </body>
 </html>
