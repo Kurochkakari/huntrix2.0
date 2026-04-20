@@ -356,17 +356,26 @@
 	border-color: #c5d8a4;
         }
         
-.product-image {
+        .product-image {
 	position: relative;
 	overflow: hidden;
         }
         
-        .product-image img {
-	transition: transform 0.4s ease;
+        .product-image::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: -100%;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(90deg, transparent, rgba(186, 220, 176, 0.7), transparent);
+	transition: left 1s ease;
+	z-index: 1;
+	pointer-events: none;
         }
         
-.product:hover .product-image img {
-	transform: scale(1.08);
+        .product:hover .product-image::before {
+	left: 100%;
         }
         
         .product img {
@@ -1674,7 +1683,7 @@
 	        <!-- Продукт 2 -->
 	        <div class="product" data-product-id="aespa-armageddon" onclick="window.location.href='альбомы общие женских групп/aespa/1/1.html'">
 	            <div class="product-image">
-	                <img loading="lazy" src="альбомы общие женских групп/aespa/1/1.jpg" alt="Aespa Album">
+	                <img src="альбомы общие женских групп/aespa/1/1.jpg" alt="Aespa Album">
 	            </div>
 	            <div class="product-info">
 	                <div class="product-title">Aespa - Armageddon</div>
@@ -1684,7 +1693,7 @@
 	        <!-- Продукт 3 -->
 	        <div class="product" data-product-id="skz-5star" onclick="window.location.href='альбомы общие мужских групп/straykids/1/1.html'">
 	            <div class="product-image">
-	                <img loading="lazy" src="альбомы общие мужских групп/straykids/1/1.jpg" alt="Stray Kids Album">
+	                <img src="альбомы общие мужских групп/straykids/1/1.jpg" alt="Stray Kids Album">
 	            </div>
 	            <div class="product-info">
 	                <div class="product-title">Stray Kids - 5-STAR</div>
@@ -1700,7 +1709,7 @@
 	        <!-- Продукт 1 -->
 	        <div class="product" data-product-id="katseye-sis" onclick="window.location.href='альбомы общие женских групп/KATSEYE/1/1.html'">
 	            <div class="product-image">
-	                <img loading="lazy" src="альбомы общие женских групп/KATSEYE/1/1.jpg" alt="KATSEYE Album">
+	                <img src="альбомы общие женских групп/KATSEYE/1/1.jpg" alt="KATSEYE Album">
 	            </div>
 	            <div class="product-info">
 	                <div class="product-title">KATSEYE - SIS</div>
@@ -1710,7 +1719,7 @@
 	        <!-- Продукт 2 -->
 	        <div class="product" data-product-id="enhypen-romance" onclick="window.location.href='альбомы общие мужских групп/enhypen/1/1.html'">
 	            <div class="product-image">
-	                <img loading="lazy" src="альбомы общие мужских групп/enhypen/1/1.jpg" alt="ENHYPEN Album">
+	                <img src="альбомы общие мужских групп/enhypen/1/1.jpg" alt="ENHYPEN Album">
 	            </div>
 	            <div class="product-info">
 	                <div class="product-title">ENHYPEN - ROMANCE : UNTOLD [daydream]</div>
@@ -1719,7 +1728,7 @@
 	        </div>
 	        <!-- Продукт 3 -->
 	        <div class="product" data-product-id="lesserafim-spaghetti" onclick="window.location.href='альбомы общие женских групп/lesserafim/1/1.html'">
-	            <img loading="lazy" src="альбомы общие женских групп/lesserafim/1/1.jpg" alt="LE SSERAFIM Album">
+	            <img src="альбомы общие женских групп/lesserafim/1/1.jpg" alt="LE SSERAFIM Album">
 	            <div class="product-info">
 	                <div class="product-title">LE SSERAFIM - SPAGHETTI</div>
 	                <div class="product-price">100.00 руб.</div>
@@ -4328,6 +4337,19 @@ registerForm?.addEventListener('submit', async (e) => {
 	        document.getElementById('search-results').classList.remove('active');
 	    }
 	});
+
+	// Продукты просто открывают свои страницы при клике
+	const products = document.querySelectorAll('.product');
+	products.forEach(product => {
+	    const img = product.querySelector('img');
+	    if (img && !product.querySelector('.product-image')) {
+	        const wrapper = document.createElement('div');
+	        wrapper.className = 'product-image';
+	        product.insertBefore(wrapper, img);
+	        wrapper.appendChild(img);
+	    }
+	});
+        });
     </script>
 </body>
 </html>
