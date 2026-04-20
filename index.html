@@ -361,14 +361,15 @@
 	overflow: hidden;
         }
         
-        .product-image img {
+        .product img {
 	width: 100%;
 	height: 200px;
 	object-fit: cover;
 	transition: transform 0.3s ease;
         }
         
-        .product:hover > .product-image img {
+        .product:hover > .product-image img,
+        .product:hover img {
 	transform: scale(1.05);
         }
         
@@ -3920,6 +3921,8 @@
     const favoritesBtn = document.getElementById('favorites-btn');
     const searchInput = document.getElementById('search-input');
     const searchBtn = document.getElementById('search-btn');
+    
+    console.log('Page loaded, elements:', { menuBtn, catalogMenu, searchInput, searchBtn, assistantBtn: document.getElementById('assistant-btn') });
     const clearFavoritesBtn = document.getElementById('clear-favorites-btn');
     const closeModalButtons = document.querySelectorAll('.close-modal');
     const modals = document.querySelectorAll('.modal');
