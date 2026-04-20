@@ -298,10 +298,13 @@
       border: 1px solid var(--border-color);
       transition: var(--transition);
       margin-bottom: 80px;
+      content-visibility: auto;
+      contain-intrinsic-size: 380px 460px;
     }
     
-    .card-wrapper:hover {
-      border-color: #dda0dd;
+.card-wrapper:hover {
+      border-color: #baa6e3;
+      box-shadow: 0 5px 20px rgba(186, 166, 227, 0.5), 0 0 30px rgba(186, 166, 227, 0.3);
     }
 
     .card-image-container {
@@ -315,7 +318,28 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .card-image-container {
+      position: relative;
+      width: 100%;
+      height: 380px;
+      overflow: hidden;
+    }
+
+
+
+    .card-wrapper:hover .card-image-container::before {
+      transform: skewX(-25deg) translateX(350%);
+      left: 140%;
+      opacity: 1;
+    }
+
+    .card-image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s ease, box-shadow 0.8s ease;
     }
 
     .card-wrapper:hover .card-image-container img {

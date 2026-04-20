@@ -59,6 +59,30 @@
       cursor: pointer;
     }
 
+    .product-image::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(186, 166, 227, 0.6), transparent);
+      transform: skewX(-25deg);
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .product-image:hover::before {
+      animation: shine 5s ease-in-out;
+    }
+
+    @keyframes shine {
+      0% { left: -100%; opacity: 0; }
+      10% { opacity: 1; }
+      40% { left: 200%; opacity: 0; }
+      100% { left: 200%; opacity: 0; }
+    }
+
     .image-wrapper {
       padding: 30px 30px 20px 30px;
       width: 100%;

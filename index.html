@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Huntrix - магазин K-POP альбомов">
+    <meta name="theme-color" content="#40502a">
     <title>Huntrix</title>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         /* Стили остались практически без изменений, за исключением исправленных пунктов */
@@ -361,23 +368,30 @@
 	overflow: hidden;
         }
         
-        .product-image::before {
+.product-image::before {
 	content: '';
 	position: absolute;
 	top: 0;
-	left: -50%;
-	width: 35%;
+	left: -60%;
+	width: 40%;
 	height: 100%;
-	background: linear-gradient(90deg, transparent, rgba(200, 235, 180, 0.5), transparent);
-	transform: skewX(-20deg);
-	transition: left 0.6s ease;
+	background: linear-gradient(90deg, transparent, rgba(200, 235, 180, 0.4), transparent);
+	transform: skewX(-25deg) translateX(0);
+	transition: transform 3s ease, left 3s ease;
 	z-index: 1;
 	pointer-events: none;
-        }
+	opacity: 0;
+}
+
+.product-image:hover::before {
+	opacity: 1;
+}
         
-        .product:hover .product-image::before {
-	left: 150%;
-        }
+.product:hover .product-image::before {
+	transform: skewX(-25deg) translateX(350%);
+	left: 140%;
+	opacity: 1;
+}
         
         .product img {
 	width: 100%;
@@ -1658,7 +1672,7 @@
 	    <h2 class="section-title">Huntrix</h2>
 	    <div class="about-section">
 	        <div class="about-image">
-	            <img src="avatars/2.jpg" alt="Huntrix">
+	            <img src="avatars/2.jpg" alt="Huntrix" loading="lazy">
 	        </div>
 	        <div class="about-text">
 	            <p>Все альбомы заказываются напрямую из Кореи и доставляются в пункт выдачи по адресу: г. Минск, ул. Интернациональная, д. 7.</p>
