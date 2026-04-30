@@ -1120,6 +1120,10 @@
             overflow-y: auto;
             border: 2px solid var(--border-color);
         }
+
+        .modal-overlay-auth.active {
+            display: flex;
+        }
         
         .auth-modal-header {
             display: flex;
@@ -1815,7 +1819,6 @@
         // Глобальные переменные для хранения данных
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
         let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
         
         // База данных пользователей (в реальном приложении это было бы на сервере)
@@ -1934,7 +1937,7 @@
             // Обновляем текст кнопки в зависимости от состояния авторизации
             const authBtn = document.getElementById('auth-btn');
             if (authBtn) {
-                if (isLoggedIn && currentUser) {
+                if (currentUser) {
                     authBtn.textContent = currentUser.name;
                     authBtn.title = `Email: ${currentUser.email}\nНажмите для выхода`;
                 } else {
@@ -1991,7 +1994,7 @@
 
         // Функция оформления заказа
         function goToCheckout() {
-            if (!isLoggedIn) {
+            if (!currentUser) {
                 alert('Для оформления заказа необходимо войти в систему.');
                 showAuthModal();
                 return;
@@ -2139,21 +2142,17 @@
         // Функции для работы с авторизацией
         function showAuthModal() {
             const authModal = document.getElementById('auth-modal');
-            const overlay = document.getElementById('overlay');
             
-            if (authModal && overlay) {
+            if (authModal) {
                 authModal.style.display = 'flex';
-                overlay.style.display = 'block';
             }
         }
         
         function closeAuthModal() {
             const authModal = document.getElementById('auth-modal');
-            const overlay = document.getElementById('overlay');
             
-            if (authModal && overlay) {
+            if (authModal) {
                 authModal.style.display = 'none';
-                overlay.style.display = 'none';
                 
                 // Очищаем формы
                 document.getElementById('login-form').reset();
@@ -2188,11 +2187,9 @@
             }
             
             // Успешный вход
-            isLoggedIn = true;
             currentUser = user;
             
             // Сохраняем состояние в localStorage
-            localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('currentUser', JSON.stringify(user));
             
             // Показываем сообщение об успехе
@@ -2256,9 +2253,7 @@
             localStorage.setItem('usersDatabase', JSON.stringify(usersDatabase));
             
             // Автоматический вход после регистрации
-            isLoggedIn = true;
             currentUser = newUser;
-            localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('currentUser', JSON.stringify(newUser));
             
             // Показываем сообщение об успехе
@@ -2277,9 +2272,7 @@
         
         function logout() {
             if (confirm('Вы уверены, что хотите выйти?')) {
-                isLoggedIn = false;
                 currentUser = null;
-                localStorage.setItem('isLoggedIn', 'false');
                 localStorage.removeItem('currentUser');
                 updateCounters();
                 alert('Вы успешно вышли из системы.');
@@ -2407,7 +2400,7 @@
 
             // Функционал кнопки авторизации
             authBtn?.addEventListener('click', () => {
-                if (isLoggedIn) {
+                if (currentUser) {
                     logout();
                 } else {
                     showAuthModal();

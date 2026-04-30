@@ -1169,7 +1169,7 @@
         }
 
         /* Модальное окно авторизации */
-        .modal-overlay-auth {
+        .auth-modal {
             display: none;
             position: fixed;
             top: 0;
@@ -1183,7 +1183,11 @@
             padding: 20px;
         }
         
-        .auth-modal {
+        .auth-modal.active {
+            display: flex;
+        }
+        
+        .auth-modal-content {
             width: 90%;
             max-width: 400px;
             background: var(--light-color);
@@ -1737,8 +1741,8 @@
     </div>
 
     <!-- Модальное окно авторизации -->
-    <div class="modal-overlay-auth" id="auth-modal">
-        <div class="auth-modal">
+    <div class="auth-modal" id="auth-modal">
+        <div class="auth-modal-content">
             <div class="auth-modal-header">
                 <div class="tab-btn active" data-tab="login">Вход</div>
                 <div class="tab-btn" data-tab="register">Регистрация</div>
@@ -1775,7 +1779,6 @@
         // ФУНКЦИОНАЛ ХЕДЕРА, ФУТЕРА И КАТАЛОГА
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
         let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
         const usersDatabase = JSON.parse(localStorage.getItem('usersDatabase')) || [];
 
@@ -1894,7 +1897,7 @@
             if (favoritesCount) favoritesCount.textContent = favorites.length;
             
             if (authBtn) {
-                if (isLoggedIn && currentUser) {
+                if (currentUser) {
                     authBtn.textContent = currentUser.name;
                     authBtn.title = `Email: ${currentUser.email}\nНажмите для выхода`;
                 } else {
@@ -2020,7 +2023,7 @@
 
         // Функция оформления заказа
         function goToCheckout() {
-            if (!isLoggedIn) {
+            if (!currentUser) {
                 alert('Для оформления заказа необходимо войти в систему.');
                 showAuthModal();
                 return;
@@ -2105,21 +2108,17 @@
         // Функции для работы с авторизацией
         function showAuthModal() {
             const authModal = document.getElementById('auth-modal');
-            const overlay = document.getElementById('overlay');
             
-            if (authModal && overlay) {
-                authModal.style.display = 'flex';
-                overlay.style.display = 'block';
+            if (authModal) {
+                authModal.classList.add('active');
             }
         }
         
         function closeAuthModal() {
             const authModal = document.getElementById('auth-modal');
-            const overlay = document.getElementById('overlay');
             
-            if (authModal && overlay) {
-                authModal.style.display = 'none';
-                overlay.style.display = 'none';
+            if (authModal) {
+                authModal.classList.remove('active');
                 
                 // Очищаем формы
                 document.getElementById('login-form').reset();
@@ -2139,118 +2138,112 @@
                 return false;
             }
             
-            // Валидация пароля
-            if (password.length < 6) {
-                showError('login-password-error', 'Пароль должен содержать минимум 6 символов');
-                return false;
-            }
-            
-            // Поиск пользователя в базе данных
-            const user = usersDatabase.find(u => u.email === email && u.password === password);
-            
-            if (!user) {
-                showError('login-password-error', 'Неверный email или пароль');
-                return false;
-            }
-            
-            // Успешный вход
-            isLoggedIn = true;
-            currentUser = user;
-            
-            // Сохраняем состояние в localStorage
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('currentUser', JSON.stringify(user));
-            
-            // Показываем сообщение об успехе
-            showSuccess('login-success', 'Успешный вход!');
-            
-            // Обновляем интерфейс
-            updateCounters();
-            
-            // Закрываем модальное окно через 1.5 секунды
-            setTimeout(() => {
-                closeAuthModal();
-            }, 1500);
-            
-            return true;
-        }
-        
-        function register(name, email, password, confirmPassword) {
-            // Валидация имени
-            if (name.length < 2) {
-                showError('register-name-error', 'Имя должно содержать минимум 2 символа');
-                return false;
-            }
-            
-            // Валидация email
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                showError('register-email-error', 'Введите корректный email');
-                return false;
-            }
-            
-            // Проверка на существующий email
-            const existingUser = usersDatabase.find(u => u.email === email);
-            if (existingUser) {
-                showError('register-email-error', 'Пользователь с таким email уже существует');
-                return false;
-            }
-            
-            // Валидация пароля
-            if (password.length < 6) {
-                showError('register-password-error', 'Пароль должен содержать минимум 6 символов');
-                return false;
-            }
-            
-            // Проверка совпадения паролей
-            if (password !== confirmPassword) {
-                showError('register-confirm-error', 'Пароли не совпадают');
-                return false;
-            }
-            
-            // Создание нового пользователя
-            const newUser = {
-                id: Date.now(),
-                name: name,
-                email: email,
-                password: password,
-                registrationDate: new Date().toISOString()
-            };
-            
-            // Добавление в базу данных
-            usersDatabase.push(newUser);
-            localStorage.setItem('usersDatabase', JSON.stringify(usersDatabase));
-            
-            // Автоматический вход после регистрации
-            isLoggedIn = true;
-            currentUser = newUser;
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('currentUser', JSON.stringify(newUser));
-            
-            // Показываем сообщение об успехе
-            showSuccess('register-success', 'Регистрация успешна!');
-            
-            // Обновляем интерфейс
-            updateCounters();
-            
-            // Закрываем модальное окно через 1.5 секунды
-            setTimeout(() => {
-                closeAuthModal();
-            }, 1500);
-            
-            return true;
-        }
-        
-        function logout() {
-            if (confirm('Вы уверены, что хотите выйти?')) {
-                isLoggedIn = false;
-                currentUser = null;
-                localStorage.setItem('isLoggedIn', 'false');
-                localStorage.removeItem('currentUser');
-                updateCounters();
-                alert('Вы успешно вышли из системы.');
-            }
-        }
+             // Валидация пароля
+             if (password.length < 6) {
+                 showError('login-password-error', 'Пароль должен содержать минимум 6 символов');
+                 return false;
+             }
+             
+             // Поиск пользователя в базе данных
+             const user = usersDatabase.find(u => u.email === email && u.password === password);
+             
+             if (!user) {
+                 showError('login-password-error', 'Неверный email или пароль');
+                 return false;
+             }
+             
+             // Успешный вход
+             currentUser = user;
+             
+             // Сохраняем состояние в localStorage
+             localStorage.setItem('currentUser', JSON.stringify(user));
+             
+             // Показываем сообщение об успехе
+             showSuccess('login-success', 'Успешный вход!');
+             
+             // Обновляем интерфейс
+             updateCounters();
+             
+             // Закрываем модальное окно через 1.5 секунды
+             setTimeout(() => {
+                 closeAuthModal();
+             }, 1500);
+             
+             return true;
+         }
+         
+         function register(name, email, password, confirmPassword) {
+             // Валидация имени
+             if (name.length < 2) {
+                 showError('register-name-error', 'Имя должно содержать минимум 2 символа');
+                 return false;
+             }
+             
+             // Валидация email
+             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+             if (!emailRegex.test(email)) {
+                 showError('register-email-error', 'Введите корректный email');
+                 return false;
+             }
+             
+             // Проверка на существующий email
+             const existingUser = usersDatabase.find(u => u.email === email);
+             if (existingUser) {
+                 showError('register-email-error', 'Пользователь с таким email уже существует');
+                 return false;
+             }
+             
+             // Валидация пароля
+             if (password.length < 6) {
+                 showError('register-password-error', 'Пароль должен содержать минимум 6 символов');
+                 return false;
+             }
+             
+             // Проверка совпадения паролей
+             if (password !== confirmPassword) {
+                 showError('register-confirm-error', 'Пароли не совпадают');
+                 return false;
+             }
+             
+             // Создание нового пользователя
+             const newUser = {
+                 id: Date.now(),
+                 name: name,
+                 email: email,
+                 password: password,
+                 registrationDate: new Date().toISOString()
+             };
+             
+             // Добавление в базу данных
+             usersDatabase.push(newUser);
+             localStorage.setItem('usersDatabase', JSON.stringify(usersDatabase));
+             
+             // Автоматический вход после регистрации
+             currentUser = newUser;
+             localStorage.setItem('currentUser', JSON.stringify(newUser));
+             
+             // Показываем сообщение об успехе
+             showSuccess('register-success', 'Регистрация успешна!');
+             
+             // Обновляем интерфейс
+             updateCounters();
+             
+             // Закрываем модальное окно через 1.5 секунды
+             setTimeout(() => {
+                 closeAuthModal();
+             }, 1500);
+             
+             return true;
+         }
+         
+         function logout() {
+             if (confirm('Вы уверены, что хотите выйти?')) {
+                 currentUser = null;
+                 localStorage.removeItem('currentUser');
+                 updateCounters();
+                 alert('Вы успешно вышли из системы.');
+             }
+         }
         
         function showError(elementId, message) {
             const errorElement = document.getElementById(elementId);
@@ -2394,7 +2387,7 @@
 
             // Функционал кнопки авторизации
             authBtn?.addEventListener('click', () => {
-                if (isLoggedIn) {
+                if (currentUser) {
                     logout();
                 } else {
                     showAuthModal();

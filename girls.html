@@ -666,6 +666,44 @@
             color: var(--button-color);
             font-weight: bold;
         }
+        
+        .item-quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        
+        .quantity-btn {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: var(--button-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+        
+        .quantity-btn:hover {
+            background: var(--dark-color);
+        }
+        
+        .quantity-btn:disabled {
+            background: var(--gray);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        .quantity {
+            font-weight: bold;
+            min-width: 40px;
+            text-align: center;
+        }
 
         .delete-btn {
             background: none;
@@ -995,6 +1033,28 @@
                 height: 320px;
             }
         }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1307,15 +1367,15 @@
             </div>
             <div class="auth-modal-body">
                 <form id="login-form">
-                    <input type="email" placeholder="Email" required aria-label="Email">
-                    <input type="password" placeholder="Пароль" required aria-label="Пароль">
+                    <input type="email" id="login-email" placeholder="Email" required aria-label="Email">
+                    <input type="password" id="login-password" placeholder="Пароль" required aria-label="Пароль">
                     <button type="submit">Войти</button>
                 </form>
                 <form id="register-form" style="display: none;">
-                    <input type="text" placeholder="Имя" required aria-label="Имя">
-                    <input type="email" placeholder="Email" required aria-label="Email">
-                    <input type="password" placeholder="Пароль" required aria-label="Пароль">
-                    <input type="password" placeholder="Подтвердите пароль" required aria-label="Подтверждение пароля">
+                    <input type="text" id="register-name" placeholder="Имя" required aria-label="Имя">
+                    <input type="email" id="register-email" placeholder="Email" required aria-label="Email">
+                    <input type="password" id="register-password" placeholder="Пароль" required aria-label="Пароль">
+                    <input type="password" id="register-confirm-password" placeholder="Подтвердите пароль" required aria-label="Подтверждение пароля">
                     <button type="submit">Зарегистрироваться</button>
                 </form>
             </div>
@@ -1325,825 +1385,617 @@
     <div class="overlay" id="overlay"></div>
 
     <script>
-        // ======================
-        // ЕДИНАЯ СИСТЕМА КОРЗИНЫ
-        // ======================
-
-        window.CartSystem = {
-            MAX_QUANTITY: 12,
-
-            init: function() {
-                this.loadCart();
-                this.setupEventListeners();
-                this.updateCartCount();
-                console.log('Система корзины инициализирована, максимум: ' + this.MAX_QUANTITY + ' шт.');
-            },
-
-            loadCart: function() {
-                try {
-                    let cartData = localStorage.getItem('cart');
-                    if (!cartData) {
-                        cartData = localStorage.getItem('cartItems');
-                    }
-
-                    this.cart = cartData ? JSON.parse(cartData) : [];
-
-                    this.cart = this.cart.map(item => {
-                        return {
-                            id: item.id || Date.now().toString(),
-                            name: item.name || 'Товар',
-                            price: parseFloat(item.price) || 0,
-                            basePrice: parseFloat(item.basePrice || item.price) || 0,
-                            image: item.image || '',
-                            quantity: parseInt(item.quantity) || 1,
-                            totalPrice: parseFloat(item.totalPrice || (item.price * (item.quantity || 1))) || 0
-                        };
-                    });
-
-                    console.log('Корзина загружена:', this.cart);
-                } catch (error) {
-                    console.error('Ошибка загрузки корзины:', error);
-                    this.cart = [];
-                }
-            },
-
-            saveCart: function() {
-                try {
-                    localStorage.setItem('cart', JSON.stringify(this.cart));
-                    localStorage.setItem('cartItems', JSON.stringify(this.cart));
-                    console.log('Корзина сохранена:', this.cart);
-                } catch (error) {
-                    console.error('Ошибка сохранения корзины:', error);
-                }
-            },
-
-            addItem: function(product) {
-                const existingItemIndex = this.cart.findIndex(item => item.id === product.id);
-
-                if (existingItemIndex > -1) {
-                    const currentQuantity = this.cart[existingItemIndex].quantity;
-                    const quantityToAdd = product.quantity || 1;
-
-                    if (currentQuantity + quantityToAdd > this.MAX_QUANTITY) {
-                        this.showNotification(`Максимум ${this.MAX_QUANTITY} шт. одного товара! У вас уже ${currentQuantity} шт.`, 'warning');
-                        return false;
-                    }
-
-                    this.cart[existingItemIndex].quantity += quantityToAdd;
-                    this.cart[existingItemIndex].totalPrice = this.cart[existingItemIndex].basePrice * this.cart[existingItemIndex].quantity;
-
-                    this.showNotification(`Добавлено еще ${quantityToAdd} шт. "${product.name}". Всего: ${this.cart[existingItemIndex].quantity} шт.`);
-                } else {
-                    const quantityToAdd = product.quantity || 1;
-
-                    if (quantityToAdd > this.MAX_QUANTITY) {
-                        this.showNotification(`Максимум ${this.MAX_QUANTITY} шт. одного товара!`, 'warning');
-                        return false;
-                    }
-
-                    const newItem = {
-                        id: product.id,
-                        name: product.name,
-                        price: parseFloat(product.price),
-                        basePrice: parseFloat(product.basePrice || product.price),
-                        image: product.image,
-                        quantity: quantityToAdd,
-                        totalPrice: product.price * quantityToAdd
-                    };
-                    this.cart.push(newItem);
-
-                    this.showNotification(`Товар "${product.name}" добавлен в корзину! Количество: ${quantityToAdd} шт.`);
-                }
-
-                this.saveCart();
-                this.updateCartCount();
-
-                if (document.getElementById('cart-modal')?.classList.contains('active')) {
-                    this.updateCartModal();
-                }
-
-                return true;
-            },
-
-            removeItem: function(productId) {
-                this.cart = this.cart.filter(item => item.id !== productId);
-                this.saveCart();
-                this.updateCartCount();
-
-                if (document.getElementById('cart-modal')?.classList.contains('active')) {
-                    this.updateCartModal();
-                }
-
-                return true;
-            },
-
-            updateQuantity: function(productId, newQuantity) {
-                const itemIndex = this.cart.findIndex(item => item.id === productId);
-
-                if (itemIndex > -1) {
-                    if (newQuantity > this.MAX_QUANTITY) {
-                        this.showNotification(`Максимум ${this.MAX_QUANTITY} шт. одного товара!`, 'warning');
-                        return false;
-                    }
-
-                    if (newQuantity > 0) {
-                        this.cart[itemIndex].quantity = newQuantity;
-                        this.cart[itemIndex].totalPrice = this.cart[itemIndex].basePrice * newQuantity;
-                    } else {
-                        return this.removeItem(productId);
-                    }
-
-                    this.saveCart();
-                    this.updateCartCount();
-
-                    if (document.getElementById('cart-modal')?.classList.contains('active')) {
-                        this.updateCartModal();
-                    }
-                }
-
-                return true;
-            },
-
-            clearCart: function() {
-                if (confirm('Вы уверены, что хотите очистить корзину?')) {
-                    this.cart = [];
-                    this.saveCart();
-                    this.updateCartCount();
-
-                    if (document.getElementById('cart-modal')?.classList.contains('active')) {
-                        this.updateCartModal();
-                    }
-
-                    this.showNotification('Корзина очищена');
-                }
-            },
-
-            getTotalItems: function() {
-                return this.cart.reduce((total, item) => total + item.quantity, 0);
-            },
-
-            getTotalPrice: function() {
-                return this.cart.reduce((total, item) => total + item.totalPrice, 0).toFixed(2);
-            },
-
-            updateCartCount: function() {
-                const cartCountElements = document.querySelectorAll('.icon-count, #cart-count');
-                const totalItems = this.getTotalItems();
-
-                cartCountElements.forEach(element => {
-                    element.textContent = totalItems;
-                });
-            },
-
-            showNotification: function(message, type = 'success') {
-                const notification = document.createElement('div');
-                const bgColor = type === 'warning' ? '#ff6b6b' : 'var(--button-color)';
-
-                notification.style.cssText = `
-                    position: fixed;
-                    top: 20px;
-                    right: 20px;
-                    background: ${bgColor};
-                    color: white;
-                    padding: 15px 25px;
-                    border-radius: var(--border-radius);
-                    box-shadow: var(--shadow);
-                    z-index: 9999;
-                    animation: slideIn 0.3s ease;
-                    max-width: 300px;
-                    font-weight: bold;
-                `;
-
-                notification.textContent = message;
-                document.body.appendChild(notification);
-
-                setTimeout(() => {
-                    notification.style.animation = 'slideOut 0.3s ease';
-                    setTimeout(() => notification.remove(), 300);
-                }, 3000);
-            },
-
-            updateCartModal: function() {
-                const cartItemsContainer = document.getElementById('cart-items');
-                const cartTotal = document.getElementById('cart-total');
-                const cartActions = document.getElementById('cart-actions');
-                const totalPriceValue = document.getElementById('total-price-value');
-
-                if (!cartItemsContainer) return;
-
-                if (this.cart.length === 0) {
-                    cartItemsContainer.innerHTML = '<div class="empty-message">Корзина пуста</div>';
-                    cartTotal.style.display = 'none';
-                    cartActions.style.display = 'none';
-                } else {
-                    cartItemsContainer.innerHTML = this.cart.map(item => `
-                        <div class="cart-item">
-                            <img src="${item.image}" alt="${item.name}" class="item-image">
-                            <div class="item-details">
-                                <div class="item-name">${item.name}</div>
-                                <div class="item-price">${item.basePrice} руб.</div>
-                                <div class="item-quantity-controls">
-                                    <button class="quantity-btn minus" onclick="CartSystem.updateQuantity('${item.id}', ${item.quantity - 1})" ${item.quantity <= 1 ? 'disabled' : ''}>-</button>
-                                    <span class="quantity">${item.quantity} шт.</span>
-                                    <button class="quantity-btn plus" onclick="CartSystem.updateQuantity('${item.id}', ${item.quantity + 1})" ${item.quantity >= this.MAX_QUANTITY ? 'disabled' : ''}>+</button>
-                                </div>
-                                <div style="font-size: 0.8rem; color: #666; margin-top: 5px;">
-                                    Максимум: ${this.MAX_QUANTITY} шт.
-                                </div>
-                            </div>
-                            <button class="delete-btn" onclick="CartSystem.removeItem('${item.id}')" title="Удалить из корзины">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    `).join('');
-
-                    cartTotal.style.display = 'block';
-                    cartActions.style.display = 'flex';
-                    totalPriceValue.textContent = this.getTotalPrice();
-                }
-            },
-
-            setupEventListeners: function() {
-                const cartBtn = document.getElementById('cart-btn');
-                if (cartBtn) {
-                    cartBtn.addEventListener('click', () => this.showCartModal());
-                }
-
-                const clearCartBtn = document.getElementById('clear-cart-btn');
-                if (clearCartBtn) {
-                    clearCartBtn.addEventListener('click', () => this.clearCart());
-                }
-
-                const checkoutBtn = document.getElementById('checkout-btn');
-                if (checkoutBtn) {
-                    checkoutBtn.addEventListener('click', () => this.goToCheckout());
-                }
-            },
-
-            showCartModal: function() {
-                this.updateCartModal();
-                const modal = document.getElementById('cart-modal');
-                const overlay = document.getElementById('overlay');
-
-                if (modal && overlay) {
-                    modal.classList.add('active');
-                    overlay.style.display = 'block';
-                }
-            },
-
-            goToCheckout: function() {
-                if (this.cart.length === 0) {
-                    alert('Корзина пуста. Добавьте товары в корзину перед оформлением заказа.');
-                    return;
-                }
-
-                const exceededItems = this.cart.filter(item => item.quantity > this.MAX_QUANTITY);
-                if (exceededItems.length > 0) {
-                    this.showNotification('Некоторые товары превышают максимальное количество!', 'warning');
-                    return;
-                }
-
-                localStorage.setItem('checkoutItems', JSON.stringify(this.cart));
-                localStorage.setItem('checkoutSource', 'cart');
-
-                window.location.href = 'buy.html';
-            },
-
-            getCart: function() {
-                return this.cart;
-            },
-
-            isInCart: function(productId) {
-                return this.cart.some(item => item.id === productId);
-            },
-
-            getItemQuantity: function(productId) {
-                const item = this.cart.find(item => item.id === productId);
-                return item ? item.quantity : 0;
-            }
-        };
-
-        // Глобальные функции для использования в HTML
-        window.addToCart = function(product) {
-            if (window.CartSystem) {
-                return window.CartSystem.addItem(product);
-            }
-            return false;
-        };
-
-        window.removeFromCart = function(productId) {
-            if (window.CartSystem) {
-                return window.CartSystem.removeItem(productId);
-            }
-            return false;
-        };
-
-        window.updateQuantity = function(productId, newQuantity) {
-            if (window.CartSystem) {
-                return window.CartSystem.updateQuantity(productId, newQuantity);
-            }
-            return false;
-        };
-
-        // ======================
-        // ИНИЦИАЛИЗАЦИЯ СТРАНИЦЫ
-        // ======================
-
-        document.addEventListener('DOMContentLoaded', function () {
-            // Инициализация системы корзины
-            if (window.CartSystem) {
-                window.CartSystem.init();
-            }
-
-            // Основные переменные
-            const menuBtn = document.getElementById('menu-btn');
-            const catalogMenu = document.getElementById('catalog-menu');
-            const authBtn = document.getElementById('auth-btn');
-            const authModal = document.getElementById('auth-modal');
-            const closeAuthModal = document.getElementById('close-auth-modal');
-            const overlay = document.getElementById('overlay');
-            const tabBtns = document.querySelectorAll('.tab-btn');
-            const loginForm = document.getElementById('login-form');
-            const registerForm = document.getElementById('register-form');
-            const favoritesBtn = document.getElementById('favorites-btn');
-            const searchInput = document.getElementById('search-input');
-            const searchBtn = document.getElementById('search-btn');
-            const clearFavoritesBtn = document.getElementById('clear-favorites-btn');
-            const closeModalButtons = document.querySelectorAll('.close-modal');
-            const modals = document.querySelectorAll('.modal');
-            const femaleGroupCategory = document.getElementById('female-group-category');
-            const maleGroupCategory = document.getElementById('male-group-category');
-            const femaleGroupSubcategory = document.getElementById('female-group-subcategory');
-            const maleGroupSubcategory = document.getElementById('male-group-subcategory');
-
-            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-
-            // База данных для поиска
-            const searchDatabase = [
-                // Женские группы
-                { type: 'group', name: 'KATSEYE', url: 'альбомы общие женских групп/KATSEYE/1.html' },
-                { type: 'group', name: 'Aespa', url: 'альбомы общие женских групп/aespa/1.html' },
-                { type: 'group', name: 'Red Velvet', url: 'альбомы общие женских групп/redvelvet/1.html' },
-                { type: 'group', name: 'BABYMONSTER', url: 'альбомы общие женских групп/babymonster/1.html' },
-                { type: 'group', name: 'ILLIT', url: 'альбомы общие женских групп/illit/1.html' },
-                { type: 'group', name: 'Kiss of life', url: 'альбомы общие женских групп/kissoflife/1.html' },
-                { type: 'group', name: 'IVE', url: 'альбомы общие женских групп/ive/1.html' },
-                { type: 'group', name: 'TWICE', url: 'альбомы общие женских групп/twice/1.html' },
-                { type: 'group', name: 'LE SSERAFIM', url: 'альбомы общие женских групп/lesserafim/1.html' },
-                { type: 'group', name: 'Kep1er', url: 'альбомы общие женских групп/kep1er/1.html' },
-                { type: 'group', name: 'ITZY', url: 'альбомы общие женских групп/itzy/1.html' },
-                { type: 'group', name: 'DREAMCATCHER', url: 'альбомы общие женских групп/dreamcatcher/1.html' },
-                
-                // Мужские группы
-                { type: 'group', name: 'ZEROBASEONE', url: 'альбомы общие мужских групп/zb1/1.html' },
-                { type: 'group', name: 'P1Harmony', url: 'альбомы общие мужских групп/p1h/1.html' },
-                { type: 'group', name: 'TXT', url: 'альбомы общие мужских групп/txt/1.html' },
-                { type: 'group', name: 'BTS', url: 'альбомы общие мужских групп/bts/1.html' },
-                { type: 'group', name: 'Enhypen', url: 'альбомы общие мужских групп/enhypen/1.html' },
-                { type: 'group', name: 'Ateez', url: 'альбомы общие мужских групп/ateez/1.html' },
-                { type: 'group', name: 'Seventeen', url: 'альбомы общие мужских групп/seventeen/1.html' },
-                { type: 'group', name: 'Stray Kids', url: 'альбомы общие мужских групп/straykids/1.html' },
-                { type: 'group', name: 'ONEUS', url: 'альбомы общие мужских групп/oneus/1.html' },
-                { type: 'group', name: 'Boynextdoor', url: 'альбомы общие мужских групп/boynextdoor/1.html' },
-                { type: 'group', name: 'XLOV', url: 'альбомы общие мужских групп/xlov/1.html' },
-                { type: 'group', name: 'RIIZE', url: 'альбомы общие мужских групп/riize/1.html' },
-                
-                // Тесты
-                { type: 'test', name: 'FEMALE GROUP TESTS', url: 'тестики/женские/1.html' },
-                { type: 'test', name: 'MALE GROUP TESTS', url: 'тестики/мужские/1.html' },
-                
-                // Альбомы женских групп
-                { type: 'album', name: 'Aespa - Armageddon', group: 'Aespa', url: 'альбомы общие женских групп/aespa/1/1.html' },
-                { type: 'album', name: 'Aespa - Drama', group: 'Aespa', url: 'альбомы общие женских групп/aespa/2/1.html' },
-                { type: 'album', name: 'Aespa - Girls', group: 'Aespa', url: 'альбомы общие женских групп/aespa/3/1.html' },
-                { type: 'album', name: 'KATSEYE - SIS', group: 'KATSEYE', url: 'альбомы общие женских групп/KATSEYE/1/1.html' },
-                { type: 'album', name: 'KATSEYE - BEAUTIFUL CHAOS', group: 'KATSEYE', url: 'альбомы общие женских групп/KATSEYE/2/1.html' },
-                { type: 'album', name: 'Red Velvet - Queendom', group: 'Red Velvet', url: 'альбомы общие женских групп/redvelvet/1/1.html' },
-                { type: 'album', name: 'Red Velvet - The ReVe Festival 2022 [Feel My Rhythm]', group: 'Red Velvet', url: 'альбомы общие женских групп/redvelvet/2/1.html' },
-                { type: 'album', name: 'IRENE - 1st Mini Album [Like A Flower]', group: 'Red Velvet', url: 'альбомы общие женских групп/redvelvet/3/1.html' },
-                { type: 'album', name: 'BABYMONSTER - DRIP', group: 'BABYMONSTER', url: 'альбомы общие женских групп/babymonster/1/1.html' },
-                { type: 'album', name: 'BABYMONSTER - DRIP ZIP', group: 'BABYMONSTER', url: 'альбомы общие женских групп/babymonster/2/1.html' },
-                { type: 'album', name: 'BABYMONS7ER - 1st MINI ALBUM [BABYMONS7ER]', group: 'BABYMONSTER', url: 'альбомы общие женских групп/babymonster/3/1.html' },
-                { type: 'album', name: 'ILLIT - 2nd Mini Album [I\'LL LIKE YOU]', group: 'ILLIT', url: 'альбомы общие женских групп/illit/1/1.html' },
-                { type: 'album', name: 'ILLIT - Bomb', group: 'ILLIT', url: 'альбомы общие женских групп/illit/2/1.html' },
-                { type: 'album', name: 'ILLIT - 1st Mini Album [SUPER REAL ME]', group: 'ILLIT', url: 'альбомы общие женских групп/illit/3/1.html' },
-                { type: 'album', name: 'KISS OF LIFE - Midas Touch', group: 'Kiss of life', url: 'альбомы общие женских групп/kissoflife/1/1.html' },
-                { type: 'album', name: 'KISS OF LIFE - Lose Yourself', group: 'Kiss of life', url: 'альбомы общие женских групп/kissoflife/2/1.html' },
-                { type: 'album', name: 'KISS OF LIFE - KISS OF LIFE', group: 'Kiss of life', url: 'альбомы общие женских групп/kissoflife/3/1.html' },
-                { type: 'album', name: 'IVE - 3rd EP Album [IVE EMPATHY]', group: 'IVE', url: 'альбомы общие женских групп/ive/1/1.html' },
-                { type: 'album', name: 'IVE - IVE SECRET', group: 'IVE', url: 'альбомы общие женских групп/ive/2/1.html' },
-                { type: 'album', name: 'IVE - IVE SWITCH', group: 'IVE', url: 'альбомы общие женских групп/ive/3/1.html' },
-                { type: 'album', name: 'TWICE - STRATEGY', group: 'TWICE', url: 'альбомы общие женских групп/twice/1/1.html' },
-                { type: 'album', name: 'TWICE - TEN: The Story Goes On', group: 'TWICE', url: 'альбомы общие женских групп/twice/2/1.html' },
-                { type: 'album', name: 'TWICE - BETWEEN 1&2', group: 'TWICE', url: 'альбомы общие женских групп/twice/3/1.html' },
-                { type: 'album', name: 'LE SSERAFIM - SPAGHETTI', group: 'LE SSERAFIM', url: 'альбомы общие женских групп/lesserafim/1/1.html' },
-                { type: 'album', name: 'LE SSERAFIM - CRAZY', group: 'LE SSERAFIM', url: 'альбомы общие женских групп/lesserafim/2/1.html' },
-                { type: 'album', name: 'LE SSERAFIM - HOT', group: 'LE SSERAFIM', url: 'альбомы общие женских групп/lesserafim/3/1.html' },
-                { type: 'album', name: 'Kep1er - Kep1going On', group: 'Kep1er', url: 'альбомы общие женских групп/kep1er/1/1.html' },
-                { type: 'album', name: 'Kep1er - BUBBLE GUM', group: 'Kep1er', url: 'альбомы общие женских групп/kep1er/2/1.html' },
-                { type: 'album', name: 'Kep1er - Magic Hour', group: 'Kep1er', url: 'альбомы общие женских групп/kep1er/3/1.html' },
-                { type: 'album', name: 'ITZY - Girls Will Be Girls', group: 'ITZY', url: 'альбомы общие женских групп/itzy/1/1.html' },
-                { type: 'album', name: 'YEJI (ITZY) - Air', group: 'ITZY', url: 'альбомы общие женских групп/itzy/2/1.html' },
-                { type: 'album', name: 'ITZY - BORN TO BE', group: 'ITZY', url: 'альбомы общие женских групп/itzy/3/1.html' },
-                { type: 'album', name: 'DREAMCATCHER - UAU [Playlist #You Are You]', group: 'DREAMCATCHER', url: 'альбомы общие женских групп/dreamcatcher/1/1.html' },
-                { type: 'album', name: 'Dreamcatcher - VillainS', group: 'DREAMCATCHER', url: 'альбомы общие женских групп/dreamcatcher/2/1.html' },
-                { type: 'album', name: 'Dreamcatcher - VirtuouS', group: 'DREAMCATCHER', url: 'альбомы общие женских групп/dreamcatcher/3/1.html' },
-                
-                // Альбомы мужских групп
-                { type: 'album', name: 'ZEROBASEONE - 2nd Mini ALBUM [MELTING POINT]', group: 'ZEROBASEONE', url: 'альбомы общие мужских групп/zb1/1/1.html' },
-                { type: 'album', name: 'ZEROBASEONE - CINEMA PARADISE', group: 'ZEROBASEONE', url: 'альбомы общие мужских групп/zb1/2/1.html' },
-                { type: 'album', name: 'ZEROBASEONE The 5th Mini Album - BLUE PARADISE', group: 'ZEROBASEONE', url: 'альбомы общие мужских групп/zb1/3/1.html' },
-                { type: 'album', name: 'P1Harmony - SAD SONG', group: 'P1Harmony', url: 'альбомы общие мужских групп/p1h/1/1.html' },
-                { type: 'album', name: 'P1Harmony - Killin\' It', group: 'P1Harmony', url: 'альбомы общие мужских групп/p1h/2/1.html' },
-                { type: 'album', name: 'P1Harmony - HARMONY : SET IN', group: 'P1Harmony', url: 'альбомы общие мужских групп/p1h/3/1.html' },
-                { type: 'album', name: 'TXT - The Dream Chapter: ETERNITY', group: 'TXT', url: 'альбомы общие мужских групп/txt/1/1.html' },
-                { type: 'album', name: 'TXT - The Dream Chapter: MAGIC', group: 'TXT', url: 'альбомы общие мужских групп/txt/2/1.html' },
-                { type: 'album', name: 'TXT - minisode1 : BLUE HOUR', group: 'TXT', url: 'альбомы общие мужских групп/txt/3/1.html' },
-                { type: 'album', name: 'BTS - SKOOL LUV AFFAIR SPECIAL ADDITION', group: 'BTS', url: 'альбомы общие мужских групп/bts/1/1.html' },
-                { type: 'album', name: 'BTS - DARK & WILD', group: 'BTS', url: 'альбомы общие мужских групп/bts/2/1.html' },
-                { type: 'album', name: 'BTS - O!RUL8,2?', group: 'BTS', url: 'альбомы общие мужских групп/bts/3/1.html' },
-                { type: 'album', name: 'ENHYPEN - ROMANCE : UNTOLD [daydream]', group: 'Enhypen', url: 'альбомы общие мужских групп/enhypen/1/1.html' },
-                { type: 'album', name: 'ENHYPEN - ORANGE BLOOD', group: 'Enhypen', url: 'альбомы общие мужских групп/enhypen/2/1.html' },
-                { type: 'album', name: 'ENHYPEN - DIMENSION : ANSWER', group: 'Enhypen', url: 'альбомы общие мужских групп/enhypen/3/1.html' },
-                { type: 'album', name: 'ATEEZ - THE WORLD : TO THE END DVD', group: 'Ateez', url: 'альбомы общие мужских групп/ateez/1/1.html' },
-                { type: 'album', name: 'ATEEZ - THE WORLD : TO THE END PLAY CODE', group: 'Ateez', url: 'альбомы общие мужских групп/ateez/2/1.html' },
-                { type: 'album', name: 'ATEEZ - THE WORLD EP.FIN : WILL', group: 'Ateez', url: 'альбомы общие мужских групп/ateez/3/1.html' },
-                { type: 'album', name: 'SEVENTEEN - An Ode', group: 'Seventeen', url: 'альбомы общие мужских групп/seventeen/1/1.html' },
-                { type: 'album', name: 'SEVENTEEN - 10th Mini Album', group: 'Seventeen', url: 'альбомы общие мужских групп/seventeen/2/1.html' },
-                { type: 'album', name: 'HOSHI X WOOZI (SEVENTEEN) - BEAM', group: 'Seventeen', url: 'альбомы общие мужских групп/seventeen/3/1.html' },
-                { type: 'album', name: 'Stray Kids - 5-STAR', group: 'Stray Kids', url: 'альбомы общие мужских групп/straykids/1/1.html' },
-                { type: 'album', name: 'Stray Kids - HIPTAPE', group: 'Stray Kids', url: 'альбомы общие мужских групп/straykids/2/1.html' },
-                { type: 'album', name: 'Stray Kids - KARMA', group: 'Stray Kids', url: 'альбомы общие мужских групп/straykids/3/1.html' },
-                { type: 'album', name: 'ONEUS - 5x', group: 'ONEUS', url: 'альбомы общие мужских групп/oneus/1/1.html' },
-                { type: 'album', name: 'ONEUS - PYGMALION', group: 'ONEUS', url: 'альбомы общие мужских групп/oneus/2/1.html' },
-                { type: 'album', name: 'ONEUS - MALUS', group: 'ONEUS', url: 'альбомы общие мужских групп/oneus/3/1.html' },
-                { type: 'album', name: 'BOYNEXTDOOR - 4th EP', group: 'Boynextdoor', url: 'альбомы общие мужских групп/boynextdoor/1/1.html' },
-                { type: 'album', name: 'BOYNEXTDOOR - WHY..', group: 'Boynextdoor', url: 'альбомы общие мужских групп/boynextdoor/2/1.html' },
-                { type: 'album', name: 'BOYNEXTDOOR - 1st EP', group: 'Boynextdoor', url: 'альбомы общие мужских групп/boynextdoor/3/1.html' },
-                { type: 'album', name: 'XLOV - I ONE', group: 'XLOV', url: 'альбомы общие мужских групп/xlov/1/1.html' },
-                { type: 'album', name: 'XLOV - 1st Single Album [I\'mma Be]', group: 'XLOV', url: 'альбомы общие мужских групп/xlov/2/1.html' },
-                { type: 'album', name: 'RIIZE - Get A Guitar', group: 'RIIZE', url: 'альбомы общие мужских групп/riize/1/1.html' },
-                { type: 'album', name: 'RIIZE - ODYSSEY', group: 'RIIZE', url: 'альбомы общие мужских групп/riize/2/1.html' },
-                { type: 'album', name: 'RIIZE - ODYSSEY', group: 'RIIZE', url: 'альбомы общие мужских групп/riize/3/1.html' }
-            ];
-
-            // Функция для выполнения поиска
-            function performSearch(query) {
-                const resultsContainer = document.getElementById('search-results');
-                resultsContainer.innerHTML = '';
-                
-                if (!query.trim()) {
-                    resultsContainer.classList.remove('active');
-                    return;
-                }
-                
-                const searchTerm = query.toLowerCase().trim();
-                
-                // Поиск по всем элементам базы данных
-                const results = searchDatabase.filter(item => {
-                    // Поиск по имени группы или альбома
-                    const nameMatch = item.name.toLowerCase().includes(searchTerm);
-                    // Поиск по названию группы (для альбомов)
-                    const groupMatch = item.group ? item.group.toLowerCase().includes(searchTerm) : false;
-                    
-                    return nameMatch || groupMatch;
-                });
-                
-                if (results.length === 0) {
-                    resultsContainer.innerHTML = '<div class="search-result-item">Ничего не найдено</div>';
-                } else {
-                    // Группируем результаты по типу
-                    const groups = results.filter(item => item.type === 'group');
-                    const tests = results.filter(item => item.type === 'test');
-                    const albums = results.filter(item => item.type === 'album');
-                    
-                    if (groups.length > 0) {
-                        resultsContainer.innerHTML += '<div class="search-result-group">Группы:</div>';
-                        groups.forEach(group => {
-                            resultsContainer.innerHTML += `
-                                <div class="search-result-item" onclick="window.location.href='${group.url}'">
-                                    ${group.name}
-                                </div>
-                            `;
-                        });
-                    }
-                    
-                    if (tests.length > 0) {
-                        resultsContainer.innerHTML += '<div class="search-result-group">Тесты:</div>';
-                        tests.forEach(test => {
-                            resultsContainer.innerHTML += `
-                                <div class="search-result-item" onclick="window.location.href='${test.url}'">
-                                    ${test.name}
-                                </div>
-                            `;
-                        });
-                    }
-                    
-                    if (albums.length > 0) {
-                        resultsContainer.innerHTML += '<div class="search-result-group">Альбомы:</div>';
-                        albums.forEach(album => {
-                            resultsContainer.innerHTML += `
-                                <div class="search-result-item search-result-album" onclick="window.location.href='${album.url}'">
-                                    ${album.name} (${album.group})
-                                </div>
-                            `;
-                        });
-                    }
-                }
-                
-                resultsContainer.classList.add('active');
-            }
-
-            function openModal(modal) {
-                closeAllModals();
-                modal.style.display = 'flex';
-                overlay.style.display = 'block';
-            }
-
-            function closeAllModals() {
-                authModal.style.display = 'none';
-                catalogMenu.classList.remove('active');
-                overlay.style.display = 'none';
-                modals.forEach(modal => modal.classList.remove('active'));
-                document.getElementById('search-results').classList.remove('active');
-            }
-
-            menuBtn?.addEventListener('click', () => {
-                closeAllModals();
-                catalogMenu.classList.add('active');
-                overlay.style.display = 'block';
-            });
-
-            authBtn?.addEventListener('click', () => openModal(authModal));
-            closeAuthModal?.addEventListener('click', () => closeAllModals());
-
-            overlay?.addEventListener('click', closeAllModals);
-
-            tabBtns.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    tabBtns.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    loginForm.style.display = tab.dataset.tab === 'login' ? 'block' : 'none';
-                    registerForm.style.display = tab.dataset.tab === 'register' ? 'block' : 'none';
-                });
-            });
-loginForm?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const email = loginForm.querySelector('input[type="email"]').value;
-    const password = loginForm.querySelector('input[type="password"]').value;
-    
+// ======================
+// ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
+// ======================
+let cart = [];
+let favorites = [];
+let isLoggedIn = false;
+let currentUser = null;
+let usersDatabase = [];
+
+const MAX_QUANTITY = 12;
+
+// ======================
+// ФУНКЦИИ КОРЗИНЫ
+// ======================
+function loadCart() {
     try {
-        const response = await fetch('http://localhost:8000/api.php?action=login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-            // Сохраняем пользователя
-            localStorage.setItem('user', JSON.stringify(result.user));
-            
-            // Обновляем кнопку
-            const authBtn = document.getElementById('auth-btn');
-            if (authBtn) {
-                authBtn.textContent = result.user.name;
-                authBtn.onclick = logout;
-            }
-            
-            alert(' Вход успешен! Добро пожаловать, ' + result.user.name);
-            closeAllModals();
-            loginForm.reset();
-        } else {
-            alert(' Ошибка: ' + result.error);
+        const savedCart = localStorage.getItem('cart');
+        if (savedCart) {
+            cart = JSON.parse(savedCart);
+            cart = cart.map(item => ({
+                ...item,
+                quantity: item.quantity || 1,
+                basePrice: item.basePrice || item.price,
+                totalPrice: (item.basePrice || item.price) * (item.quantity || 1)
+            }));
         }
-    } catch (error) {
-        alert(' Ошибка соединения: ' + error.message);
-    }
-});
+    } catch(e) { console.error('Ошибка загрузки корзины:', e); cart = []; }
+    updateCartCount();
+}
 
-registerForm?.addEventListener('submit', async (e) => {
-    e.preventDefault();
+function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    broadcastState();
+}
+
+function addToCart(product) {
+    const existingIndex = cart.findIndex(item => item.id === product.id);
+    const quantityToAdd = product.quantity || 1;
     
-    const inputs = registerForm.querySelectorAll('input');
-    const name = inputs[0].value;
-    const email = inputs[1].value;
-    const password = inputs[2].value;
-    const confirmPassword = inputs[3].value;
+    if (existingIndex > -1) {
+        const newQuantity = cart[existingIndex].quantity + quantityToAdd;
+        if (newQuantity > MAX_QUANTITY) {
+            showNotification(`Максимум ${MAX_QUANTITY} шт. одного товара! У вас уже ${cart[existingIndex].quantity} шт.`, 'warning');
+            return false;
+        }
+        cart[existingIndex].quantity = newQuantity;
+        cart[existingIndex].totalPrice = cart[existingIndex].basePrice * newQuantity;
+        showNotification(`Добавлено еще ${quantityToAdd} шт. "${product.name}". Всего: ${newQuantity} шт.`);
+    } else {
+        if (quantityToAdd > MAX_QUANTITY) {
+            showNotification(`Максимум ${MAX_QUANTITY} шт. одного товара!`, 'warning');
+            return false;
+        }
+        cart.push({
+            id: product.id,
+            name: product.name,
+            price: parseFloat(product.price),
+            basePrice: parseFloat(product.basePrice || product.price),
+            image: product.image,
+            quantity: quantityToAdd,
+            totalPrice: product.price * quantityToAdd
+        });
+        showNotification(`"${product.name}" добавлен в корзину! Количество: ${quantityToAdd} шт.`);
+    }
     
-    if (password !== confirmPassword) {
-        alert(' Пароли не совпадают!');
+    saveCart();
+    if (document.getElementById('cart-modal').classList.contains('active')) updateCartModal();
+    return true;
+}
+
+function removeFromCart(productId) {
+    cart = cart.filter(item => item.id !== productId);
+    saveCart();
+    updateCartModal();
+    showNotification('Товар удален из корзины');
+}
+
+function updateCartQuantity(productId, newQuantity) {
+    const itemIndex = cart.findIndex(item => item.id === productId);
+    if (itemIndex === -1) return;
+    
+    newQuantity = Math.max(1, Math.min(newQuantity, MAX_QUANTITY));
+    cart[itemIndex].quantity = newQuantity;
+    cart[itemIndex].totalPrice = cart[itemIndex].basePrice * newQuantity;
+    saveCart();
+    updateCartModal();
+}
+
+function clearCart() {
+    if (confirm('Очистить корзину?')) {
+        cart = [];
+        saveCart();
+        updateCartModal();
+        showNotification('Корзина очищена');
+    }
+}
+
+function getCartTotal() {
+    return cart.reduce((sum, item) => sum + item.totalPrice, 0).toFixed(2);
+}
+
+function getCartItemCount() {
+    return cart.reduce((sum, item) => sum + item.quantity, 0);
+}
+
+function updateCartCount() {
+    const countEl = document.getElementById('cart-count');
+    if (countEl) countEl.textContent = getCartItemCount();
+}
+
+function updateCartModal() {
+    const container = document.getElementById('cart-items');
+    const totalEl = document.getElementById('cart-total');
+    const actionsEl = document.getElementById('cart-actions');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    if (cart.length === 0) {
+        container.innerHTML = '<div class="empty-message">Ваша корзина пуста</div>';
+        totalEl.style.display = 'none';
+        actionsEl.style.display = 'none';
         return;
     }
     
+    cart.forEach(item => {
+        const itemEl = document.createElement('div');
+        itemEl.className = 'cart-item';
+        itemEl.innerHTML = `
+            <img src="${item.image}" alt="${item.name}" class="item-image" onerror="this.src='https://via.placeholder.com/60'">
+            <div class="item-details">
+                <div class="item-name">${item.name}</div>
+                <div class="item-price">${item.basePrice} руб. x ${item.quantity} = ${item.totalPrice} руб.</div>
+                <div class="item-quantity-controls">
+                    <button class="quantity-btn minus" data-id="${item.id}">-</button>
+                    <span class="quantity">${item.quantity}</span>
+                    <button class="quantity-btn plus" data-id="${item.id}">+</button>
+                </div>
+            </div>
+            <button class="delete-btn" data-id="${item.id}"><i class="fas fa-trash"></i></button>
+        `;
+        container.appendChild(itemEl);
+    });
+    
+    totalEl.style.display = 'block';
+    document.getElementById('total-price-value').textContent = getCartTotal();
+    actionsEl.style.display = 'flex';
+    
+    container.querySelectorAll('.quantity-btn.minus').forEach(btn => {
+        btn.addEventListener('click', () => updateCartQuantity(btn.dataset.id, cart.find(i => i.id === btn.dataset.id)?.quantity - 1));
+    });
+    container.querySelectorAll('.quantity-btn.plus').forEach(btn => {
+        btn.addEventListener('click', () => updateCartQuantity(btn.dataset.id, cart.find(i => i.id === btn.dataset.id)?.quantity + 1));
+    });
+    container.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', () => removeFromCart(btn.dataset.id));
+    });
+}
+
+// ======================
+// ФУНКЦИИ ИЗБРАННОГО
+// ======================
+function loadFavorites() {
     try {
-        const response = await fetch('http://localhost:8000/api.php?action=register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, email, password })
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-            // Сохраняем пользователя
-            localStorage.setItem('user', JSON.stringify(result.user));
-            
-            // Обновляем кнопку
-            const authBtn = document.getElementById('auth-btn');
-            if (authBtn) {
-                authBtn.textContent = result.user.name;
-                authBtn.onclick = logout;
-            }
-            
-            alert(' Регистрация успешна! Добро пожаловать, ' + result.user.name);
-            closeAllModals();
-            registerForm.reset();
-        } else {
-            alert(' Ошибка: ' + result.error);
-        }
-    } catch (error) {
-        alert(' Ошибка соединения: ' + error.message);
+        const saved = localStorage.getItem('favorites');
+        favorites = saved ? JSON.parse(saved) : [];
+    } catch(e) { favorites = []; }
+    updateFavoritesCount();
+}
+
+function saveFavorites() {
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    updateFavoritesCount();
+    broadcastState();
+}
+
+function addToFavorites(product) {
+    if (favorites.some(f => f.id === product.id)) {
+        showNotification('Товар уже в избранном', 'warning');
+        return false;
     }
-});
+    favorites.push(product);
+    saveFavorites();
+    showNotification(`"${product.name}" добавлен в избранное!`);
+    return true;
+}
 
-            femaleGroupCategory?.addEventListener('click', function(e) {
-                if (e.target.closest('i')) {
-                    femaleGroupSubcategory.classList.toggle('active');
-                    const icon = this.querySelector('i');
-                    if (femaleGroupSubcategory.classList.contains('active')) {
-                        icon.classList.remove('fa-chevron-right');
-                        icon.classList.add('fa-chevron-down');
-                    } else {
-                        icon.classList.remove('fa-chevron-down');
-                        icon.classList.add('fa-chevron-right');
-                    }
-                }
+function removeFromFavorites(productId) {
+    favorites = favorites.filter(item => item.id !== productId);
+    saveFavorites();
+    updateFavoritesModal();
+    showNotification('Товар удален из избранного');
+}
+
+function toggleFavorite(product) {
+    if (favorites.some(f => f.id === product.id)) {
+        removeFromFavorites(product.id);
+    } else {
+        addToFavorites(product);
+    }
+}
+
+function clearFavorites() {
+    if (confirm('Очистить избранное?')) {
+        favorites = [];
+        saveFavorites();
+        updateFavoritesModal();
+        showNotification('Избранное очищено');
+    }
+}
+
+function updateFavoritesCount() {
+    const countEl = document.getElementById('favorites-count');
+    if (countEl) countEl.textContent = favorites.length;
+}
+
+function updateFavoritesModal() {
+    const container = document.getElementById('favorites-items');
+    const actionsEl = document.getElementById('favorites-actions');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    if (favorites.length === 0) {
+        container.innerHTML = '<div class="empty-message">Ваше избранное пусто</div>';
+        actionsEl.style.display = 'none';
+        return;
+    }
+    
+    actionsEl.style.display = 'flex';
+    favorites.forEach(fav => {
+        const item = document.createElement('div');
+        item.className = 'favorite-item';
+        item.innerHTML = `
+            <img src="${fav.image}" alt="${fav.name}" class="item-image" onerror="this.src='https://via.placeholder.com/60'">
+            <div class="item-details">
+                <div class="item-name">${fav.name}</div>
+                <div class="item-price">${fav.price} руб.</div>
+            </div>
+            <button class="delete-btn" data-id="${fav.id}"><i class="fas fa-trash"></i></button>
+        `;
+        container.appendChild(item);
+    });
+    
+    container.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', () => removeFromFavorites(btn.dataset.id));
+    });
+}
+
+// ======================
+// ФУНКЦИИ АВТОРИЗАЦИИ
+// ======================
+function loadUsers() {
+    try {
+        const saved = localStorage.getItem('usersDatabase');
+        usersDatabase = saved ? JSON.parse(saved) : [];
+    } catch(e) { usersDatabase = []; }
+}
+
+function saveUsers() {
+    localStorage.setItem('usersDatabase', JSON.stringify(usersDatabase));
+}
+
+function loadCurrentUser() {
+    try {
+        const saved = localStorage.getItem('currentUser');
+        if (saved) {
+            currentUser = JSON.parse(saved);
+            isLoggedIn = true;
+        }
+    } catch(e) { currentUser = null; isLoggedIn = false; }
+    updateAuthButton();
+}
+
+function saveCurrentUser(user) {
+    if (user) {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        currentUser = user;
+        isLoggedIn = true;
+    } else {
+        localStorage.removeItem('currentUser');
+        currentUser = null;
+        isLoggedIn = false;
+    }
+    updateAuthButton();
+}
+
+function login(email, password) {
+    const user = usersDatabase.find(u => u.email === email && u.password === password);
+    if (user) {
+        saveCurrentUser(user);
+        showNotification(`Добро пожаловать, ${user.name}!`);
+        closeAuthModal();
+        return true;
+    } else {
+        showNotification('Неверный email или пароль', 'error');
+        return false;
+    }
+}
+
+function register(name, email, password, confirmPassword) {
+    if (password !== confirmPassword) {
+        showNotification('Пароли не совпадают', 'error');
+        return false;
+    }
+    if (usersDatabase.some(u => u.email === email)) {
+        showNotification('Пользователь с таким email уже существует', 'error');
+        return false;
+    }
+    const newUser = { id: Date.now(), name, email, password };
+    usersDatabase.push(newUser);
+    saveUsers();
+    saveCurrentUser(newUser);
+    showNotification(`Регистрация успешна! Добро пожаловать, ${name}!`);
+    closeAuthModal();
+    return true;
+}
+
+function logout() {
+    if (confirm('Вы уверены, что хотите выйти?')) {
+        saveCurrentUser(null);
+        showNotification('Вы вышли из системы');
+    }
+}
+
+function updateAuthButton() {
+    const authBtn = document.getElementById('auth-btn');
+    if (!authBtn) return;
+    if (isLoggedIn && currentUser) {
+        authBtn.textContent = currentUser.name;
+        authBtn.onclick = () => logout();
+    } else {
+        authBtn.textContent = 'Войти / Регистрация';
+        authBtn.onclick = () => showAuthModal();
+    }
+}
+
+function showAuthModal() {
+    const modal = document.getElementById('auth-modal');
+    const overlay = document.getElementById('overlay');
+    if (modal && overlay) {
+        modal.style.display = 'flex';
+        overlay.style.display = 'block';
+    }
+}
+
+function closeAuthModal() {
+    const modal = document.getElementById('auth-modal');
+    const overlay = document.getElementById('overlay');
+    if (modal && overlay) {
+        modal.style.display = 'none';
+        overlay.style.display = 'none';
+    }
+    document.getElementById('login-form')?.reset();
+    document.getElementById('register-form')?.reset();
+}
+
+// ======================
+// ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+// ======================
+function showNotification(message, type = 'success') {
+    const notification = document.createElement('div');
+    const bgColor = type === 'error' ? '#ff4444' : type === 'warning' ? '#ffa700' : '#00C851';
+    notification.style.cssText = `
+        position: fixed; top: 20px; right: 20px; padding: 15px 20px;
+        border-radius: 8px; color: white; font-weight: bold; z-index: 3000;
+        background: ${bgColor}; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        animation: slideIn 0.3s ease;
+    `;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
+
+function broadcastState() {
+    // Отправляем состояние во все iframe на странице
+    document.querySelectorAll('iframe').forEach(iframe => {
+        try {
+            iframe.contentWindow.postMessage({
+                type: 'UPDATE_CART_STATE',
+                cartItems: cart
+            }, '*');
+            iframe.contentWindow.postMessage({
+                type: 'UPDATE_FAVORITES_STATE',
+                favoritesItems: favorites
+            }, '*');
+        } catch(e) {}
+    });
+}
+
+function goToCheckout() {
+    if (!isLoggedIn) {
+        showNotification('Для оформления заказа необходимо войти в систему', 'warning');
+        showAuthModal();
+        return;
+    }
+    if (cart.length === 0) {
+        showNotification('Корзина пуста', 'warning');
+        return;
+    }
+    localStorage.setItem('checkoutItems', JSON.stringify(cart));
+    localStorage.setItem('checkoutSource', 'cart');
+    window.location.href = 'buy.html';
+}
+
+// ======================
+// ПОИСК
+// ======================
+const searchDatabase = [
+    { type: 'group', name: 'KATSEYE', url: 'альбомы общие женских групп/KATSEYE/1.html' },
+    { type: 'group', name: 'Aespa', url: 'альбомы общие женских групп/aespa/1.html' },
+    { type: 'group', name: 'Red Velvet', url: 'альбомы общие женских групп/redvelvet/1.html' },
+    { type: 'group', name: 'BABYMONSTER', url: 'альбомы общие женских групп/babymonster/1.html' },
+    { type: 'group', name: 'ILLIT', url: 'альбомы общие женских групп/illit/1.html' },
+    { type: 'group', name: 'Kiss of life', url: 'альбомы общие женских групп/kissoflife/1.html' },
+    { type: 'group', name: 'IVE', url: 'альбомы общие женских групп/ive/1.html' },
+    { type: 'group', name: 'TWICE', url: 'альбомы общие женских групп/twice/1.html' },
+    { type: 'group', name: 'LE SSERAFIM', url: 'альбомы общие женских групп/lesserafim/1.html' },
+    { type: 'group', name: 'Kep1er', url: 'альбомы общие женских групп/kep1er/1.html' },
+    { type: 'group', name: 'ITZY', url: 'альбомы общие женских групп/itzy/1.html' },
+    { type: 'group', name: 'DREAMCATCHER', url: 'альбомы общие женских групп/dreamcatcher/1.html' },
+    { type: 'group', name: 'ZEROBASEONE', url: 'альбомы общие мужских групп/zb1/1.html' },
+    { type: 'group', name: 'P1Harmony', url: 'альбомы общие мужских групп/p1h/1.html' },
+    { type: 'group', name: 'TXT', url: 'альбомы общие мужских групп/txt/1.html' },
+    { type: 'group', name: 'BTS', url: 'альбомы общие мужских групп/bts/1.html' },
+    { type: 'group', name: 'Enhypen', url: 'альбомы общие мужских групп/enhypen/1.html' },
+    { type: 'group', name: 'Ateez', url: 'альбомы общие мужских групп/ateez/1.html' },
+    { type: 'group', name: 'Seventeen', url: 'альбомы общие мужских групп/seventeen/1.html' },
+    { type: 'group', name: 'Stray Kids', url: 'альбомы общие мужских групп/straykids/1.html' },
+    { type: 'group', name: 'ONEUS', url: 'альбомы общие мужских групп/oneus/1.html' },
+    { type: 'group', name: 'Boynextdoor', url: 'альбомы общие мужских групп/boynextdoor/1.html' },
+    { type: 'group', name: 'XLOV', url: 'альбомы общие мужских групп/xlov/1.html' },
+    { type: 'group', name: 'RIIZE', url: 'альбомы общие мужских групп/riize/1.html' },
+    { type: 'test', name: 'FEMALE GROUP TESTS', url: 'тестики/женские/1.html' },
+    { type: 'test', name: 'MALE GROUP TESTS', url: 'тестики/мужские/1.html' }
+];
+
+function performSearch(query) {
+    const resultsContainer = document.getElementById('search-results');
+    resultsContainer.innerHTML = '';
+    if (!query.trim()) {
+        resultsContainer.classList.remove('active');
+        return;
+    }
+    const searchTerm = query.toLowerCase().trim();
+    const results = searchDatabase.filter(item => 
+        item.name.toLowerCase().includes(searchTerm) || 
+        (item.group && item.group.toLowerCase().includes(searchTerm))
+    );
+    if (results.length === 0) {
+        resultsContainer.innerHTML = '<div class="search-result-item">Ничего не найдено</div>';
+    } else {
+        const groups = results.filter(item => item.type === 'group');
+        const tests = results.filter(item => item.type === 'test');
+        if (groups.length > 0) {
+            resultsContainer.innerHTML += '<div class="search-result-group">Группы:</div>';
+            groups.forEach(group => {
+                resultsContainer.innerHTML += `<div class="search-result-item" onclick="window.location.href='${group.url}'">${group.name}</div>`;
             });
-
-            maleGroupCategory?.addEventListener('click', function(e) {
-                if (e.target.closest('i')) {
-                    maleGroupSubcategory.classList.toggle('active');
-                    const icon = this.querySelector('i');
-                    if (maleGroupSubcategory.classList.contains('active')) {
-                        icon.classList.remove('fa-chevron-right');
-                        icon.classList.add('fa-chevron-down');
-                    } else {
-                        icon.classList.remove('fa-chevron-down');
-                        icon.classList.add('fa-chevron-right');
-                    }
-                }
+        }
+        if (tests.length > 0) {
+            resultsContainer.innerHTML += '<div class="search-result-group">Тесты:</div>';
+            tests.forEach(test => {
+                resultsContainer.innerHTML += `<div class="search-result-item" onclick="window.location.href='${test.url}'">${test.name}</div>`;
             });
+        }
+    }
+    resultsContainer.classList.add('active');
+}
 
-            function updateCounters() {
-                document.getElementById('favorites-count').textContent = favorites.length;
-            }
-
-            favoritesBtn?.addEventListener('click', showFavorites);
-
-            function showFavorites() {
-                const favoritesItems = document.getElementById('favorites-items');
-                const modal = document.getElementById('favorites-modal');
-                const favoritesActions = document.getElementById('favorites-actions');
-
-                if (favorites.length === 0) {
-                    favoritesItems.innerHTML = '<div class="empty-message">В избранном пока нет товаров</div>';
-                    favoritesActions.style.display = 'none';
-                } else {
-                    favoritesItems.innerHTML = favorites.map(item => `
-                        <div class="favorite-item">
-                            <img src="${item.image}" alt="${item.name}" class="item-image">
-                            <div class="item-details">
-                                <div class="item-name">${item.name}</div>
-                                <div class="item-price">${item.price} руб.</div>
-                            </div>
-                            <button class="delete-btn" onclick="removeFromFavorites('${item.id}')" title="Удалить из избранного">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    `).join('');
-                    favoritesActions.style.display = 'flex';
-                }
-
-                modal.classList.add('active');
-                document.getElementById('overlay').style.display = 'block';
-            }
-
-            window.removeFromFavorites = function(productId) {
-                favorites = favorites.filter(item => item.id !== productId);
-                localStorage.setItem('favorites', JSON.stringify(favorites));
-                updateCounters();
-                showFavorites();
-                alert('Товар удален из избранного');
-            };
-
-            clearFavoritesBtn?.addEventListener('click', function() {
-                if (confirm('Вы уверены, что хотите очистить избранное?')) {
-                    favorites = [];
-                    localStorage.setItem('favorites', JSON.stringify(favorites));
-                    updateCounters();
-                    showFavorites();
-                    alert('Избранное очищено');
-                }
-            });
-
-            closeModalButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    modals.forEach(modal => modal.classList.remove('active'));
-                    overlay.style.display = 'none';
-                });
-            });
-
-            modals.forEach(modal => {
-                modal.addEventListener('click', (e) => {
-                    if (e.target === modal) {
-                        modal.classList.remove('active');
-                        overlay.style.display = 'none';
-                    }
-                });
-            });
-
-            updateCounters();
-
-            // УЛУЧШЕННЫЙ ПОИСК
-            let searchTimeout;
-            
-            // Поиск при вводе каждой буквы с задержкой
-            searchInput?.addEventListener('input', function() {
-                // Очищаем предыдущий таймаут
-                clearTimeout(searchTimeout);
-                
-                // Устанавливаем новый таймаут для поиска через 300мс после последнего ввода
-                searchTimeout = setTimeout(() => {
-                    performSearch(this.value);
-                }, 300);
-            });
-
-            // Поиск при нажатии Enter
-            searchInput?.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    performSearch(this.value);
-                }
-            });
-
-            // Поиск при клике на кнопку
-            searchBtn?.addEventListener('click', function() {
-                performSearch(searchInput.value);
-            });
-
-            // Закрытие результатов поиска при клике вне
-            document.addEventListener('click', function(e) {
-                if (!e.target.closest('.search-container')) {
-                    document.getElementById('search-results').classList.remove('active');
-                }
-            });
-
-            // Добавляем элементы управления количеством в стили
-            const style = document.createElement('style');
-            style.textContent = `
-                .item-quantity-controls {
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    margin-top: 5px;
-                }
-                
-                .quantity-btn {
-                    width: 25px;
-                    height: 25px;
-                    border-radius: 50%;
-                    background: var(--button-color);
-                    color: white;
-                    border: none;
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-weight: bold;
-                    transition: var(--transition);
-                }
-                
-                .quantity-btn:hover {
-                    background: var(--dark-color);
-                }
-                
-                .quantity-btn:disabled {
-                    background: var(--gray);
-                    opacity: 0.5;
-                    pointer-events: none;
-                }
-                
-                .quantity {
-                    font-weight: bold;
-                    min-width: 40px;
-                    text-align: center;
-                }
-            `;
-            document.head.appendChild(style);
+// ======================
+// ИНИЦИАЛИЗАЦИЯ
+// ======================
+document.addEventListener('DOMContentLoaded', () => {
+    loadUsers();
+    loadCurrentUser();
+    loadCart();
+    loadFavorites();
+    
+    // Настройка модальных окон
+    const overlay = document.getElementById('overlay');
+    const cartModal = document.getElementById('cart-modal');
+    const favModal = document.getElementById('favorites-modal');
+    const menuBtn = document.getElementById('menu-btn');
+    const catalogMenu = document.getElementById('catalog-menu');
+    const cartBtn = document.getElementById('cart-btn');
+    const favBtn = document.getElementById('favorites-btn');
+    const clearCartBtn = document.getElementById('clear-cart-btn');
+    const clearFavBtn = document.getElementById('clear-favorites-btn');
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const searchInput = document.getElementById('search-input');
+    const searchBtn = document.getElementById('search-btn');
+    const femaleCategory = document.getElementById('female-group-category');
+    const femaleSub = document.getElementById('female-group-subcategory');
+    const maleCategory = document.getElementById('male-group-category');
+    const maleSub = document.getElementById('male-group-subcategory');
+    
+    // Модальное окно авторизации
+    const authModal = document.getElementById('auth-modal');
+    const closeAuth = document.getElementById('close-auth-modal');
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    
+    if (menuBtn && catalogMenu) {
+        menuBtn.addEventListener('click', () => {
+            catalogMenu.classList.toggle('active');
+            if (catalogMenu.classList.contains('active')) overlay.style.display = 'block';
+            else overlay.style.display = 'none';
         });
+    }
+    
+    if (overlay) {
+        overlay.addEventListener('click', () => {
+            document.querySelectorAll('.modal, .modal-overlay').forEach(modal => {
+                modal.classList.remove('active');
+            });
+            catalogMenu.classList.remove('active');
+            overlay.style.display = 'none';
+        });
+    }
+    
+    if (cartBtn) cartBtn.addEventListener('click', () => { updateCartModal(); cartModal.classList.add('active'); overlay.style.display = 'block'; });
+    if (favBtn) favBtn.addEventListener('click', () => { updateFavoritesModal(); favModal.classList.add('active'); overlay.style.display = 'block'; });
+    if (clearCartBtn) clearCartBtn.addEventListener('click', clearCart);
+    if (clearFavBtn) clearFavBtn.addEventListener('click', clearFavorites);
+    if (checkoutBtn) checkoutBtn.addEventListener('click', goToCheckout);
+    
+    document.querySelectorAll('.close-modal').forEach(btn => {
+        btn.addEventListener('click', () => {
+            cartModal.classList.remove('active');
+            favModal.classList.remove('active');
+            overlay.style.display = 'none';
+        });
+    });
+    
+    // Категории каталога
+    if (femaleCategory && femaleSub) {
+        femaleCategory.addEventListener('click', (e) => {
+            if (e.target.closest('i')) {
+                femaleSub.classList.toggle('active');
+                const icon = femaleCategory.querySelector('i');
+                if (icon) icon.style.transform = femaleSub.classList.contains('active') ? 'rotate(90deg)' : 'translateX(5px)';
+            }
+        });
+    }
+    if (maleCategory && maleSub) {
+        maleCategory.addEventListener('click', (e) => {
+            if (e.target.closest('i')) {
+                maleSub.classList.toggle('active');
+                const icon = maleCategory.querySelector('i');
+                if (icon) icon.style.transform = maleSub.classList.contains('active') ? 'rotate(90deg)' : 'translateX(5px)';
+            }
+        });
+    }
+    
+    // Поиск
+    let searchTimeout;
+    if (searchInput && searchBtn) {
+        searchInput.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => performSearch(searchInput.value), 300);
+        });
+        searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') performSearch(searchInput.value); });
+        searchBtn.addEventListener('click', () => performSearch(searchInput.value));
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-container')) {
+                document.getElementById('search-results')?.classList.remove('active');
+            }
+        });
+    }
+    
+    // Авторизация
+    if (closeAuth) closeAuth.addEventListener('click', closeAuthModal);
+    if (tabBtns.length) {
+        tabBtns.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabBtns.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const tabName = tab.dataset.tab;
+                loginForm.style.display = tabName === 'login' ? 'block' : 'none';
+                registerForm.style.display = tabName === 'register' ? 'block' : 'none';
+            });
+        });
+    }
+    if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            login(email, password);
+        });
+    }
+    if (registerForm) {
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirm = document.getElementById('register-confirm-password').value;
+            register(name, email, password, confirm);
+        });
+    }
+    
+    // Сообщение о загрузке
+    console.log('Страница girls.html инициализирована');
+});
     </script>
-    <script src="auth.js"></script>
 </body>
 </html>
