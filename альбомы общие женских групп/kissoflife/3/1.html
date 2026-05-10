@@ -1051,112 +1051,169 @@
       z-index: 999;
     }
 
-    /* Модальное окно авторизации */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
+        /* Модальное окно авторизации */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
-    .auth-modal {
-      width: 90%;
-      max-width: 400px;
-      background: var(--light-color);
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      overflow: hidden;
-      position: relative;
-      max-height: 90vh;
-      overflow-y: auto;
-      border: 2px solid var(--secondary-color);
-    }
+        .auth-modal {
+            width: 90%;
+            max-width: 400px;
+            background: var(--light-color);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 2px solid var(--secondary-color);
+        }
 
-    .auth-modal-header {
-      display: flex;
-      justify-content: space-between;
-      background: var(--accent-color);
-      padding: var(--spacing-sm);
-      position: relative;
-    }
+        .auth-modal-header {
+            display: flex;
+            justify-content: space-between;
+            background: var(--accent-color);
+            padding: var(--spacing-sm);
+            position: relative;
+        }
 
-    .tab-btn {
-      flex: 1;
-      padding: var(--spacing-sm);
-      text-align: center;
-      cursor: pointer;
-      font-weight: bold;
-      border-bottom: 3px solid transparent;
-      color: var(--text-color);
-    }
+        .tab-btn {
+            flex: 1;
+            padding: var(--spacing-sm);
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+            border-bottom: 3px solid transparent;
+            color: var(--text-color);
+        }
 
-    .tab-btn.active {
-      border-bottom: 3px solid var(--dark-color);
-      color: var(--dark-color);
-    }
+        .tab-btn.active {
+            border-bottom: 3px solid var(--dark-color);
+            color: var(--dark-color);
+        }
 
-    .close-auth-modal {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      width: 30px;
-      height: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      color: var(--text-color);
-      cursor: pointer;
-      transition: var(--transition);
-      background: transparent;
-      border: none;
-      z-index: 1;
-    }
+        .close-auth-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: var(--transition);
+            background: transparent;
+            border: none;
+            z-index: 1;
+        }
 
-    .close-auth-modal:hover {
-      color: var(--dark-color);
-      transform: rotate(90deg);
-    }
+        .close-auth-modal:hover {
+            color: var(--dark-color);
+            transform: rotate(90deg);
+        }
 
-    .auth-modal-body {
-      padding: var(--spacing-lg);
-    }
+        .auth-modal-body {
+            padding: var(--spacing-lg);
+        }
 
-    .auth-modal-body form input {
-      width: 100%;
-      padding: 0.8rem;
-      margin-bottom: var(--spacing-sm);
-      border: 1px solid var(--secondary-color);
-      border-radius: var(--border-radius);
-      outline: none;
-      font-size: 16px;
-      background: var(--light-color);
-      color: var(--text-color);
-    }
+        .auth-modal-body form input {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: var(--spacing-sm);
+            border: 1px solid var(--secondary-color);
+            border-radius: var(--border-radius);
+            outline: none;
+            font-size: 16px;
+            background: var(--light-color);
+            color: var(--text-color);
+        }
 
-    .auth-modal-body button {
-      width: 100%;
-      padding: 0.8rem;
-      background: var(--dark-color);
-      color: var(--light-color);
-      border: none;
-      border-radius: var(--border-radius);
-      font-weight: bold;
-      cursor: pointer;
-      transition: var(--transition);
-    }
+        .auth-modal-body button {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--dark-color);
+            color: var(--light-color);
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+        }
 
-    .auth-modal-body button:hover {
-      background: var(--dark-color);
-      transform: translateY(-2px);
-    }
+        .auth-modal-body button:hover {
+            background: var(--dark-color);
+            transform: translateY(-2px);
+        }
+
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .auth-modal-body .password-wrapper .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%) !important;
+            background: none !important;
+            border: none;
+            cursor: pointer;
+            color: #000;
+            padding: 5px 8px;
+            font-size: 16px;
+            width: auto;
+            min-width: auto;
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0;
+            font-weight: normal;
+            transition: none !important;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .auth-modal-body .password-wrapper .password-toggle:hover {
+            background: none !important;
+            color: #000;
+            transform: translateY(-50%) !important;
+        }
+
+        .auth-modal-body .password-wrapper input {
+            margin-bottom: 0;
+            padding-right: 40px;
+        }
+
+        .forgot-password,
+        .back-to-login {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #000;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+        }
+
+        .forgot-password:hover,
+        .back-to-login:hover {
+            color: #333;
+        }
 
     /* Анимации */
     @keyframes slideIn {
@@ -1610,32 +1667,66 @@
     </div>
   </div>
 
-  <!-- МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ -->
-  <div class="modal-overlay" id="auth-modal">
-    <div class="auth-modal">
-      <div class="auth-modal-header">
-        <div class="tab-btn active" data-tab="login">Вход</div>
-        <div class="tab-btn" data-tab="register">Регистрация</div>
-        <button class="close-auth-modal" id="close-auth-modal" aria-label="Закрыть">&times;</button>
-      </div>
-      <div class="auth-modal-body">
-        <form id="login-form">
-          <input type="email" placeholder="Email" required aria-label="Email">
-          <input type="password" placeholder="Пароль" required aria-label="Пароль">
-          <button type="submit">Войти</button>
-        </form>
-        <form id="register-form" style="display: none;">
-          <input type="text" placeholder="Имя" required aria-label="Имя">
-          <input type="email" placeholder="Email" required aria-label="Email">
-          <input type="password" placeholder="Пароль" required aria-label="Пароль">
-          <input type="password" placeholder="Подтвердите пароль" required aria-label="Подтверждение пароля">
-          <button type="submit">Зарегистрироваться</button>
-        </form>
-      </div>
+    <!-- МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ -->
+    <div class="modal-overlay" id="auth-modal">
+        <div class="auth-modal">
+            <div class="auth-modal-header">
+                <div class="tab-btn active" data-tab="login">Вход</div>
+                <div class="tab-btn" data-tab="register">Регистрация</div>
+                <button class="close-auth-modal" id="close-auth-modal" aria-label="Закрыть">&times;</button>
+            </div>
+            <div class="auth-modal-body">
+                <form id="login-form">
+                    <input type="email" placeholder="Email" required aria-label="Email">
+                    <div class="password-wrapper">
+                        <input type="password" placeholder="Пароль" required aria-label="Пароль" id="login-password">
+                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility('login-password', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <button type="submit">Войти</button>
+                    <a href="#" class="forgot-password">Забыли пароль?</a>
+                </form>
+                <form id="register-form" style="display: none;">
+                    <input type="text" placeholder="Имя" required aria-label="Имя">
+                    <input type="email" placeholder="Email" required aria-label="Email">
+                    <div class="password-wrapper">
+                        <input type="password" placeholder="Пароль" required aria-label="Пароль" id="register-password">
+                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility('register-password', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-wrapper">
+                        <input type="password" placeholder="Подтвердите пароль" required aria-label="Подтверждение пароля" id="register-confirm-password">
+                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility('register-confirm-password', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <button type="submit">Зарегистрироваться</button>
+                </form>
+                <form id="reset-password-form" style="display: none;">
+                    <p style="margin-bottom: 15px; color: var(--text-color);">Введите ваш email и новый пароль</p>
+                    <input type="email" id="reset-email" placeholder="Email" required aria-label="Email">
+                    <div class="password-wrapper">
+                        <input type="password" id="reset-new-password" placeholder="Новый пароль" required aria-label="Новый пароль">
+                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility('reset-new-password', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-wrapper">
+                        <input type="password" id="reset-confirm-password" placeholder="Подтвердите новый пароль" required aria-label="Подтверждение">
+                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility('reset-confirm-password', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <button type="submit">Сбросить пароль</button>
+                    <a href="#" class="back-to-login">Вернуться ко входу</a>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <div class="overlay" id="overlay"></div>
+    <div class="overlay" id="overlay"></div>
 
   <script>
     // Глобальные переменные для хранения данных
@@ -2184,12 +2275,25 @@
       const overlay = document.getElementById('overlay');
       const modals = document.querySelectorAll('.modal');
       const searchResults = document.getElementById('search-results');
+      const resetPasswordForm = document.getElementById('reset-password-form');
       
       if (authModal) authModal.style.display = 'none';
       if (catalogMenu) catalogMenu.classList.remove('active');
       if (overlay) overlay.style.display = 'none';
       if (modals) modals.forEach(modal => modal.classList.remove('active'));
       if (searchResults) searchResults.classList.remove('active');
+      if (resetPasswordForm) resetPasswordForm.style.display = 'none';
+    }
+
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      const type = input.type === 'password' ? 'text' : 'password';
+      input.type = type;
+      const icon = btn.querySelector('i');
+      if (icon) {
+        icon.className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+      }
     }
 
     // Инициализация при загрузке страницы
@@ -2206,6 +2310,7 @@
       const tabBtns = document.querySelectorAll('.tab-btn');
       const loginForm = document.getElementById('login-form');
       const registerForm = document.getElementById('register-form');
+      const resetPasswordForm = document.getElementById('reset-password-form');
       const favoritesBtn = document.getElementById('favorites-btn');
       const searchInput = document.getElementById('search-input');
       const searchBtn = document.getElementById('search-btn');
@@ -2371,6 +2476,7 @@
           tab.classList.add('active');
           if (loginForm) loginForm.style.display = tab.dataset.tab === 'login' ? 'block' : 'none';
           if (registerForm) registerForm.style.display = tab.dataset.tab === 'register' ? 'block' : 'none';
+          if (resetPasswordForm) resetPasswordForm.style.display = 'none';
         });
       });
 
@@ -2459,6 +2565,36 @@
         updateCounters();
         showNotification(`Регистрация успешна! Добро пожаловать, ${name}!`);
         closeAllModals();
+      });
+
+      // Обработчик для кнопки "Забыли пароль?"
+      document.querySelector('.forgot-password')?.addEventListener('click', function(e) {
+        e.preventDefault();
+        loginForm.style.display = 'none';
+        registerForm.style.display = 'none';
+        const resetForm = document.getElementById('reset-password-form');
+        if (resetForm) resetForm.style.display = 'block';
+      });
+
+      // Обработчик для формы сброса пароля
+      document.getElementById('reset-password-form')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('reset-email').value;
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        const user = users.find(u => u.email === email);
+        if (user) {
+          showNotification('Инструкция по сбросу пароля отправлена на ваш email');
+        } else {
+          showNotification('Пользователь с таким email не найден', 'warning');
+        }
+        closeAllModals();
+      });
+
+      // Обработчик для кнопки "Вернуться ко входу"
+      document.querySelector('.back-to-login')?.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('reset-password-form').style.display = 'none';
+        loginForm.style.display = 'block';
       });
 
       femaleGroupCategory?.addEventListener('click', function(e) {
@@ -2567,6 +2703,5 @@ function goBackToAlbumList() {
     } catch (e) {}
     window.location.href = '../1.html';
 }  </script>
-  <script src="../../auth.js"></script>
 </body>
 </html>

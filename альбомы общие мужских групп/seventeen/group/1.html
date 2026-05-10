@@ -920,7 +920,86 @@
 
         .auth-modal-body button:hover {
             background: #153a6d;
-            transform: translateY(-2px);
+            }
+
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .password-wrapper .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #000;
+            padding: 5px 8px;
+            font-size: 16px;
+            width: auto;
+            min-width: auto;
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0;
+            font-weight: normal;
+            transition: none;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .password-wrapper .password-toggle:hover {
+            background: none;
+            color: #000;
+        }
+
+        .auth-modal-body .password-wrapper input {
+            margin-bottom: 0;
+            padding-right: 40px;
+        }
+
+        .forgot-password,
+        .back-to-login {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #000;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+        }
+
+        .forgot-password:hover,
+        .back-to-login:hover {
+            color: #333;
+        }
+
+        .form-error {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: -0.5rem;
+            margin-bottom: 0.5rem;
+            display: none;
+        }
+
+        .form-error.show {
+            display: block;
+        }
+
+        .form-success {
+            color: #27ae60;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            text-align: center;
+            display: none;
+        }
+
+        .form-success.show {
+            display: block;
         }
 
         /* Анимации */
@@ -1511,16 +1590,58 @@
             </div>
             <div class="auth-modal-body">
                 <form id="login-form">
-                    <input type="email" placeholder="Email" required aria-label="Email">
-                    <input type="password" placeholder="Пароль" required aria-label="Пароль">
+                    <input type="email" id="login-email" placeholder="Email" required aria-label="Email">
+                    <div class="form-error" id="login-email-error">Введите корректный email</div>
+                    <div class="password-wrapper">
+                        <input type="password" id="login-password" placeholder="Пароль" required aria-label="Пароль">
+                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility('login-password', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="form-error" id="login-password-error">Пароль должен содержать минимум 6 символов</div>
                     <button type="submit">Войти</button>
+                    <div class="form-success" id="login-success">Успешный вход!</div>
+                    <a class="forgot-password" onclick="showResetForm()">Забыли пароль?</a>
                 </form>
                 <form id="register-form" style="display: none;">
-                    <input type="text" placeholder="Имя" required aria-label="Имя">
-                    <input type="email" placeholder="Email" required aria-label="Email">
-                    <input type="password" placeholder="Пароль" required aria-label="Пароль">
-                    <input type="password" placeholder="Подтвердите пароль" required aria-label="Подтверждение пароля">
+                    <input type="text" id="register-name" placeholder="Имя" required aria-label="Имя">
+                    <div class="form-error" id="register-name-error">Имя должно содержать минимум 2 символа</div>
+                    <input type="email" id="register-email" placeholder="Email" required aria-label="Email">
+                    <div class="form-error" id="register-email-error">Введите корректный email</div>
+                    <div class="password-wrapper">
+                        <input type="password" id="register-password" placeholder="Пароль" required aria-label="Пароль">
+                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility('register-password', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="form-error" id="register-password-error">Пароль должен содержать минимум 6 символов</div>
+                    <div class="password-wrapper">
+                        <input type="password" id="register-confirm-password" placeholder="Подтвердите пароль" required aria-label="Подтверждение пароля">
+                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility('register-confirm-password', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="form-error" id="register-confirm-error">Пароли не совпадают</div>
                     <button type="submit">Зарегистрироваться</button>
+                    <div class="form-success" id="register-success">Регистрация успешна!</div>
+                </form>
+                <form id="reset-password-form" style="display: none;">
+                    <p style="margin-bottom: 15px; color: var(--text-color);">Введите ваш email и новый пароль</p>
+                    <input type="email" id="reset-email" placeholder="Email" required aria-label="Email">
+                    <div class="password-wrapper">
+                        <input type="password" id="reset-new-password" placeholder="Новый пароль" required aria-label="Новый пароль">
+                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility('reset-new-password', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-wrapper">
+                        <input type="password" id="reset-confirm-password" placeholder="Подтвердите новый пароль" required aria-label="Подтверждение">
+                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility('reset-confirm-password', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <button type="submit">Сбросить пароль</button>
+                    <a href="#" class="back-to-login">Вернуться ко входу</a>
                 </form>
             </div>
         </div>
@@ -1749,6 +1870,44 @@
             if (overlay) overlay.style.display = 'none';
             if (modals) modals.forEach(modal => modal.classList.remove('active'));
             if (searchResults) searchResults.classList.remove('active');
+            const resetForm = document.getElementById('reset-password-form');
+            if (resetForm) {
+                resetForm.style.display = 'none';
+                resetForm.reset();
+            }
+        }
+
+        function togglePasswordVisibility(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.querySelector('i').classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                btn.querySelector('i').classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        function resetPassword(email, newPassword, confirmPassword) {
+            if (newPassword !== confirmPassword) {
+                showNotification('Пароли не совпадают', 'error');
+                return false;
+            }
+            if (newPassword.length < 6) {
+                showNotification('Пароль должен содержать минимум 6 символов', 'error');
+                return false;
+            }
+            const users = JSON.parse(localStorage.getItem('usersDatabase') || '[]');
+            const userIndex = users.findIndex(u => u.email === email);
+            if (userIndex === -1) {
+                showNotification('Пользователь с таким email не найден', 'error');
+                return false;
+            }
+            users[userIndex].password = newPassword;
+            localStorage.setItem('usersDatabase', JSON.stringify(users));
+            showNotification('Пароль успешно обновлен!');
+            return true;
         }
 
         // Функция выхода из системы
@@ -1983,6 +2142,8 @@
                     tab.classList.add('active');
                     if (loginForm) loginForm.style.display = tab.dataset.tab === 'login' ? 'block' : 'none';
                     if (registerForm) registerForm.style.display = tab.dataset.tab === 'register' ? 'block' : 'none';
+                    const resetForm = document.getElementById('reset-password-form');
+                    if (resetForm) resetForm.style.display = 'none';
                 });
             });
 
@@ -2062,6 +2223,43 @@
                 updateCounters();
                 showNotification('Вы успешно зарегистрировались!');
             });
+
+            const forgotLink = document.querySelector('.forgot-password');
+            if (forgotLink) {
+                forgotLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.getElementById('login-form').style.display = 'none';
+                    document.getElementById('register-form').style.display = 'none';
+                    document.getElementById('reset-password-form').style.display = 'block';
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                });
+            }
+
+            const resetFormEl = document.getElementById('reset-password-form');
+            if (resetFormEl) {
+                resetFormEl.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const email = document.getElementById('reset-email').value;
+                    const newPassword = document.getElementById('reset-new-password').value;
+                    const confirmPassword = document.getElementById('reset-confirm-password').value;
+                    if (resetPassword(email, newPassword, confirmPassword)) {
+                        document.getElementById('reset-password-form').style.display = 'none';
+                        document.getElementById('login-form').style.display = 'block';
+                        if (tabBtns.length > 0) tabBtns[0].classList.add('active');
+                    }
+                });
+            }
+
+            const backToLogin = document.querySelector('.back-to-login');
+            if (backToLogin) {
+                backToLogin.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.getElementById('reset-password-form').style.display = 'none';
+                    document.getElementById('login-form').style.display = 'block';
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    if (tabBtns.length > 0) tabBtns[0].classList.add('active');
+                });
+            }
 
             femaleGroupCategory?.addEventListener('click', function(e) {
                 if (e.target.closest('i')) {
@@ -2167,6 +2365,5 @@
             });
         });
     </script>
-  <script src="../../auth.js"></script>
 </body>
 </html>

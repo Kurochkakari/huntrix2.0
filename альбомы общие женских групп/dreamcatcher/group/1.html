@@ -508,7 +508,7 @@
             color: var(--light-color);
         }
 
-        /* ФУТЕР (ПОЛНОСТЬЮ КАК В ПЕРВОМ ПРИМЕРЕ) */
+        /* ФУТЕР */
         footer {
             background: var(--light-color);
             color: var(--text-color);
@@ -817,6 +817,236 @@
             z-index: 999;
         }
 
+        /* Модальное окно авторизации (улучшенное) */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .auth-modal {
+            width: 90%;
+            max-width: 400px;
+            background: var(--light-color);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 2px solid var(--secondary-color);
+        }
+        
+        .auth-modal-header {
+            display: flex;
+            justify-content: space-between;
+            background: var(--accent-color);
+            padding: var(--spacing-sm);
+            position: relative;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: var(--spacing-sm);
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+            border-bottom: 3px solid transparent;
+            color: var(--text-color);
+        }
+        
+        .tab-btn.active {
+            border-bottom: 3px solid var(--button-color);
+            color: var(--button-color);
+        }
+        
+        .close-auth-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: var(--transition);
+            background: transparent;
+            border: none;
+            z-index: 1;
+        }
+        
+        .close-auth-modal:hover {
+            color: var(--button-color);
+            transform: rotate(90deg);
+        }
+        
+        .auth-modal-body {
+            padding: var(--spacing-lg);
+        }
+        
+        .auth-modal-body form input {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: var(--spacing-sm);
+            border: 1px solid var(--button-color);
+            border-radius: var(--border-radius);
+            outline: none;
+            font-size: 16px;
+            background: var(--light-color);
+            color: var(--text-color);
+        }
+        
+        .auth-modal-body input:focus {
+            border-color: #c94a72;
+            box-shadow: 0 0 0 2px rgba(222, 93, 131, 0.1);
+        }
+        
+        .auth-modal-body button {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--button-color);
+            color: var(--light-color);
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .auth-modal-body button:hover {
+            background: #c94a72;
+        }
+        
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .password-wrapper .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #000;
+            padding: 5px 8px;
+            font-size: 16px;
+            width: auto;
+            min-width: auto;
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0;
+            font-weight: normal;
+            transition: none;
+            margin: 0;
+            line-height: 1;
+        }
+        
+        .password-wrapper .password-toggle:hover {
+            background: none;
+            color: #000;
+        }
+        
+        .auth-modal-body .password-wrapper input {
+            margin-bottom: 0;
+            padding-right: 40px;
+        }
+        
+        .forgot-password,
+        .back-to-login {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #000;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+        }
+        
+        .forgot-password:hover,
+        .back-to-login:hover {
+            color: #333;
+        }
+        
+        .form-error {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: -0.5rem;
+            margin-bottom: 0.5rem;
+            display: none;
+        }
+        
+        .form-error.show {
+            display: block;
+        }
+        
+        .form-success {
+            color: #27ae60;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            text-align: center;
+            display: none;
+        }
+        
+        .form-success.show {
+            display: block;
+        }
+
+        /* Элементы управления количеством */
+        .item-quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        
+        .quantity-btn {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: var(--button-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+        
+        .quantity-btn:hover {
+            background: #c94a72;
+        }
+        
+        .quantity-btn:disabled {
+            background: var(--gray);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        .quantity {
+            font-weight: bold;
+            min-width: 40px;
+            text-align: center;
+        }
+
         @media (max-width: 768px) {
             .logo-img {
                 max-height: 45px;
@@ -913,6 +1143,28 @@
             .search-section {
                 top: auto;
                 position: relative;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
             }
         }
     </style>
@@ -1114,7 +1366,7 @@
         </div>
     </div>
 
-    <!-- ФУТЕР (ПОЛНОСТЬЮ КАК В ПРИМЕРЕ) -->
+    <!-- ФУТЕР -->
     <footer id="contacts">
         <div class="container">
             <div class="footer-grid">
@@ -1262,8 +1514,8 @@
         </div>
     </div>
 
-    <!-- Модальное окно авторизации -->
-    <div class="modal-overlay" id="auth-modal" style="display: none;">
+    <!-- Модальное окно авторизации (улучшенное) -->
+    <div class="modal-overlay" id="auth-modal">
         <div class="auth-modal">
             <div class="auth-modal-header">
                 <div class="tab-btn active" data-tab="login">Вход</div>
@@ -1272,16 +1524,60 @@
             </div>
             <div class="auth-modal-body">
                 <form id="login-form">
-                    <input type="email" placeholder="Email" required aria-label="Email">
-                    <input type="password" placeholder="Пароль" required aria-label="Пароль">
+                    <input type="email" id="login-email" placeholder="Email" required aria-label="Email">
+                    <div class="form-error" id="login-email-error">Введите корректный email</div>
+                    <div class="password-wrapper">
+                        <input type="password" id="login-password" placeholder="Пароль" required aria-label="Пароль">
+                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility('login-password', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="form-error" id="login-password-error">Пароль должен содержать минимум 6 символов</div>
                     <button type="submit">Войти</button>
+                    <div class="form-success" id="login-success">Успешный вход!</div>
+                    <a class="forgot-password" onclick="showResetForm()">Забыли пароль?</a>
                 </form>
                 <form id="register-form" style="display: none;">
-                    <input type="text" placeholder="Имя" required aria-label="Имя">
-                    <input type="email" placeholder="Email" required aria-label="Email">
-                    <input type="password" placeholder="Пароль" required aria-label="Пароль">
-                    <input type="password" placeholder="Подтвердите пароль" required aria-label="Подтверждение пароля">
+                    <input type="text" id="register-name" placeholder="Имя" required aria-label="Имя">
+                    <div class="form-error" id="register-name-error">Имя должно содержать минимум 2 символа</div>
+                    <input type="email" id="register-email" placeholder="Email" required aria-label="Email">
+                    <div class="form-error" id="register-email-error">Введите корректный email</div>
+                    <div class="password-wrapper">
+                        <input type="password" id="register-password" placeholder="Пароль" required aria-label="Пароль">
+                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility('register-password', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="form-error" id="register-password-error">Пароль должен содержать минимум 6 символов</div>
+                    <div class="password-wrapper">
+                        <input type="password" id="register-confirm-password" placeholder="Подтвердите пароль" required aria-label="Подтверждение пароля">
+                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility('register-confirm-password', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="form-error" id="register-confirm-error">Пароли не совпадают</div>
                     <button type="submit">Зарегистрироваться</button>
+                    <div class="form-success" id="register-success">Регистрация успешна!</div>
+                </form>
+                <form id="reset-password-form" style="display: none;">
+                    <input type="email" id="reset-email" placeholder="Введите ваш email" required aria-label="Email для восстановления">
+                    <div class="form-error" id="reset-email-error">Введите корректный email</div>
+                    <div class="password-wrapper">
+                        <input type="password" id="reset-new-password" placeholder="Новый пароль" required aria-label="Новый пароль">
+                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility('reset-new-password', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-wrapper">
+                        <input type="password" id="reset-confirm-password" placeholder="Подтвердите новый пароль" required aria-label="Подтверждение">
+                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility('reset-confirm-password', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="form-error" id="reset-confirm-error">Пароли не совпадают</div>
+                    <button type="submit">Сбросить пароль</button>
+                    <a class="back-to-login" onclick="showLoginForm()">Вернуться ко входу</a>
+                    <div class="form-success" id="reset-success">Пароль успешно обновлен!</div>
                 </form>
             </div>
         </div>
@@ -1297,7 +1593,7 @@
         // ИНИЦИАЛИЗАЦИЯ ГЛОБАЛЬНЫХ ПЕРЕМЕННЫХ
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-        let users = JSON.parse(localStorage.getItem('users')) || [];
+        let usersDatabase = JSON.parse(localStorage.getItem('usersDatabase')) || [];
         let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
         let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
         const MAX_QUANTITY = 12;
@@ -1336,19 +1632,12 @@
             const cartTotalItems = cart.reduce((total, item) => total + item.quantity, 0);
             document.getElementById('cart-count').textContent = cartTotalItems;
             document.getElementById('favorites-count').textContent = favorites.length;
-        }
-
-        // ФУНКЦИЯ ОБНОВЛЕНИЯ КНОПКИ АВТОРИЗАЦИИ
-        function updateAuthButton() {
+            
             const authBtn = document.getElementById('auth-btn');
-            if (!authBtn) return;
-
             if (isLoggedIn && currentUser) {
                 authBtn.textContent = currentUser.name;
-                authBtn.title = `Email: ${currentUser.email}\nНажмите для выхода`;
             } else {
                 authBtn.textContent = 'Войти / Регистрация';
-                authBtn.title = '';
             }
         }
 
@@ -1393,7 +1682,6 @@
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCounters();
             
-            // Обновляем модальное окно корзины, если оно открыто
             if (document.getElementById('cart-modal')?.classList.contains('active')) {
                 showCart();
             }
@@ -1407,7 +1695,6 @@
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCounters();
             
-            // Обновляем модальное окно корзины, если оно открыто
             if (document.getElementById('cart-modal')?.classList.contains('active')) {
                 showCart();
             }
@@ -1435,7 +1722,6 @@
                 localStorage.setItem('cart', JSON.stringify(cart));
                 updateCounters();
                 
-                // Обновляем модальное окно корзины, если оно открыто
                 if (document.getElementById('cart-modal')?.classList.contains('active')) {
                     showCart();
                 }
@@ -1450,18 +1736,12 @@
                 localStorage.setItem('cart', JSON.stringify(cart));
                 updateCounters();
                 
-                // Обновляем модальное окно корзины, если оно открыто
                 if (document.getElementById('cart-modal')?.classList.contains('active')) {
                     showCart();
                 }
                 
                 showNotification('Корзина очищена');
             }
-        }
-
-        // ФУНКЦИЯ ПРОВЕРКИ НАЛИЧИЯ ТОВАРА В КОРЗИНЕ
-        function isInCart(productId) {
-            return cart.some(item => item.id === productId);
         }
 
         // ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ ИЗБРАННОГО
@@ -1495,7 +1775,6 @@
             localStorage.setItem('favorites', JSON.stringify(favorites));
             updateCounters();
             
-            // Обновляем модальное окно избранного, если оно открыто
             if (document.getElementById('favorites-modal')?.classList.contains('active')) {
                 showFavorites();
             }
@@ -1510,7 +1789,6 @@
                 localStorage.setItem('favorites', JSON.stringify(favorites));
                 updateCounters();
                 
-                // Обновляем модальное окно избранного, если оно открыто
                 if (document.getElementById('favorites-modal')?.classList.contains('active')) {
                     showFavorites();
                 }
@@ -1519,86 +1797,138 @@
             }
         }
 
-        // ФУНКЦИЯ ПРОВЕРКИ НАЛИЧИЯ ТОВАРА В ИЗБРАННОМ
-        function isInFavorites(productId) {
-            return favorites.some(item => item.id === productId);
+        // ФУНКЦИЯ ПОКАЗА ОШИБКИ
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.classList.add('show');
+                setTimeout(() => errorElement.classList.remove('show'), 3000);
+            }
         }
 
-        // ФУНКЦИЯ АВТОРИЗАЦИИ
+        // ФУНКЦИЯ ПОКАЗА УСПЕХА
+        function showSuccess(elementId, message) {
+            const successElement = document.getElementById(elementId);
+            if (successElement) {
+                successElement.textContent = message;
+                successElement.classList.add('show');
+                setTimeout(() => successElement.classList.remove('show'), 2000);
+            }
+        }
+
+        // ФУНКЦИЯ ЛОГИНА
         function login(email, password) {
-            const user = users.find(u => u.email === email && u.password === password);
-            
-            if (user) {
-                currentUser = user;
-                isLoggedIn = true;
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                localStorage.setItem('isLoggedIn', 'true');
-                updateAuthButton();
-                showNotification(`Добро пожаловать, ${user.name}!`);
-                return true;
-            } else {
-                showNotification('Неверный email или пароль', 'warning');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showError('login-email-error', 'Введите корректный email');
                 return false;
             }
+            if (password.length < 6) {
+                showError('login-password-error', 'Пароль должен содержать минимум 6 символов');
+                return false;
+            }
+            
+            const user = usersDatabase.find(u => u.email === email && u.password === password);
+            if (!user) {
+                showError('login-password-error', 'Неверный email или пароль');
+                return false;
+            }
+            
+            isLoggedIn = true;
+            currentUser = user;
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            showSuccess('login-success', 'Успешный вход!');
+            updateCounters();
+            setTimeout(() => closeAuthModal(), 1500);
+            return true;
         }
 
         // ФУНКЦИЯ РЕГИСТРАЦИИ
-        function register(name, email, password) {
-            // Проверка уникальности email
-            if (users.some(u => u.email === email)) {
-                showNotification('Пользователь с таким email уже существует', 'warning');
+        function register(name, email, password, confirmPassword) {
+            if (name.length < 2) {
+                showError('register-name-error', 'Имя должно содержать минимум 2 символа');
                 return false;
             }
-
-            // Проверка валидности email
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
-                showNotification('Введите корректный email', 'warning');
+                showError('register-email-error', 'Введите корректный email');
                 return false;
             }
-
-            // Проверка длины пароля
+            const existingUser = usersDatabase.find(u => u.email === email);
+            if (existingUser) {
+                showError('register-email-error', 'Пользователь с таким email уже существует');
+                return false;
+            }
             if (password.length < 6) {
-                showNotification('Пароль должен содержать не менее 6 символов', 'warning');
+                showError('register-password-error', 'Пароль должен содержать минимум 6 символов');
                 return false;
             }
-
-            // Проверка длины имени
-            if (name.length < 2) {
-                showNotification('Имя должно содержать не менее 2 символов', 'warning');
+            if (password !== confirmPassword) {
+                showError('register-confirm-error', 'Пароли не совпадают');
                 return false;
             }
-
-            const newUser = {
-                id: Date.now().toString(),
-                name: name,
-                email: email,
-                password: password,
-                registrationDate: new Date().toISOString()
-            };
-
-            users.push(newUser);
-            localStorage.setItem('users', JSON.stringify(users));
-
-            currentUser = newUser;
+            
+            const newUser = { id: Date.now(), name, email, password, registrationDate: new Date().toISOString() };
+            usersDatabase.push(newUser);
+            localStorage.setItem('usersDatabase', JSON.stringify(usersDatabase));
+            
             isLoggedIn = true;
-            localStorage.setItem('currentUser', JSON.stringify(newUser));
+            currentUser = newUser;
             localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('currentUser', JSON.stringify(newUser));
+            showSuccess('register-success', 'Регистрация успешна!');
+            updateCounters();
+            setTimeout(() => closeAuthModal(), 1500);
+            return true;
+        }
+
+        // ФУНКЦИЯ СБРОСА ПАРОЛЯ
+        function resetPassword(email, newPassword, confirmPassword) {
+            if (newPassword !== confirmPassword) {
+                showError('reset-confirm-error', 'Пароли не совпадают');
+                return false;
+            }
+            if (newPassword.length < 6) {
+                showError('reset-confirm-error', 'Пароль должен содержать минимум 6 символов');
+                return false;
+            }
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showError('reset-email-error', 'Введите корректный email');
+                return false;
+            }
             
-            updateAuthButton();
-            showNotification(`Регистрация успешна! Добро пожаловать, ${name}!`);
+            const users = JSON.parse(localStorage.getItem('usersDatabase') || '[]');
+            const userIndex = users.findIndex(u => u.email === email);
+            if (userIndex === -1) {
+                showError('reset-email-error', 'Пользователь с таким email не найден');
+                return false;
+            }
             
+            users[userIndex].password = newPassword;
+            localStorage.setItem('usersDatabase', JSON.stringify(users));
+            showSuccess('reset-success', 'Пароль успешно обновлен!');
+            setTimeout(() => {
+                document.getElementById('reset-password-form').style.display = 'none';
+                document.getElementById('login-form').style.display = 'block';
+                const tabBtns = document.querySelectorAll('.tab-btn');
+                if (tabBtns.length > 0) tabBtns[0].classList.add('active');
+                if (tabBtns.length > 1) tabBtns[1].classList.remove('active');
+                document.getElementById('reset-password-form').reset();
+            }, 2000);
             return true;
         }
 
         // ФУНКЦИЯ ВЫХОДА
         function logout() {
             if (confirm('Вы уверены, что хотите выйти?')) {
-                currentUser = null;
                 isLoggedIn = false;
-                localStorage.removeItem('currentUser');
+                currentUser = null;
                 localStorage.setItem('isLoggedIn', 'false');
-                updateAuthButton();
+                localStorage.removeItem('currentUser');
+                updateCounters();
                 showNotification('Вы успешно вышли из системы.');
             }
         }
@@ -1627,12 +1957,9 @@
                             <div class="item-price">${item.basePrice} руб.</div>
                             ${item.version ? `<div class="item-version" style="font-size:0.9rem;color:#666;">Версия: ${item.version}</div>` : ''}
                             <div class="item-quantity-controls">
-                                <button class="quantity-btn minus" onclick="updateCartQuantity('${item.id}', ${item.quantity - 1})" ${item.quantity <= 1 ? 'disabled' : ''}>-</button>
+                                <button class="quantity-btn" onclick="updateCartQuantity('${item.id}', ${item.quantity - 1})">-</button>
                                 <span class="quantity">${item.quantity} шт.</span>
-                                <button class="quantity-btn plus" onclick="updateCartQuantity('${item.id}', ${item.quantity + 1})" ${item.quantity >= MAX_QUANTITY ? 'disabled' : ''}>+</button>
-                            </div>
-                            <div style="font-size: 0.8rem; color: #666; margin-top: 5px;">
-                                Максимум: ${MAX_QUANTITY} шт.
+                                <button class="quantity-btn" onclick="updateCartQuantity('${item.id}', ${item.quantity + 1})">+</button>
                             </div>
                         </div>
                         <button class="delete-btn" onclick="removeFromCart('${item.id}')" title="Удалить из корзины">
@@ -1691,12 +2018,6 @@
                 return;
             }
 
-            const exceededItems = cart.filter(item => item.quantity > MAX_QUANTITY);
-            if (exceededItems.length > 0) {
-                showNotification('Некоторые товары превышают максимальное количество!', 'warning');
-                return;
-            }
-
             if (!isLoggedIn) {
                 showNotification('Для оформления заказа необходимо войти в систему.', 'warning');
                 return;
@@ -1704,13 +2025,61 @@
 
             localStorage.setItem('checkoutItems', JSON.stringify(cart));
             localStorage.setItem('checkoutSource', 'cart');
-
             window.location.href = '../../../buy.html';
+        }
+
+        // ФУНКЦИЯ ДЛЯ ПЕРЕКЛЮЧЕНИЯ ВИДИМОСТИ ПАРОЛЯ
+        function togglePasswordVisibility(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.querySelector('i').classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                btn.querySelector('i').classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        // ФУНКЦИЯ ПОКАЗА ФОРМЫ ВОССТАНОВЛЕНИЯ
+        function showResetForm() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'none';
+            document.getElementById('reset-password-form').style.display = 'block';
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        }
+
+        // ФУНКЦИЯ ПОКАЗА ФОРМЫ ЛОГИНА
+        function showLoginForm() {
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('register-form').style.display = 'none';
+            document.getElementById('reset-password-form').style.display = 'none';
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            if (tabBtns[0]) tabBtns[0].classList.add('active');
+            if (tabBtns[1]) tabBtns[1].classList.remove('active');
+        }
+
+        // ФУНКЦИЯ ЗАКРЫТИЯ АВТОРИЗАЦИИ
+        function closeAuthModal() {
+            const authModal = document.getElementById('auth-modal');
+            const overlay = document.getElementById('overlay');
+            if (authModal && overlay) {
+                authModal.style.display = 'none';
+                overlay.style.display = 'none';
+                document.getElementById('login-form').reset();
+                document.getElementById('register-form').reset();
+                const resetForm = document.getElementById('reset-password-form');
+                if (resetForm) {
+                    resetForm.style.display = 'none';
+                    resetForm.reset();
+                }
+                document.querySelectorAll('.form-error').forEach(el => el.classList.remove('show'));
+                document.querySelectorAll('.form-success').forEach(el => el.classList.remove('show'));
+            }
         }
 
         // База данных для поиска
         const searchDatabase = [
-            // Женские группы
             { type: 'group', name: 'KATSEYE', url: '../../../альбомы общие женских групп/KATSEYE/1.html' },
             { type: 'group', name: 'Aespa', url: '../../../альбомы общие женских групп/aespa/1.html' },
             { type: 'group', name: 'Red Velvet', url: '../../../альбомы общие женских групп/redvelvet/1.html' },
@@ -1723,8 +2092,6 @@
             { type: 'group', name: 'Kep1er', url: '../../../альбомы общие женских групп/kep1er/1.html' },
             { type: 'group', name: 'ITZY', url: '../../../альбомы общие женских групп/itzy/1.html' },
             { type: 'group', name: 'DREAMCATCHER', url: '../../../альбомы общие женских групп/dreamcatcher/1.html' },
-            
-            // Мужские группы
             { type: 'group', name: 'ZEROBASEONE', url: '../../../альбомы общие мужских групп/zb1/1.html' },
             { type: 'group', name: 'P1Harmony', url: '../../../альбомы общие мужских групп/p1h/1.html' },
             { type: 'group', name: 'TXT', url: '../../../альбомы общие мужских групп/txt/1.html' },
@@ -1737,84 +2104,11 @@
             { type: 'group', name: 'Boynextdoor', url: '../../../альбомы общие мужских групп/boynextdoor/1.html' },
             { type: 'group', name: 'XLOV', url: '../../../альбомы общие мужских групп/xlov/1.html' },
             { type: 'group', name: 'RIIZE', url: '../../../альбомы общие мужских групп/riize/1.html' },
-            
-            // Тесты
             { type: 'test', name: 'FEMALE GROUP TESTS', url: '../../../тестики/женские/1.html' },
             { type: 'test', name: 'MALE GROUP TESTS', url: '../../../тестики/мужские/1.html' },
-            
-            // Альбомы Dreamcatcher
             { type: 'album', name: 'DREAMCATCHER - UAU [Playlist #You Are You]', group: 'DREAMCATCHER', url: '../../../альбомы общие женских групп/dreamcatcher/1/1.html' },
             { type: 'album', name: 'Dreamcatcher - VillainS', group: 'DREAMCATCHER', url: '../../../альбомы общие женских групп/dreamcatcher/2/1.html' },
             { type: 'album', name: 'Dreamcatcher - VirtuouS', group: 'DREAMCATCHER', url: '../../../альбомы общие женских групп/dreamcatcher/3/1.html' },
-            
-            // Другие альбомы
-            { type: 'album', name: 'TXT - The Dream Chapter: ETERNITY', group: 'TXT', url: '../../../альбомы общие мужских групп/txt/1/1.html' },
-            { type: 'album', name: 'TXT - The Dream Chapter: MAGIC', group: 'TXT', url: '../../../альбомы общие мужских групп/txt/2/1.html' },
-            { type: 'album', name: 'TXT - minisode1 : BLUE HOUR', group: 'TXT', url: '../../../альбомы общие мужских групп/txt/3/1.html' },
-            { type: 'album', name: 'ONEUS - MALUS', group: 'ONEUS', url: '../../../альбомы общие мужских групп/oneus/3/1.html' },
-            { type: 'album', name: 'ONEUS - PYGMALION', group: 'ONEUS', url: '../../../альбомы общие мужских групп/oneus/2/1.html' },
-            { type: 'album', name: 'ONEUS - 5x', group: 'ONEUS', url: '../../../альбомы общие мужских групп/oneus/1/1.html' },
-            { type: 'album', name: 'Aespa - Armageddon', group: 'Aespa', url: '../../../альбомы общие женских групп/aespa/1/1.html' },
-            { type: 'album', name: 'Aespa - Drama', group: 'Aespa', url: '../../../альбомы общие женских групп/aespa/2/1.html' },
-            { type: 'album', name: 'Aespa - Girls', group: 'Aespa', url: '../../../альбомы общие женских групп/aespa/3/1.html' },
-            { type: 'album', name: 'KATSEYE - SIS', group: 'KATSEYE', url: '../../../альбомы общие женских групп/KATSEYE/1/1.html' },
-            { type: 'album', name: 'KATSEYE - BEAUTIFUL CHAOS', group: 'KATSEYE', url: '../../../альбомы общие женских групп/KATSEYE/2/1.html' },
-            { type: 'album', name: 'Red Velvet - Queendom', group: 'Red Velvet', url: '../../../альбомы общие женских групп/redvelvet/1/1.html' },
-            { type: 'album', name: 'Red Velvet - The ReVe Festival 2022 [Feel My Rhythm]', group: 'Red Velvet', url: '../../../альбомы общие женских групп/redvelvet/2/1.html' },
-            { type: 'album', name: 'IRENE - 1st Mini Album [Like A Flower]', group: 'Red Velvet', url: '../../../альбомы общие женских групп/redvelvet/3/1.html' },
-            { type: 'album', name: 'BABYMONSTER - DRIP', group: 'BABYMONSTER', url: '../../../альбомы общие женских групп/babymonster/1/1.html' },
-            { type: 'album', name: 'BABYMONSTER - DRIP ZIP', group: 'BABYMONSTER', url: '../../../альбомы общие женских групп/babymonster/2/1.html' },
-            { type: 'album', name: 'BABYMONS7ER - 1st MINI ALBUM [BABYMONS7ER]', group: 'BABYMONSTER', url: '../../../альбомы общие женских групп/babymonster/3/1.html' },
-            { type: 'album', name: 'ILLIT - 2nd Mini Album [I\'LL LIKE YOU]', group: 'ILLIT', url: '../../../альбомы общие женских групп/illit/1/1.html' },
-            { type: 'album', name: 'ILLIT - Bomb', group: 'ILLIT', url: '../../../альбомы общие женских групп/illit/2/1.html' },
-            { type: 'album', name: 'ILLIT - 1st Mini Album [SUPER REAL ME]', group: 'ILLIT', url: '../../../альбомы общие женских групп/illit/3/1.html' },
-            { type: 'album', name: 'KISS OF LIFE - Midas Touch', group: 'Kiss of life', url: '../../../альбомы общие женских групп/kissoflife/1/1.html' },
-            { type: 'album', name: 'KISS OF LIFE - Lose Yourself', group: 'Kiss of life', url: '../../../альбомы общие женских групп/kissoflife/2/1.html' },
-            { type: 'album', name: 'KISS OF LIFE - KISS OF LIFE', group: 'Kiss of life', url: '../../../альбомы общие женских групп/kissoflife/3/1.html' },
-            { type: 'album', name: 'IVE - 3rd EP Album [IVE EMPATHY]', group: 'IVE', url: '../../../альбомы общие женских групп/ive/1/1.html' },
-            { type: 'album', name: 'IVE - IVE SECRET', group: 'IVE', url: '../../../альбомы общие женских групп/ive/2/1.html' },
-            { type: 'album', name: 'IVE - IVE SWITCH', group: 'IVE', url: '../../../альбомы общие женских групп/ive/3/1.html' },
-            { type: 'album', name: 'TWICE - STRATEGY', group: 'TWICE', url: '../../../альбомы общие женских групп/twice/1/1.html' },
-            { type: 'album', name: 'TWICE - TEN: The Story Goes On', group: 'TWICE', url: '../../../альбомы общие женских групп/twice/2/1.html' },
-            { type: 'album', name: 'TWICE - BETWEEN 1&2', group: 'TWICE', url: '../../../альбомы общие женских групп/twice/3/1.html' },
-            { type: 'album', name: 'LE SSERAFIM - SPAGHETTI', group: 'LE SSERAFIM', url: '../../../альбомы общие женских групп/lesserafim/1/1.html' },
-            { type: 'album', name: 'LE SSERAFIM - CRAZY', group: 'LE SSERAFIM', url: '../../../альбомы общие женских групп/lesserafim/2/1.html' },
-            { type: 'album', name: 'LE SSERAFIM - HOT', group: 'LE SSERAFIM', url: '../../../альбомы общие женских групп/lesserafim/3/1.html' },
-            { type: 'album', name: 'Kep1er - Kep1going On', group: 'Kep1er', url: '../../../альбомы общие женских групп/kep1er/1/1.html' },
-            { type: 'album', name: 'Kep1er - BUBBLE GUM', group: 'Kep1er', url: '../../../альбомы общие женских групп/kep1er/2/1.html' },
-            { type: 'album', name: 'Kep1er - Magic Hour', group: 'Kep1er', url: '../../../альбомы общие женских групп/kep1er/3/1.html' },
-            { type: 'album', name: 'ITZY - Girls Will Be Girls', group: 'ITZY', url: '../../../альбомы общие женских групп/itzy/1/1.html' },
-            { type: 'album', name: 'YEJI (ITZY) - Air', group: 'ITZY', url: '../../../альбомы общие женских групп/itzy/2/1.html' },
-            { type: 'album', name: 'ITZY - BORN TO BE', group: 'ITZY', url: '../../../альбомы общие женских групп/itzy/3/1.html' },
-            { type: 'album', name: 'ZEROBASEONE - 2nd Mini ALBUM [MELTING POINT]', group: 'ZEROBASEONE', url: '../../../альбомы общие мужских групп/zb1/1/1.html' },
-            { type: 'album', name: 'ZEROBASEONE - CINEMA PARADISE', group: 'ZEROBASEONE', url: '../../../альбомы общие мужских групп/zb1/2/1.html' },
-            { type: 'album', name: 'ZEROBASEONE The 5th Mini Album - BLUE PARADISE', group: 'ZEROBASEONE', url: '../../../альбомы общие мужских групп/zb1/3/1.html' },
-            { type: 'album', name: 'P1Harmony - SAD SONG', group: 'P1Harmony', url: '../../../альбомы общие мужских групп/p1h/1/1.html' },
-            { type: 'album', name: 'P1Harmony - Killin\' It', group: 'P1Harmony', url: '../../../альбомы общие мужских групп/p1h/2/1.html' },
-            { type: 'album', name: 'P1Harmony - HARMONY : SET IN', group: 'P1Harmony', url: '../../../альбомы общие мужских групп/p1h/3/1.html' },
-            { type: 'album', name: 'BTS - SKOOL LUV AFFAIR SPECIAL ADDITION', group: 'BTS', url: '../../../альбомы общие мужских групп/bts/1/1.html' },
-            { type: 'album', name: 'BTS - DARK & WILD', group: 'BTS', url: '../../../альбомы общие мужских групп/bts/2/1.html' },
-            { type: 'album', name: 'BTS - O!RUL8,2?', group: 'BTS', url: '../../../альбомы общие мужских групп/bts/3/1.html' },
-            { type: 'album', name: 'ENHYPEN - ROMANCE : UNTOLD [daydream]', group: 'Enhypen', url: '../../../альбомы общие мужских групп/enhypen/1/1.html' },
-            { type: 'album', name: 'ENHYPEN - ORANGE BLOOD', group: 'Enhypen', url: '../../../альбомы общие мужских групп/enhypen/2/1.html' },
-            { type: 'album', name: 'ENHYPEN - DIMENSION : ANSWER', group: 'Enhypen', url: '../../../альбомы общие мужских групп/enhypen/3/1.html' },
-            { type: 'album', name: 'ATEEZ - THE WORLD : TO THE END DVD', group: 'Ateez', url: '../../../альбомы общие мужских групп/ateez/1/1.html' },
-            { type: 'album', name: 'ATEEZ - THE WORLD : TO THE END PLAY CODE', group: 'Ateez', url: '../../../альбомы общие мужских групп/ateez/2/1.html' },
-            { type: 'album', name: 'ATEEZ - THE WORLD EP.FIN : WILL', group: 'Ateez', url: '../../../альбомы общие мужских групп/ateez/3/1.html' },
-            { type: 'album', name: 'SEVENTEEN - An Ode', group: 'Seventeen', url: '../../../альбомы общие мужских групп/seventeen/1/1.html' },
-            { type: 'album', name: 'SEVENTEEN - 10th Mini Album', group: 'Seventeen', url: '../../../альбомы общие мужских групп/seventeen/2/1.html' },
-            { type: 'album', name: 'HOSHI X WOOZI (SEVENTEEN) - BEAM', group: 'Seventeen', url: '../../../альбомы общие мужских групп/seventeen/3/1.html' },
-            { type: 'album', name: 'Stray Kids - 5-STAR', group: 'Stray Kids', url: '../../../альбомы общие мужских групп/straykids/1/1.html' },
-            { type: 'album', name: 'Stray Kids - HIPTAPE', group: 'Stray Kids', url: '../../../альбомы общие мужских групп/straykids/2/1.html' },
-            { type: 'album', name: 'Stray Kids - KARMA', group: 'Stray Kids', url: '../../../альбомы общие мужских групп/straykids/3/1.html' },
-            { type: 'album', name: 'BOYNEXTDOOR - 4th EP', group: 'Boynextdoor', url: '../../../альбомы общие мужских групп/boynextdoor/1/1.html' },
-            { type: 'album', name: 'BOYNEXTDOOR - WHY..', group: 'Boynextdoor', url: '../../../альбомы общие мужских групп/boynextdoor/2/1.html' },
-            { type: 'album', name: 'BOYNEXTDOOR - 1st EP', group: 'Boynextdoor', url: '../../../альбомы общие мужских групп/boynextdoor/3/1.html' },
-            { type: 'album', name: 'XLOV - I ONE', group: 'XLOV', url: '../../../альбомы общие мужских групп/xlov/1/1.html' },
-            { type: 'album', name: 'XLOV - 1st Single Album [I\'mma Be]', group: 'XLOV', url: '../../../альбомы общие мужских групп/xlov/2/1.html' },
-            { type: 'album', name: 'RIIZE - Get A Guitar', group: 'RIIZE', url: '../../../альбомы общие мужских групп/riize/1/1.html' },
-            { type: 'album', name: 'RIIZE - ODYSSEY', group: 'RIIZE', url: '../../../альбомы общие мужских групп/riize/2/1.html' },
-            { type: 'album', name: 'RIIZE - ODYSSEY', group: 'RIIZE', url: '../../../альбомы общие мужских групп/riize/3/1.html' }
         ];
 
         // ФУНКЦИЯ ДЛЯ ВЫПОЛНЕНИЯ ПОИСКА
@@ -1828,19 +2122,15 @@
             }
             
             const searchTerm = query.toLowerCase().trim();
-            
-            // Поиск по всем элементам базы данных
             const results = searchDatabase.filter(item => {
                 const nameMatch = item.name.toLowerCase().includes(searchTerm);
                 const groupMatch = item.group ? item.group.toLowerCase().includes(searchTerm) : false;
-                
                 return nameMatch || groupMatch;
             });
             
             if (results.length === 0) {
                 resultsContainer.innerHTML = '<div class="search-result-item">Ничего не найдено</div>';
             } else {
-                // Группируем результаты по типу
                 const groups = results.filter(item => item.type === 'group');
                 const tests = results.filter(item => item.type === 'test');
                 const albums = results.filter(item => item.type === 'album');
@@ -1882,34 +2172,12 @@
             resultsContainer.classList.add('active');
         }
 
-        // ФУНКЦИЯ ДЛЯ ОТКРЫТИЯ МОДАЛЬНОГО ОКНА
-        function openModal(modal) {
-            closeAllModals();
-            modal.style.display = 'flex';
-            document.getElementById('overlay').style.display = 'block';
-        }
-
-        // ФУНКЦИЯ ДЛЯ ЗАКРЫТИЯ ВСЕХ МОДАЛЬНЫХ ОКОН
-        function closeAllModals() {
-            const authModal = document.getElementById('auth-modal');
-            const catalogMenu = document.getElementById('catalog-menu');
-            const overlay = document.getElementById('overlay');
-            const modals = document.querySelectorAll('.modal');
-            const searchResults = document.getElementById('search-results');
-            
-            if (authModal) authModal.style.display = 'none';
-            if (catalogMenu) catalogMenu.classList.remove('active');
-            if (overlay) overlay.style.display = 'none';
-            if (modals) modals.forEach(modal => modal.classList.remove('active'));
-            if (searchResults) searchResults.classList.remove('active');
-        }
-
         // Инициализация при загрузке страницы
         document.addEventListener('DOMContentLoaded', function () {
             const menuBtn = document.getElementById('menu-btn');
             const authBtn = document.getElementById('auth-btn');
             const authModal = document.getElementById('auth-modal');
-            const closeAuthModal = document.getElementById('close-auth-modal');
+            const closeAuthModalBtn = document.getElementById('close-auth-modal');
             const overlay = document.getElementById('overlay');
             const tabBtns = document.querySelectorAll('.tab-btn');
             const loginForm = document.getElementById('login-form');
@@ -1928,42 +2196,31 @@
             const maleGroupCategory = document.getElementById('male-group-category');
             const femaleGroupSubcategory = document.getElementById('female-group-subcategory');
             const maleGroupSubcategory = document.getElementById('male-group-subcategory');
-            const logoLink = document.querySelector('.logo a');
 
-            // Инициализация счетчиков и кнопки авторизации
             updateCounters();
-            updateAuthButton();
 
-            // Функция открытия модального окна авторизации
             function openAuthModal() {
                 closeAllModals();
                 authModal.style.display = 'flex';
                 overlay.style.display = 'block';
             }
 
-            // УЛУЧШЕННЫЙ ПОИСК
+            function closeAllModals() {
+                if (authModal) authModal.style.display = 'none';
+                if (catalogMenu) catalogMenu.classList.remove('active');
+                if (overlay) overlay.style.display = 'none';
+                modals.forEach(modal => modal.classList.remove('active'));
+                const searchResults = document.getElementById('search-results');
+                if (searchResults) searchResults.classList.remove('active');
+            }
+
             let searchTimeout;
-            
-            // Поиск при вводе каждой буквы с задержкой
             searchInput?.addEventListener('input', function() {
                 clearTimeout(searchTimeout);
-                
-                searchTimeout = setTimeout(() => {
-                    performSearch(this.value);
-                }, 300);
+                searchTimeout = setTimeout(() => performSearch(this.value), 300);
             });
-
-            // Поиск при нажатии Enter
-            searchInput?.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    performSearch(this.value);
-                }
-            });
-
-            // Поиск при клике на кнопку
-            searchBtn?.addEventListener('click', function() {
-                performSearch(searchInput.value);
-            });
+            searchInput?.addEventListener('keypress', function(e) { if (e.key === 'Enter') performSearch(this.value); });
+            searchBtn?.addEventListener('click', function() { performSearch(searchInput.value); });
 
             menuBtn?.addEventListener('click', () => {
                 closeAllModals();
@@ -1979,8 +2236,7 @@
                 }
             });
 
-            closeAuthModal?.addEventListener('click', () => closeAllModals());
-
+            closeAuthModalBtn?.addEventListener('click', closeAllModals);
             overlay?.addEventListener('click', closeAllModals);
 
             tabBtns.forEach(tab => {
@@ -1989,48 +2245,50 @@
                     tab.classList.add('active');
                     if (loginForm) loginForm.style.display = tab.dataset.tab === 'login' ? 'block' : 'none';
                     if (registerForm) registerForm.style.display = tab.dataset.tab === 'register' ? 'block' : 'none';
+                    const resetForm = document.getElementById('reset-password-form');
+                    if (resetForm) resetForm.style.display = 'none';
                 });
             });
 
             loginForm?.addEventListener('submit', (e) => {
                 e.preventDefault();
-                const email = loginForm.querySelector('input[type="email"]').value;
-                const password = loginForm.querySelector('input[type="password"]').value;
-                
-                if (login(email, password)) {
-                    closeAllModals();
-                }
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                if (login(email, password)) closeAllModals();
             });
 
             registerForm?.addEventListener('submit', (e) => {
                 e.preventDefault();
-                const name = registerForm.querySelector('input[type="text"]').value;
-                const email = registerForm.querySelector('input[type="email"]').value;
-                const password = registerForm.querySelector('input[type="password"]').value;
-                const confirmPassword = registerForm.querySelectorAll('input[type="password"]')[1].value;
-                
-                if (password !== confirmPassword) {
-                    showNotification('Пароли не совпадают', 'warning');
-                    return;
-                }
-                
-                if (register(name, email, password)) {
-                    closeAllModals();
-                }
+                const name = document.getElementById('register-name').value;
+                const email = document.getElementById('register-email').value;
+                const password = document.getElementById('register-password').value;
+                const confirmPassword = document.getElementById('register-confirm-password').value;
+                if (register(name, email, password, confirmPassword)) closeAllModals();
             });
 
-            // Обработчики для категорий каталога
+            const forgotLink = document.querySelector('.forgot-password');
+            if (forgotLink) forgotLink.addEventListener('click', (e) => { e.preventDefault(); showResetForm(); });
+            
+            const resetFormPw = document.getElementById('reset-password-form');
+            if (resetFormPw) {
+                resetFormPw.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const email = document.getElementById('reset-email').value;
+                    const newPassword = document.getElementById('reset-new-password').value;
+                    const confirmPassword = document.getElementById('reset-confirm-password').value;
+                    resetPassword(email, newPassword, confirmPassword);
+                });
+            }
+
+            const backToLogin = document.querySelector('.back-to-login');
+            if (backToLogin) backToLogin.addEventListener('click', (e) => { e.preventDefault(); showLoginForm(); });
+
             femaleGroupCategory?.addEventListener('click', function(e) {
                 if (e.target.closest('i')) {
                     femaleGroupSubcategory.classList.toggle('active');
                     const icon = this.querySelector('i');
-                    if (femaleGroupSubcategory.classList.contains('active')) {
-                        icon.classList.remove('fa-chevron-right');
-                        icon.classList.add('fa-chevron-down');
-                    } else {
-                        icon.classList.remove('fa-chevron-down');
-                        icon.classList.add('fa-chevron-right');
-                    }
+                    icon.classList.toggle('fa-chevron-right');
+                    icon.classList.toggle('fa-chevron-down');
                 }
             });
 
@@ -2038,36 +2296,17 @@
                 if (e.target.closest('i')) {
                     maleGroupSubcategory.classList.toggle('active');
                     const icon = this.querySelector('i');
-                    if (maleGroupSubcategory.classList.contains('active')) {
-                        icon.classList.remove('fa-chevron-right');
-                        icon.classList.add('fa-chevron-down');
-                    } else {
-                        icon.classList.remove('fa-chevron-down');
-                        icon.classList.add('fa-chevron-right');
-                    }
+                    icon.classList.toggle('fa-chevron-right');
+                    icon.classList.toggle('fa-chevron-down');
                 }
             });
 
-            cartBtn?.addEventListener('click', () => {
-                showCart();
-            });
-
-            favoritesBtn?.addEventListener('click', () => {
-                showFavorites();
-            });
-
-            clearCartBtn?.addEventListener('click', () => {
-                clearCart();
-            });
-
-            clearFavoritesBtn?.addEventListener('click', () => {
-                clearFavorites();
-            });
-
-            checkoutBtn?.addEventListener('click', () => {
-                goToCheckout();
-            });
-
+            cartBtn?.addEventListener('click', showCart);
+            favoritesBtn?.addEventListener('click', showFavorites);
+            clearCartBtn?.addEventListener('click', clearCart);
+            clearFavoritesBtn?.addEventListener('click', clearFavorites);
+            checkoutBtn?.addEventListener('click', goToCheckout);
+            
             closeModalButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     modals.forEach(modal => modal.classList.remove('active'));
@@ -2084,201 +2323,13 @@
                 });
             });
 
-            // Закрытие результатов поиска при клике вне
             document.addEventListener('click', function(e) {
                 if (!e.target.closest('.search-container')) {
                     const searchResults = document.getElementById('search-results');
                     if (searchResults) searchResults.classList.remove('active');
                 }
             });
-
-            // Обработчик для логотипа
-            logoLink?.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.body.style.opacity = '0';
-                document.body.style.transition = 'opacity 0.3s ease';
-                
-                setTimeout(() => {
-                    window.location.href = this.getAttribute('href');
-                }, 300);
-            });
-
-            // Стили для модального окна авторизации (добавляем динамически)
-            const authModalStyles = `
-                <style>
-                    .modal-overlay {
-                        display: none;
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                        background: rgba(0, 0, 0, 0.5);
-                        z-index: 1000;
-                        justify-content: center;
-                        align-items: center;
-                        padding: 20px;
-                    }
-
-                    .auth-modal {
-                        width: 90%;
-                        max-width: 400px;
-                        background: var(--light-color);
-                        border-radius: 12px;
-                        box-shadow: 0 10px 30px rgba(222, 93, 131, 0.3);
-                        overflow: hidden;
-                        position: relative;
-                        max-height: 90vh;
-                        overflow-y: auto;
-                        border: 2px solid var(--secondary-color);
-                    }
-
-                    .auth-modal-header {
-                        display: flex;
-                        justify-content: space-between;
-                        background: var(--accent-color);
-                        padding: var(--spacing-sm);
-                        position: relative;
-                    }
-
-                    .tab-btn {
-                        flex: 1;
-                        padding: var(--spacing-sm);
-                        text-align: center;
-                        cursor: pointer;
-                        font-weight: bold;
-                        border-bottom: 3px solid transparent;
-                        color: var(--text-color);
-                    }
-
-                    .tab-btn.active {
-                        border-bottom: 3px solid var(--button-color);
-                        color: var(--button-color);
-                    }
-
-                    .close-auth-modal {
-                        position: absolute;
-                        top: 10px;
-                        right: 10px;
-                        width: 30px;
-                        height: 30px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        font-size: 1.5rem;
-                        color: var(--text-color);
-                        cursor: pointer;
-                        transition: var(--transition);
-                        background: transparent;
-                        border: none;
-                        z-index: 1;
-                    }
-
-                    .close-auth-modal:hover {
-                        color: var(--button-color);
-                        transform: rotate(90deg);
-                    }
-
-                    .auth-modal-body {
-                        padding: var(--spacing-lg);
-                    }
-
-                    .auth-modal-body form input {
-                        width: 100%;
-                        padding: 0.8rem;
-                        margin-bottom: var(--spacing-sm);
-                        border: 1px solid var(--button-color);
-                        border-radius: var(--border-radius);
-                        outline: none;
-                        font-size: 16px;
-                        background: var(--light-color);
-                        color: var(--text-color);
-                    }
-
-                    .auth-modal-body button {
-                        width: 100%;
-                        padding: 0.8rem;
-                        background: var(--button-color);
-                        color: var(--light-color);
-                        border: none;
-                        border-radius: var(--border-radius);
-                        font-weight: bold;
-                        cursor: pointer;
-                        transition: var(--transition);
-                    }
-
-                    .auth-modal-body button:hover {
-                        background: #c94a72;
-                    }
-
-                    /* Элементы управления количеством */
-                    .item-quantity-controls {
-                        display: flex;
-                        align-items: center;
-                        gap: 10px;
-                        margin-top: 5px;
-                    }
-                    
-                    .quantity-btn {
-                        width: 25px;
-                        height: 25px;
-                        border-radius: 50%;
-                        background: var(--button-color);
-                        color: white;
-                        border: none;
-                        cursor: pointer;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        font-weight: bold;
-                        transition: var(--transition);
-                    }
-                    
-                    .quantity-btn:hover {
-                        background: #c94a72;
-                    }
-                    
-                    .quantity-btn:disabled {
-                        background: var(--gray);
-                        opacity: 0.5;
-                        pointer-events: none;
-                    }
-                    
-                    .quantity {
-                        font-weight: bold;
-                        min-width: 40px;
-                        text-align: center;
-                    }
-
-                    /* Анимации */
-                    @keyframes slideIn {
-                        from {
-                            transform: translateX(100%);
-                            opacity: 0;
-                        }
-                        to {
-                            transform: translateX(0);
-                            opacity: 1;
-                        }
-                    }
-                    
-                    @keyframes slideOut {
-                        from {
-                            transform: translateX(0);
-                            opacity: 1;
-                        }
-                        to {
-                            transform: translateX(100%);
-                            opacity: 0;
-                        }
-                    }
-                </style>
-            `;
-
-            // Добавляем стили в head
-            document.head.insertAdjacentHTML('beforeend', authModalStyles);
         });
     </script>
-  <script src="../../auth.js"></script>
 </body>
 </html>

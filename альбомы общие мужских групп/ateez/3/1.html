@@ -1159,6 +1159,68 @@
       background: #c94a72;
     }
 
+    .form-error,
+    .form-success {
+      display: none;
+    }
+
+    .password-wrapper {
+      position: relative;
+      width: 100%;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .password-wrapper .password-toggle {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-color);
+      padding: 5px 8px;
+      font-size: 16px;
+      width: auto;
+      min-width: auto;
+      height: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0;
+      font-weight: normal;
+      transition: none;
+      margin: 0;
+      line-height: 1;
+    }
+
+    .password-wrapper .password-toggle:hover {
+      background: none;
+      color: var(--text-color);
+    }
+
+    .auth-modal-body .password-wrapper input {
+      margin-bottom: 0;
+      padding-right: 40px;
+    }
+
+    .forgot-password,
+    .back-to-login {
+      display: block;
+      text-align: center;
+      margin-top: 15px;
+      color: var(--text-color);
+      cursor: pointer;
+      font-size: 16px;
+      text-decoration: none;
+    }
+
+    .forgot-password:hover,
+    .back-to-login:hover {
+      color: var(--text-color);
+      opacity: 0.7;
+    }
+
     /* Элементы управления количеством */
     .item-quantity-controls {
       display: flex;
@@ -1650,30 +1712,71 @@
   </div>
 </div>
 
-<!-- МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ -->
-<div class="modal-overlay" id="auth-modal">
-  <div class="auth-modal">
-    <div class="auth-modal-header">
-      <div class="tab-btn active" data-tab="login">Вход</div>
-      <div class="tab-btn" data-tab="register">Регистрация</div>
-      <button class="close-auth-modal" id="close-auth-modal" aria-label="Закрыть">&times;</button>
-    </div>
-    <div class="auth-modal-body">
-      <form id="login-form">
-        <input type="email" placeholder="Email" required aria-label="Email">
-        <input type="password" placeholder="Пароль" required aria-label="Пароль">
-        <button type="submit">Войти</button>
-      </form>
-      <form id="register-form" style="display: none;">
-        <input type="text" placeholder="Имя" required aria-label="Имя">
-        <input type="email" placeholder="Email" required aria-label="Email">
-        <input type="password" placeholder="Пароль" required aria-label="Пароль">
-        <input type="password" placeholder="Подтвердите пароль" required aria-label="Подтверждение пароля">
-        <button type="submit">Зарегистрироваться</button>
-      </form>
+  <!-- МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ -->
+  <div class="modal-overlay" id="auth-modal">
+    <div class="auth-modal">
+      <div class="auth-modal-header">
+        <div class="tab-btn active" data-tab="login">Вход</div>
+        <div class="tab-btn" data-tab="register">Регистрация</div>
+        <button class="close-auth-modal" id="close-auth-modal" aria-label="Закрыть">&times;</button>
+      </div>
+      <div class="auth-modal-body">
+        <form id="login-form">
+          <input type="email" id="login-email" placeholder="Email" required aria-label="Email">
+          <div class="password-wrapper">
+            <input type="password" id="login-password" placeholder="Пароль" required aria-label="Пароль">
+            <button type="button" class="password-toggle" onclick="togglePasswordVisibility('login-password', this)">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+          <div class="form-error" id="login-password-error">Пароль должен содержать минимум 6 символов</div>
+          <button type="submit">Войти</button>
+          <a href="#" class="forgot-password">Забыли пароль?</a>
+          <div class="form-success" id="login-success">Успешный вход!</div>
+        </form>
+        <form id="register-form" style="display: none;">
+          <input type="text" id="register-name" placeholder="Имя" required aria-label="Имя">
+          <div class="form-error" id="register-name-error">Имя должно содержать минимум 2 символа</div>
+          <input type="email" id="register-email" placeholder="Email" required aria-label="Email">
+          <div class="form-error" id="register-email-error">Введите корректный email</div>
+          <div class="password-wrapper">
+            <input type="password" id="register-password" placeholder="Пароль" required aria-label="Пароль">
+            <button type="button" class="password-toggle" onclick="togglePasswordVisibility('register-password', this)">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+          <div class="form-error" id="register-password-error">Пароль должен содержать минимум 6 символов</div>
+          <div class="password-wrapper">
+            <input type="password" id="register-confirm-password" placeholder="Подтвердите пароль" required aria-label="Подтверждение пароля">
+            <button type="button" class="password-toggle" onclick="togglePasswordVisibility('register-confirm-password', this)">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+          <div class="form-error" id="register-confirm-error">Пароли не совпадают</div>
+          <button type="submit">Зарегистрироваться</button>
+          <div class="form-success" id="register-success">Регистрация успешна!</div>
+        </form>
+        <form id="reset-password-form" style="display: none;">
+          <p style="margin-bottom: 15px; color: var(--text-color);">Введите ваш email и новый пароль</p>
+          <input type="email" id="reset-email" placeholder="Email" required aria-label="Email">
+          <div class="password-wrapper">
+            <input type="password" id="reset-new-password" placeholder="Новый пароль" required aria-label="Новый пароль">
+            <button type="button" class="password-toggle" onclick="togglePasswordVisibility('reset-new-password', this)">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+          <div class="password-wrapper">
+            <input type="password" id="reset-confirm-password" placeholder="Подтвердите новый пароль" required aria-label="Подтверждение">
+            <button type="button" class="password-toggle" onclick="togglePasswordVisibility('reset-confirm-password', this)">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+          <button type="submit">Сбросить пароль</button>
+          <a href="#" class="back-to-login">Вернуться ко входу</a>
+        </form>
+      </div>
     </div>
   </div>
-</div>
 
 <div class="overlay" id="overlay"></div>
 
@@ -2511,6 +2614,7 @@
         tab.classList.add('active');
         if (loginForm) loginForm.style.display = tab.dataset.tab === 'login' ? 'block' : 'none';
         if (registerForm) registerForm.style.display = tab.dataset.tab === 'register' ? 'block' : 'none';
+        document.getElementById('reset-password-form').style.display = 'none';
       });
     });
 
@@ -2540,6 +2644,62 @@
         closeAllModals();
       }
     });
+
+    // Обработчик для "Забыли пароль?"
+    const forgotLink = document.querySelector('.forgot-password');
+    if (forgotLink) {
+      forgotLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('register-form').style.display = 'none';
+        document.getElementById('reset-password-form').style.display = 'block';
+        tabBtns.forEach(b => b.classList.remove('active'));
+      });
+    }
+
+    // Обработчик для формы сброса пароля
+    const resetForm = document.getElementById('reset-password-form');
+    if (resetForm) {
+      resetForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = document.getElementById('reset-email').value;
+        const newPassword = document.getElementById('reset-new-password').value;
+        const confirmPassword = document.getElementById('reset-confirm-password').value;
+        const users = JSON.parse(localStorage.getItem('users') || '[]');
+        const userIndex = users.findIndex(u => u.email === email);
+        if (userIndex === -1) {
+          showNotification('Пользователь с таким email не найден', 'error');
+          return;
+        }
+        if (newPassword !== confirmPassword) {
+          showNotification('Пароли не совпадают', 'error');
+          return;
+        }
+        if (newPassword.length < 6) {
+          showNotification('Пароль должен содержать минимум 6 символов', 'error');
+          return;
+        }
+        users[userIndex].password = newPassword;
+        localStorage.setItem('users', JSON.stringify(users));
+        showNotification('Пароль успешно обновлен!');
+        document.getElementById('reset-password-form').style.display = 'none';
+        document.getElementById('login-form').style.display = 'block';
+        tabBtns.forEach(b => b.classList.remove('active'));
+        if (tabBtns.length > 0) tabBtns[0].classList.add('active');
+      });
+    }
+
+    // Обработчик для "Вернуться ко входу"
+    const backToLogin = document.querySelector('.back-to-login');
+    if (backToLogin) {
+      backToLogin.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.getElementById('reset-password-form').style.display = 'none';
+        document.getElementById('login-form').style.display = 'block';
+        tabBtns.forEach(b => b.classList.remove('active'));
+        if (tabBtns.length > 0) tabBtns[0].classList.add('active');
+      });
+    }
 
     femaleGroupCategory?.addEventListener('click', function(e) {
       if (e.target.closest('i')) {
@@ -2731,6 +2891,5 @@ function goBackToAlbumList() {
     } catch (e) {}
     window.location.href = '../1.html';
 }</script>
-  <script src="../../auth.js"></script>
 </body>
 </html>
